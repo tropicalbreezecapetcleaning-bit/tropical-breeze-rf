@@ -52,10 +52,8 @@ const TRUST = [
 ];
 
 const SOCIAL = [
+ const SOCIAL = [
   n=>`<strong>${n} people</strong> booked in the last hour`,
-  n=>`<strong>${n} neighbors</strong> booked this week`,
-  n=>`Someone just booked <strong>${n} rooms</strong> nearby`,
-];
 
 const STEPS = ["Ask AI", "Services", "Review", "Your Info"];
 const T_MODAL = 149, T_MULTI = 400;

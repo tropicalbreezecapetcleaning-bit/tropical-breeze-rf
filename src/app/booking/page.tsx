@@ -58,7 +58,6 @@ const SOCIAL = [
   (n: number) => `Someone just booked <strong>${n} rooms</strong> nearby`,
 ];
 
-const STEPS
 const STEPS = ["Ask AI", "Services", "Review", "Your Info"];
 const T_MODAL = 149, T_MULTI = 400;
 

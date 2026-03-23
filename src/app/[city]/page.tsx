@@ -6,7 +6,10 @@ import { notFound } from 'next/navigation';
 interface CityPageProps {
   params: Promise<{ city: string }>;
 }
-
+export async function generateStaticParams() {
+  const allCities = await db.select({ slug: cities.slug }).from(cities);
+  return allCities.map((city) => ({ city: city.slug }));
+}
 export async function generateMetadata({ params }: CityPageProps) {
   const { city: citySlug } = await params;
   const city = await db.select().from(cities).where(eq(cities.slug, citySlug)).limit(1);

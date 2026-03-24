@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
         system_instruction: { parts: [{ text: SYSTEM_PROMPT }] },
         contents: messages.map((m: { role: string; content: string }) => ({
           role: m.role === 'assistant' ? 'model' : 'user',
-          parts: [{ text: m.content }],
+          parts: [{ text: <span dangerouslySetInnerHTML={{ __html: m.content.replace(/\/booking/g, '<a href="/booking" style="color:#0097A7;font-weight:700;text-decoration:underline;">Book Online</a>') }} />}],
         })),
         generationConfig: { maxOutputTokens: 500, temperature: 0.7 },
       }),

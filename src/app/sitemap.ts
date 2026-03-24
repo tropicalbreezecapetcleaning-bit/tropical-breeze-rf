@@ -1,3 +1,4 @@
+export const dynamic = 'force-static';
 import { db } from '@/db';
 import { cities } from '@/db/schema';
 import { MetadataRoute } from 'next';

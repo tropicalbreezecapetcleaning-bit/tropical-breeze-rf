@@ -4,14 +4,14 @@ import { eq } from 'drizzle-orm';
 import { notFound } from 'next/navigation';
 
 interface CityPageProps {
-  params: Promise<{ city: string }>;
+  params: Promise<{ slug: string }>;
 }
 export async function generateStaticParams() {
   const allCities = await db.select({ slug: cities.slug }).from(cities);
-  return allCities.map((city) => ({ city: city.slug }));
+ return allCities.map((city) => ({ slug: city.slug }));
 }
 export async function generateMetadata({ params }: CityPageProps) {
-  const { city: citySlug } = await params;
+  const { slug: citySlug } = await params;
   const city = await db.select().from(cities).where(eq(cities.slug, citySlug)).limit(1);
   if (!city[0]) return {};
   return {
@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: CityPageProps) {
 }
 
 export default async function CityPage({ params }: CityPageProps) {
-  const { city: citySlug } = await params;
+const { slug: citySlug } = await params;
   const result = await db.select().from(cities).where(eq(cities.slug, citySlug)).limit(1);
   const city = result[0];
   if (!city) notFound();

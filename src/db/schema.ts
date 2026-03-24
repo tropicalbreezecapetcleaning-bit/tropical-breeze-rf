@@ -40,9 +40,10 @@ export const cities = pgTable('cities', {
   featuredReview: text('featured_review'),
   featuredReviewer: varchar('featured_reviewer', { length: 100 }),
   createdAt: timestamp('created_at').defaultNow(),
-  updatedAt: timestamp('updated_at').defaultNow(),
+ updatedAt: timestamp('updated_at').defaultNow(),
+  lat: decimal('lat', { precision: 10, scale: 7 }),
+  lng: decimal('lng', { precision: 10, scale: 7 }),
 });
-
 export const services = pgTable('services', {
   id: serial('id').primaryKey(),
   slug: varchar('slug', { length: 100 }).unique().notNull(),

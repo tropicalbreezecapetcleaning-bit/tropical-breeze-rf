@@ -44,7 +44,7 @@ export default function Chatbot() {
             {messages.map((m, i) => (
               <div key={i} style={{ display: 'flex', justifyContent: m.role === 'user' ? 'flex-end' : 'flex-start' }}>
                 <div style={{ maxWidth: '80%', padding: '9px 12px', borderRadius: 14, background: m.role === 'user' ? '#006978' : '#f4f7f8', color: m.role === 'user' ? 'white' : '#1a2e35', fontSize: 13, lineHeight: 1.5 }}>
-                  {m.content}
+                  <span dangerouslySetInnerHTML={{ __html: m.content.replace(/\/booking/g, '<a href="/booking" style="color:#0097A7;font-weight:700;text-decoration:underline;">Book Online</a>') }} />
                 </div>
               </div>
             ))}

@@ -53,4 +53,4 @@ export default function Navbar() {
       )}
     </nav>
   );
-}
+}<Link href="/contact" className="hover:text-teal-300 transition">Contact</Link>

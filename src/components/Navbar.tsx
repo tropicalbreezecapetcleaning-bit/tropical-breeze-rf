@@ -21,6 +21,7 @@ export default function Navbar() {
           <Link href="/windows" className="hover:text-teal-300 transition">Windows</Link>
           <Link href="/ez-breeze" className="hover:text-teal-300 transition">EZ Breeze</Link>
         </div>
+        <Link href="/about" className="hover:text-teal-300 transition">About</Link>
         <div className="hidden md:flex items-center gap-3">
           <a href="tel:4438563244" className="text-sm text-teal-300 hover:text-white transition font-mono">443-856-3244</a>
           <a href="/booking" className="bg-teal-400 hover:bg-teal-300 text-sky-900 font-bold px-5 py-2 rounded-full text-sm transition">Book Now</a>
@@ -43,6 +44,7 @@ export default function Navbar() {
           <Link href="/hardwood" onClick={() => setMenuOpen(false)} className="hover:text-teal-300 transition">Hardwood</Link>
           <Link href="/windows" onClick={() => setMenuOpen(false)} className="hover:text-teal-300 transition">Windows</Link>
           <Link href="/ez-breeze" onClick={() => setMenuOpen(false)} className="hover:text-teal-300 transition">EZ Breeze</Link>
+          <Link href="/about" onClick={() => setMenuOpen(false)} className="hover:text-teal-300 transition">About</Link>
           <div className="pt-2 border-t border-sky-700 flex flex-col gap-3">
             <a href="tel:4438563244" className="text-teal-300 font-mono">443-856-3244</a>
             <a href="/booking" className="bg-teal-400 text-sky-900 font-bold px-5 py-2 rounded-full text-center">Book Now</a>

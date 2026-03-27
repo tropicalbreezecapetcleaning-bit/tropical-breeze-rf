@@ -117,6 +117,22 @@ export default function Home() {
         </div>
         <p className="text-sky-400 text-sm mt-8">Residue Doesn't Survive Here™ · tropicalbreezerf.com</p>
       </section>
+      {/* REVIEWS */}
+<section className="py-16 px-6 bg-white">
+  <div className="max-w-4xl mx-auto text-center">
+    <p className="text-teal-600 text-sm font-mono uppercase tracking-widest mb-3">What Customers Say</p>
+    <h2 className="text-3xl font-bold text-sky-900 mb-10">200+ Five-Star Reviews Across the Eastern Shore</h2>
+    <div className="flex justify-center">
+      <iframe 
+        src="https://client.housecallpro.com/reviews/widget/org_50b68db028f14c63aac14e1697f85fa8" 
+        height="600" 
+        width="100%"
+        style={{ border: 'none', maxWidth: '800px' }}
+        title="Customer Reviews"
+      />
+    </div>
+  </div>
+</section>
     </main>
   );
 }

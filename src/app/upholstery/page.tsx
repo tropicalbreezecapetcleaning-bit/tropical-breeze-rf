@@ -63,7 +63,7 @@ export default function Upholstery() {
             {[{item:"Chair",price:"$50"},{item:"Loveseat",price:"$75"},{item:"Sofa",price:"$85"},{item:"Sectional",price:"From $120"}].map(p => (
               <Link href="/booking" key={p.item} className="bg-white bg-opacity-15 rounded-2xl p-6 hover:bg-opacity-25 transition border border-white border-opacity-20 block">
                 <div className="text-3xl font-black mb-1">{p.price}</div>
-                <div className="text-orange-100 font-semibold text-sm">{p.item}</div>
+                <div className="text-white font-semibold text-sm">{p.item}</div>
                 <div className="text-orange-200 text-xs mt-2">Book Online →</div>
               </Link>
             ))}

@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next';
 
-const BASE_URL = 'https://tropicalbreezerf.com';
+const BASE_URL = 'https://app.tropicalbreezerf.com';
 
 const CITY_SLUGS = [
   'salisbury-md', 'ocean-city-md', 'rehoboth-beach-de', 'bethany-beach-de',

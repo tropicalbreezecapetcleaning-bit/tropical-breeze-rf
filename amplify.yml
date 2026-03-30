@@ -1,9 +1,10 @@
-version: 1
+﻿version: 1
 frontend:
   phases:
     preBuild:
       commands:
-        - npm ci
+        - echo "GEMINI_API_KEY=$GEMINI_API_KEY" >> .env.production`n       
+         - npm ci
     build:
       commands:
         - npm run build

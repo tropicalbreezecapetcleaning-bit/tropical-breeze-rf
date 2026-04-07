@@ -701,7 +701,6 @@ Always respond with your message first, then the JSON block like this:
                 if (data.success) { setSuccess(true); } else { alert("Something went wrong. Please call 443-856-3244 to book."); }
               } catch(e) { alert("Something went wrong. Please call 443-856-3244 to book."); }
               setSending(false);
-            }}
             }} disabled={sending} style={{padding:"11px 16px",background:"linear-gradient(135deg,#FF6F00,#e65100)",color:"white",border:"none",borderRadius:12,fontWeight:800,fontSize:13,cursor:"pointer",whiteSpace:"nowrap",boxShadow:"0 4px 14px rgba(255,111,0,.3)"}}>
               {sending?"Sending...":"Confirm — $"+grand}
             </button>

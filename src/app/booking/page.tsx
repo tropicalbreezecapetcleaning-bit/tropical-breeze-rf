@@ -671,7 +671,47 @@ Always respond with your message first, then the JSON block like this:
           ):(
             <button onClick={async()=>{
               if(!form.name||!form.phone||!form.street||!form.city||!form.state||!form.zip||!form.date||!form.time){alert("Please fill in all required fields.");return;}
-              setSending(true);await new Promise(r=>setTimeout(r,1200));setSuccess(true);setSending(false);
+              onClick={async()=>{
+  if(!form.name||!form.phone||!form.street||!form.city||!form.state||!form.zip||!form.date||!form.time){
+    alert("Please fill in all required fields.");return;
+  }
+  setSending(true);
+  try {
+    const res = await fetch("/api/booking", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        ...form,
+        services: {
+          [`Carpet (${counts.carpet} rooms)`]: counts.carpet > 0 ? `$${carpetCost}` : null,
+          [`Hardwood (${hw} sqft)`]: hwN > 0 ? `$${Math.round(hwN*P.hardwood_per_sqft)}` : null,
+          [`Tile & Grout (${counts.tile} rooms)`]: counts.tile > 0 ? `$${tileCost}` : null,
+          [`Upholstery`]: upActive ? `$${upCost}` : null,
+          [`Windows (${counts.windows})`]: counts.windows > 0 ? `$${winCost}` : null,
+        },
+        addons: {
+          "Scotchgard™": addons.scotchgard || null,
+          "Carpet Deodorizer": addons.carpetDeod || null,
+          "Grout Sealing": addons.grout || null,
+          "Fabric Protector": addons.fabricProt || null,
+          "Upholstery Deodorizer": addons.upDeod || null,
+          "Screen & Track": addons.screens || null,
+        },
+        total: grand,
+        saved: saved > 0 ? saved : null,
+      }),
+    });
+    const data = await res.json();
+    if (data.success) {
+      setSuccess(true);
+    } else {
+      alert("Something went wrong. Please call 443-856-3244 to book.");
+    }
+  } catch(e) {
+    alert("Something went wrong. Please call 443-856-3244 to book.");
+  }
+  setSending(false);
+}}
             }} disabled={sending} style={{padding:"11px 16px",background:"linear-gradient(135deg,#FF6F00,#e65100)",color:"white",border:"none",borderRadius:12,fontWeight:800,fontSize:13,cursor:"pointer",whiteSpace:"nowrap",boxShadow:"0 4px 14px rgba(255,111,0,.3)"}}>
               {sending?"Sending...":"Confirm — $"+grand}
             </button>

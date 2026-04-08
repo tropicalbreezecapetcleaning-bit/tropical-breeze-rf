@@ -4,6 +4,7 @@ frontend:
     preBuild:
       commands:
         - echo "GEMINI_API_KEY=$GEMINI_API_KEY" >> .env.production
+        - echo "SENDGRID_API_KEY=$SENDGRID_API_KEY" >> .env.production
         - npm ci
     build:
       commands:

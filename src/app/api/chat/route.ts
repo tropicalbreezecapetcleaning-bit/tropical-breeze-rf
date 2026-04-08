@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
   try {
     const { messages, message } = await req.json();
 
-    const apiKey = process.env.GEMINI_API_KEY;
+    const apiKey = process.env.GEMINI_API_KEY;`n    console.log("KEY EXISTS:", !!apiKey, "LENGTH:", apiKey?.length);
     if (!apiKey) {
       return NextResponse.json({ message: "Call us at 443-856-3244 for a free quote!", response: "Call us at 443-856-3244 for a free quote!" });
     }

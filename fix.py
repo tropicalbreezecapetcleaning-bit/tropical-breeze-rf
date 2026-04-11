@@ -1,0 +1,8 @@
+﻿content = open("public/booking.html", "r", encoding="utf-8").read()
+content = content.replace("\u00e2\u0080\u0094", "--")
+content = content.replace("\u00e2\u0080\u0099", "'")
+content = content.replace("\u00e2\u0084\u00a2", "TM")
+content = content.replace("\u00c3\u00b7", "x")
+content = content.replace("\u00c2\u00b7", "-")
+open("public/booking.html", "w", encoding="utf-8").write(content)
+print("Done")

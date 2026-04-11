@@ -2025,6 +2025,47 @@ async function submitBooking(skip){
     season:season.emoji,source:'booking_html',timestamp:new Date().toISOString()
   };
 
+  // Build line items for email
+  const emailLines = [];
+  const addLine = (l,v,cls='') => emailLines.push({label:l, value:v, cls:cls});
+  if(counts.carpet>0){
+    const rms=roomSelections.carpet;
+    addLine('Carpet - 1st room'+(rms[0]?' ('+rms[0]+')':''), P.carpet_first);
+    for(let i=1;i<counts.carpet;i++) addLine('  Additional'+(rms[i]?' ('+rms[i]+')':''), P.carpet_add);
+  }
+  const hwVal=parseFloat(document.getElementById('hw').value)||0;
+  if(hwVal) addLine('Hardwood - '+hwVal+' sq ft', Math.round(hwVal*P.hardwood));
+  for(let i=0;i<counts.tile;i++) addLine('Tile - '+(roomSelections.tile[i]||'Room '+(i+1)), P.tile);
+  for(let i=0;i<counts.bath_tile;i++) addLine('Bathroom - '+(roomSelections.bath_tile[i]||'Bath '+(i+1)), P.bath_tile);
+  const upData2=calcUpTotal();
+  if(upData2.sofaC) addLine('Sofas x '+upCounts.sofa, upData2.sofaC);
+  if(upData2.loveC) addLine('Loveseats x '+upCounts.loveseat, upData2.loveC);
+  if(upData2.chairC) addLine('Chairs x '+upCounts.chair, upData2.chairC);
+  if(upData2.diningC) addLine('Dining Chairs x '+upCounts.dining+' ('+upData2.diningTypeLabel+')', upData2.diningC);
+  if(upData2.sectC) addLine('Sectional - '+upData2.sf+'ft', upData2.sectC);
+  if(upData2.sectDeodC) addLine('Sectional Deodorizer', upData2.sectDeodC);
+  if(upData2.sectProtC) addLine('Sectional Protector', upData2.sectProtC);
+  if(counts.windows) addLine('Windows x '+counts.windows, counts.windows*P.window);
+  if(counts.ezbreeze) addLine('EZ Breeze x '+counts.ezbreeze, counts.ezbreeze*P.ezbreeze_panel);
+  const rugN2=counts.rug_small+counts.rug_medium+counts.rug_large+counts.rug_oversized;
+  if(rugN2) addLine('Rugs (incl. pickup)', counts.rug_small*P.rug_small+counts.rug_medium*P.rug_medium+counts.rug_large*P.rug_large+counts.rug_oversized*P.rug_oversized+rugN2*P.rug_pickup);
+  const sc2=addons.scotchgard?counts.carpet*P.scotchgard:0;
+  const cd2=addons.carpetDeod?counts.carpet*P.carpetDeod:0;
+  const gr2=addons.grout?(counts.tile+counts.bath_tile)*P.grout:0;
+  const cs2=addons.colorSeal?(counts.tile+counts.bath_tile)*P.colorSeal:0;
+  const scr2=addons.screens?counts.windows*P.screens:0;
+  const fp2=addons.fabricProt?(upCounts.sofa+upCounts.loveseat+upCounts.chair)*P.fabricProt_piece:0;
+  const ud2=addons.upDeod?(upCounts.sofa+upCounts.loveseat+upCounts.chair)*P.upDeod_piece:0;
+  if(sc2) addLine('Scotchgard x '+counts.carpet, sc2);
+  if(cd2) addLine('Carpet Deodorizer x '+counts.carpet, cd2);
+  if(gr2) addLine('Grout Sealing', gr2);
+  if(cs2) addLine('Color Seal'+(selColor?' - '+selColor.n:''), cs2);
+  if(scr2) addLine('Screens & Tracks', scr2);
+  if(fp2) addLine('Fabric Protector', fp2);
+  if(ud2) addLine('Upholstery Deodorizer', ud2);
+  const seaD2=grand>0?Math.round(grand*P.sea):0;
+  if(seaD2) addLine('Seasonal Discount (10%)', -seaD2, 'disc');
+  payload.line_items = emailLines;
   try{await fetch('/api/booking',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});}catch{}
 
   // Build line items

@@ -7,6 +7,8 @@ frontend:
     build:
       commands:
         - echo "GEMINI_API_KEY=$GEMINI_API_KEY" >> .env.production
+        - echo "SENDGRID_API_KEY=$SENDGRID_API_KEY" >> .env.production
+        - echo "DATABASE_URL=$DATABASE_URL" >> .env.production
         - npm run build
   artifacts:
     baseDirectory: .next

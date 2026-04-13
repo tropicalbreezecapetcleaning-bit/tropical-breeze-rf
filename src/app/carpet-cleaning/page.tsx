@@ -159,21 +159,21 @@ export default function CarpetCleaning() {
 
           <div className="grid md:grid-cols-3 gap-6 mb-12">
             <div className="relative rounded-2xl overflow-hidden shadow-lg group">
-              <img src="/images/carpet-during-1.jpg" alt="Carpet cleaning in progress with Prochem truckmount and Rotovac wand" className="w-full h-72 object-cover group-hover:scale-105 transition-transform duration-500" />
+              <img src="https://d1chim18wmcawu.cloudfront.net/images/carpet-during-1.jpg" alt="Carpet cleaning in progress with Prochem truckmount and Rotovac wand" className="w-full h-72 object-cover group-hover:scale-105 transition-transform duration-500" />
               <div className="absolute top-4 left-4 bg-orange-500 text-white text-xs font-black px-3 py-1 rounded-full">DURING</div>
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
                 <p className="text-white text-xs font-bold">Rotovac Powerwand 360 in action</p>
               </div>
             </div>
             <div className="relative rounded-2xl overflow-hidden shadow-lg group">
-              <img src="/images/carpet-during-2.jpg" alt="RF carpet cleaning process showing half cleaned half dirty comparison" className="w-full h-72 object-cover group-hover:scale-105 transition-transform duration-500" />
+              <img src="https://d1chim18wmcawu.cloudfront.net/images/carpet-during-2.jpg" alt="RF carpet cleaning process showing half cleaned half dirty comparison" className="w-full h-72 object-cover group-hover:scale-105 transition-transform duration-500" />
               <div className="absolute top-4 left-4 bg-orange-500 text-white text-xs font-black px-3 py-1 rounded-full">DURING</div>
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
                 <p className="text-white text-xs font-bold">300-500 PSI extraction</p>
               </div>
             </div>
             <div className="relative rounded-2xl overflow-hidden shadow-lg group">
-              <img src="/images/carpet-after.jpg" alt="Carpet after RF cleaning — clean fluffy restored fibers" className="w-full h-72 object-cover group-hover:scale-105 transition-transform duration-500" />
+              <img src="https://d1chim18wmcawu.cloudfront.net/images/carpet-after.jpg" alt="Carpet after RF cleaning â€” clean fluffy restored fibers" className="w-full h-72 object-cover group-hover:scale-105 transition-transform duration-500" />
               <div className="absolute top-4 left-4 bg-teal-500 text-white text-xs font-black px-3 py-1 rounded-full">AFTER</div>
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
                 <p className="text-white text-xs font-bold">Zero residue. Dry in 4-6 hours.</p>
@@ -200,7 +200,7 @@ export default function CarpetCleaning() {
 
           <div className="text-center">
             <Link href="/booking" className="bg-gradient-to-r from-orange-500 to-orange-600 text-white font-black text-xl px-12 py-6 rounded-full shadow-2xl hover:-translate-y-1 transition-all inline-flex items-center gap-2">
-              🧼 Book RF99 Carpet Cleaning
+              ðŸ§¼ Book RF99 Carpet Cleaning
             </Link>
           </div>
         </div>

@@ -90,6 +90,63 @@ export default function Upholstery() {
         </div>
       </section>
 
+
+      {/* BEFORE & AFTER GALLERY */}
+      <section className="py-24 px-6 bg-gray-50">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <span className="text-orange-500 text-xs font-bold tracking-widest uppercase block mb-4">Real Results</span>
+            <h2 className="font-black text-[#0a1628] leading-none" style={{fontSize:"clamp(32px,4vw,56px)"}}>
+              DINING CHAIRS.<br /><span className="text-teal-600">COMPLETELY RESTORED.</span>
+            </h2>
+            <p className="text-gray-500 mt-4 text-lg max-w-xl mx-auto">Set of dining chairs — stained fabric restored to like-new condition with RF™ upholstery cleaning.</p>
+          </div>
+
+          {/* BEFORE ROW */}
+          <div className="mb-6">
+            <div className="inline-flex items-center gap-2 bg-red-50 border border-red-200 text-red-700 text-xs font-bold px-4 py-2 rounded-full mb-6">BEFORE — Stained dining chair fabric</div>
+            <div className="grid md:grid-cols-3 gap-4">
+              {["upholstery-before-1.jpg","upholstery-before-2.jpg","upholstery-before-3.jpg"].map((img,i) => (
+                <div key={i} className="relative rounded-2xl overflow-hidden shadow-lg group">
+                  <img src={`/images/${img}`} alt={`Dining chair upholstery before RF cleaning — chair ${i+1}`} className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <div className="absolute top-4 left-4 bg-red-500 text-white text-xs font-black px-3 py-1 rounded-full">BEFORE</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* DURING */}
+          <div className="mb-6">
+            <div className="inline-flex items-center gap-2 bg-orange-50 border border-orange-200 text-orange-700 text-xs font-bold px-4 py-2 rounded-full mb-6">DURING — RF™ extraction in progress</div>
+            <div className="grid md:grid-cols-1 gap-4 max-w-sm">
+              <div className="relative rounded-2xl overflow-hidden shadow-lg group">
+                <img src="/images/upholstery-during.jpg" alt="Upholstery cleaning in progress — RF extraction wand on chair" className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div className="absolute top-4 left-4 bg-orange-500 text-white text-xs font-black px-3 py-1 rounded-full">DURING</div>
+              </div>
+            </div>
+          </div>
+
+          {/* AFTER ROW */}
+          <div className="mb-8">
+            <div className="inline-flex items-center gap-2 bg-teal-50 border border-teal-200 text-teal-700 text-xs font-bold px-4 py-2 rounded-full mb-6">AFTER — Clean restored fabric</div>
+            <div className="grid md:grid-cols-3 gap-4">
+              {["upholstery-after-1.jpg","upholstery-after-2.jpg","upholstery-after-3.jpg"].map((img,i) => (
+                <div key={i} className="relative rounded-2xl overflow-hidden shadow-lg group">
+                  <img src={`/images/${img}`} alt={`Dining chair upholstery after RF cleaning — chair ${i+1}`} className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <div className="absolute top-4 left-4 bg-teal-500 text-white text-xs font-black px-3 py-1 rounded-full">AFTER</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="text-center mt-12">
+            <Link href="/booking" className="bg-gradient-to-r from-orange-500 to-orange-600 text-white font-black text-xl px-12 py-6 rounded-full shadow-2xl hover:-translate-y-1 transition-all inline-flex items-center gap-2">
+              🛋️ Book Upholstery Cleaning
+            </Link>
+          </div>
+        </div>
+      </section>
+
       <section className="py-24 px-6 bg-white">
         <div className="max-w-4xl mx-auto">
           <div className="bg-teal-50 border border-teal-200 rounded-3xl p-10">

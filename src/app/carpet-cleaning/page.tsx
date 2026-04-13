@@ -145,6 +145,67 @@ export default function CarpetCleaning() {
         </div>
       </section>
 
+
+      {/* BEFORE & AFTER GALLERY */}
+      <section className="py-24 px-6 bg-gray-50">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <span className="text-orange-500 text-xs font-bold tracking-widest uppercase block mb-4">Real Results</span>
+            <h2 className="font-black text-[#0a1628] leading-none" style={{fontSize:"clamp(32px,4vw,56px)"}}>
+              PROCHEM + ROTOVAC.<br /><span className="text-teal-600">REAL RESULTS.</span>
+            </h2>
+            <p className="text-gray-500 mt-4 text-lg max-w-xl mx-auto">Professional Prochem truckmount with Rotovac Powerwand 360 in action. 300-500 PSI. 200F+. Zero residue.</p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6 mb-12">
+            <div className="relative rounded-2xl overflow-hidden shadow-lg group">
+              <img src="/images/carpet-during-1.jpg" alt="Carpet cleaning in progress with Prochem truckmount and Rotovac wand" className="w-full h-72 object-cover group-hover:scale-105 transition-transform duration-500" />
+              <div className="absolute top-4 left-4 bg-orange-500 text-white text-xs font-black px-3 py-1 rounded-full">DURING</div>
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+                <p className="text-white text-xs font-bold">Rotovac Powerwand 360 in action</p>
+              </div>
+            </div>
+            <div className="relative rounded-2xl overflow-hidden shadow-lg group">
+              <img src="/images/carpet-during-2.jpg" alt="RF carpet cleaning process showing half cleaned half dirty comparison" className="w-full h-72 object-cover group-hover:scale-105 transition-transform duration-500" />
+              <div className="absolute top-4 left-4 bg-orange-500 text-white text-xs font-black px-3 py-1 rounded-full">DURING</div>
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+                <p className="text-white text-xs font-bold">300-500 PSI extraction</p>
+              </div>
+            </div>
+            <div className="relative rounded-2xl overflow-hidden shadow-lg group">
+              <img src="/images/carpet-after.jpg" alt="Carpet after RF cleaning — clean fluffy restored fibers" className="w-full h-72 object-cover group-hover:scale-105 transition-transform duration-500" />
+              <div className="absolute top-4 left-4 bg-teal-500 text-white text-xs font-black px-3 py-1 rounded-full">AFTER</div>
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+                <p className="text-white text-xs font-bold">Zero residue. Dry in 4-6 hours.</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-teal-50 rounded-2xl p-8 border border-teal-100 text-center mb-8">
+            <div className="grid grid-cols-3 gap-6">
+              <div>
+                <div className="font-black text-teal-700 text-3xl">300-500</div>
+                <div className="text-teal-600 text-sm font-semibold mt-1">PSI for Carpet</div>
+              </div>
+              <div>
+                <div className="font-black text-teal-700 text-3xl">200F+</div>
+                <div className="text-teal-600 text-sm font-semibold mt-1">Heat Extraction</div>
+              </div>
+              <div>
+                <div className="font-black text-teal-700 text-3xl">4-6hr</div>
+                <div className="text-teal-600 text-sm font-semibold mt-1">Dry Time</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="text-center">
+            <Link href="/booking" className="bg-gradient-to-r from-orange-500 to-orange-600 text-white font-black text-xl px-12 py-6 rounded-full shadow-2xl hover:-translate-y-1 transition-all inline-flex items-center gap-2">
+              🧼 Book RF99 Carpet Cleaning
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* PROCESS */}
       <section className="py-24 px-6 bg-gray-50">
         <div className="max-w-6xl mx-auto">

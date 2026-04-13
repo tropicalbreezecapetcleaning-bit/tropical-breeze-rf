@@ -78,6 +78,105 @@ export default function TileGrout() {
         </div>
       </section>
 
+
+      {/* BEFORE & AFTER GALLERY */}
+      <section className="py-24 px-6 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <span className="text-orange-500 text-xs font-bold tracking-widest uppercase block mb-4">Real Results</span>
+            <h2 className="font-black text-[#0a1628] leading-none" style={{fontSize:"clamp(32px,4vw,56px)"}}>
+              BEFORE AND AFTER.<br /><span className="text-teal-600">THE RF™ DIFFERENCE.</span>
+            </h2>
+            <p className="text-gray-500 mt-4 text-lg max-w-xl mx-auto">Real jobs on the Eastern Shore. Every result verified with pH meter after cleaning.</p>
+          </div>
+
+          {/* SET 1 - White Bathroom */}
+          <div className="mb-16">
+            <div className="inline-flex items-center gap-2 bg-teal-50 border border-teal-200 text-teal-700 text-xs font-bold px-4 py-2 rounded-full mb-6">⬜ White Bathroom Tile — Grout Restoration</div>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="relative rounded-2xl overflow-hidden shadow-lg group">
+                <img src="/images/tile-before-white-bathroom-1.jpg" alt="White bathroom tile before RF cleaning — dirty grout lines" className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div className="absolute top-4 left-4 bg-red-500 text-white text-xs font-black px-3 py-1 rounded-full">BEFORE</div>
+              </div>
+              <div className="relative rounded-2xl overflow-hidden shadow-lg group">
+                <img src="/images/tile-after-white-bathroom.jpg" alt="White bathroom tile after RF cleaning — bright clean grout" className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div className="absolute top-4 left-4 bg-teal-500 text-white text-xs font-black px-3 py-1 rounded-full">AFTER</div>
+              </div>
+            </div>
+          </div>
+
+          {/* SET 2 - Bathroom White 2 */}
+          <div className="mb-16">
+            <div className="inline-flex items-center gap-2 bg-teal-50 border border-teal-200 text-teal-700 text-xs font-bold px-4 py-2 rounded-full mb-6">🚿 Bathroom Tile — Color Seal Restoration</div>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="relative rounded-2xl overflow-hidden shadow-lg group">
+                <img src="/images/tile-before-white-2.jpg" alt="Bathroom tile before cleaning — tan stained grout" className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div className="absolute top-4 left-4 bg-red-500 text-white text-xs font-black px-3 py-1 rounded-full">BEFORE</div>
+              </div>
+              <div className="relative rounded-2xl overflow-hidden shadow-lg group">
+                <img src="/images/tile-after-white-2.jpg" alt="Bathroom tile after RF cleaning — bright white grout lines" className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div className="absolute top-4 left-4 bg-teal-500 text-white text-xs font-black px-3 py-1 rounded-full">AFTER</div>
+              </div>
+            </div>
+          </div>
+
+          {/* SET 3 - Tan Bathroom Hotel */}
+          <div className="mb-16">
+            <div className="inline-flex items-center gap-2 bg-teal-50 border border-teal-200 text-teal-700 text-xs font-bold px-4 py-2 rounded-full mb-6">🏨 Vacation Rental Bathroom — Deep Extraction</div>
+            <div className="grid md:grid-cols-3 gap-4">
+              <div className="relative rounded-2xl overflow-hidden shadow-lg group">
+                <img src="/images/tile-before-tan.jpg" alt="Hotel bathroom tile before RF cleaning" className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div className="absolute top-4 left-4 bg-red-500 text-white text-xs font-black px-3 py-1 rounded-full">BEFORE</div>
+              </div>
+              <div className="relative rounded-2xl overflow-hidden shadow-lg group">
+                <img src="/images/tile-during-tan.jpg" alt="Hotel bathroom tile during RF cleaning process" className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div className="absolute top-4 left-4 bg-orange-500 text-white text-xs font-black px-3 py-1 rounded-full">DURING</div>
+              </div>
+              <div className="relative rounded-2xl overflow-hidden shadow-lg group">
+                <img src="/images/tile-after-tan.jpg" alt="Hotel bathroom tile after RF cleaning — spotless" className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div className="absolute top-4 left-4 bg-teal-500 text-white text-xs font-black px-3 py-1 rounded-full">AFTER</div>
+              </div>
+            </div>
+          </div>
+
+          {/* SET 4 - Kitchen */}
+          <div className="mb-16">
+            <div className="inline-flex items-center gap-2 bg-teal-50 border border-teal-200 text-teal-700 text-xs font-bold px-4 py-2 rounded-full mb-6">🍳 Kitchen Slate Tile — Grout Deep Clean</div>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="relative rounded-2xl overflow-hidden shadow-lg group">
+                <img src="/images/tile-before-kitchen.jpg" alt="Kitchen slate tile before RF cleaning — orange grout" className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div className="absolute top-4 left-4 bg-red-500 text-white text-xs font-black px-3 py-1 rounded-full">BEFORE</div>
+              </div>
+              <div className="relative rounded-2xl overflow-hidden shadow-lg group">
+                <img src="/images/tile-after-kitchen.jpg" alt="Kitchen slate tile after RF cleaning — clean grey grout" className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div className="absolute top-4 left-4 bg-teal-500 text-white text-xs font-black px-3 py-1 rounded-full">AFTER</div>
+              </div>
+            </div>
+          </div>
+
+          {/* SET 5 - Entryway */}
+          <div className="mb-8">
+            <div className="inline-flex items-center gap-2 bg-teal-50 border border-teal-200 text-teal-700 text-xs font-bold px-4 py-2 rounded-full mb-6">🚪 Entryway Tile — Color Seal Transformation</div>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="relative rounded-2xl overflow-hidden shadow-lg group">
+                <img src="/images/tile-before-entryway.jpg" alt="Entryway tile before RF cleaning" className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div className="absolute top-4 left-4 bg-red-500 text-white text-xs font-black px-3 py-1 rounded-full">BEFORE</div>
+              </div>
+              <div className="relative rounded-2xl overflow-hidden shadow-lg group">
+                <img src="/images/tile-after-entryway.jpg" alt="Entryway tile after RF cleaning — bright white grout" className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div className="absolute top-4 left-4 bg-teal-500 text-white text-xs font-black px-3 py-1 rounded-full">AFTER</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="text-center mt-12">
+            <Link href="/booking" className="bg-gradient-to-r from-orange-500 to-orange-600 text-white font-black text-xl px-12 py-6 rounded-full shadow-2xl hover:-translate-y-1 transition-all inline-flex items-center gap-2">
+              🌴 Get These Results — Book Now
+            </Link>
+          </div>
+        </div>
+      </section>
+
       <section className="py-24 px-6 bg-gray-50">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">

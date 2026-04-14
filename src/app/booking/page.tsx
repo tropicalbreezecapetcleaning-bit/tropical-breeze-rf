@@ -1,804 +1,751 @@
-'use client';import { useState, useEffect, useRef } from "react";
+"use client";
+import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
 
-// ─── CONFIGURABLE PRICING ─────────────────────────────────────────────────────
-const PRICING = {
-  carpet_first_room: 99,
-  carpet_additional: 50,
-  hardwood_per_sqft: 1.00,
-  tile_per_room: 125,
-  chair: 50,
-  loveseat: 75,
-  sofa: 85,
-  sectional_per_ft: 11,
-  window: 13,
-  scotchgard_per_room: 25,
-  carpet_deod_per_room: 20,
-  grout_per_room: 45,
-  fabric_protector_per_piece: 25,
-  fabric_protector_per_ft: 3,
-  upholstery_deod_per_piece: 15,
-  upholstery_deod_per_ft: 2,
-  screens_per_window: 4,
-  starter_pack: 49,
-  seasonal_discount: 0.10,
-  multiservice_discount: 0.05,
+// ── TYPES ─────────────────────────────────────────────────────────────────────
+interface BookingState {
+  carpetRooms: string[];
+  tileRooms: string[];
+  bathrooms: string[];
+  scotchgard: boolean;
+  deodorizer: boolean;
+  groutSealing: boolean;
+  colorSeal: boolean;
+  groutColor: string;
+  sofas: number;
+  loveseats: number;
+  chairs: number;
+  diningChairs: number;
+  diningChairType: string;
+  ottomans: number;
+  sectionalFt: number;
+  upholProtect: boolean;
+  upholDeodor: boolean;
+  windows: number;
+  ezBreeze: number;
+  glassDoors: number;
+  rugSmall: number;
+  rugMedium: number;
+  rugLarge: number;
+  rugOversized: number;
+  hardwoodSqft: number;
+  referral: string;
+  upsellStarter: boolean;
+}
+
+interface LineItem { label: string; value: number; cls?: string; }
+
+// ── CONSTANTS ─────────────────────────────────────────────────────────────────
+const SPRING = 0.10;
+const CARPET_ROOMS = ["LR","BR 1","BR 2","BR 3","BR 4","OF","DN","ST","ENTRY","HALL","DR","LOFT","PORCH","BONUS"];
+const TILE_ROOMS = ["KT","LR","DN","HL","PORCH","LNDRY","MUD","SUNRM"];
+const BATH_ROOMS = ["MB","BT 2","BT 3","HALF","POOL","SHOW"];
+const REFERRAL_OPTIONS = [
+  {id:"google",label:"Google"},{id:"facebook",label:"Facebook"},
+  {id:"instagram",label:"Instagram"},{id:"neighbor",label:"Neighbor"},
+  {id:"returning",label:"Returning Customer"},{id:"airbnb",label:"Airbnb / VRBO"},
+  {id:"bing",label:"Bing AI"},{id:"other",label:"Other"},
+];
+const GROUT_COLORS = [
+  {id:"white",name:"White",hex:"#FFFFFF",light:true},
+  {id:"bone",name:"Bone",hex:"#E8DCC8",light:true},
+  {id:"almond",name:"Almond",hex:"#D4B896",light:true},
+  {id:"beige",name:"Beige",hex:"#C8A882",light:true},
+  {id:"pewter",name:"Pewter",hex:"#A89880",light:true},
+  {id:"gray",name:"Gray",hex:"#8C8C8C",light:false},
+  {id:"silver",name:"Silverado",hex:"#6B7280",light:false},
+  {id:"charcoal",name:"Charcoal",hex:"#4B4B4B",light:false},
+  {id:"brown",name:"Brown",hex:"#6B4226",light:false},
+  {id:"black",name:"Black",hex:"#1A1A1A",light:false},
+];
+const PACKAGES = [
+  {id:"rf99",badge:"Most Popular",badgeColor:"#2e7d32",badgeBg:"#e8f5e9",emoji:"🧹",name:"RF99 Starter",sub:"Perfect first-time clean",features:["1 Carpet Room","RF99 Process","Deodorizer or Protector"],price:99,original:125,
+    apply:(s:BookingState)=>({...s,carpetRooms:["LR"]})},
+  {id:"home",badge:"Best Value",badgeColor:"#f57f17",badgeBg:"#fff8e1",emoji:"🏠",name:"Home Clean",sub:"3 bedrooms + tile kitchen",features:["3 Carpet Rooms","1 Tile Room","Mix & Match Savings"],price:277,original:324,
+    apply:(s:BookingState)=>({...s,carpetRooms:["LR","BR 1","BR 2"],tileRooms:["KT"]})},
+  {id:"upholstery",badge:"New",badgeColor:"#c62828",badgeBg:"#fce4ec",emoji:"🛋️",name:"Upholstery Refresh",sub:"Sofa + loveseat + 2 chairs",features:["1 Sofa","1 Loveseat","2 Chairs","Fabric Protector"],price:242,original:269,
+    apply:(s:BookingState)=>({...s,sofas:1,loveseats:1,chairs:2,upholProtect:true})},
+  {id:"full",badge:"Full Service",badgeColor:"#283593",badgeBg:"#e8eaf6",emoji:"🏡",name:"Full House",sub:"Whole home deep clean",features:["5 Carpet Rooms","2 Tile Rooms","10 Windows"],price:581,original:679,
+    apply:(s:BookingState)=>({...s,carpetRooms:["LR","BR 1","BR 2","BR 3","BR 4"],tileRooms:["KT","LR"],windows:10})},
+  {id:"pet",badge:"Pet Special",badgeColor:"#00695c",badgeBg:"#e0f2f1",emoji:"🐾",name:"Pet Home",sub:"Odor & stain elimination",features:["3 Carpet Rooms","Enzyme Deodorizer","Scotchgard Protector"],price:301,original:334,
+    apply:(s:BookingState)=>({...s,carpetRooms:["LR","BR 1","BR 2"],deodorizer:true,scotchgard:true})},
+  {id:"rental",badge:"Shore Special",badgeColor:"#1565c0",badgeBg:"#e3f2fd",emoji:"🏖️",name:"Vacation Rental",sub:"Guest-ready in one visit",features:["3 Carpet Rooms","2 Bathrooms","12 Windows"],price:517,original:605,
+    apply:(s:BookingState)=>({...s,carpetRooms:["LR","BR 1","BR 2"],bathrooms:["MB","BT 2"],windows:12})},
+];
+
+const defaultState: BookingState = {
+  carpetRooms:[],tileRooms:[],bathrooms:[],scotchgard:false,deodorizer:false,
+  groutSealing:false,colorSeal:false,groutColor:"",
+  sofas:0,loveseats:0,chairs:0,diningChairs:0,diningChairType:"seat_back",
+  ottomans:0,sectionalFt:0,upholProtect:false,upholDeodor:false,
+  windows:0,ezBreeze:0,glassDoors:0,
+  rugSmall:0,rugMedium:0,rugLarge:0,rugOversized:0,
+  hardwoodSqft:0,referral:"",upsellStarter:false,
 };
 
-const PACKAGES = [
-  { id:"rf99",  icon:"🏠", name:"RF99™ Carpet Refresh",    desc:"Perfect first-time clean",        tag:"Most Popular", color:"#006978",
-    services:{ carpet:1 }, addons:{}, get price(){ return PRICING.carpet_first_room; } },
-  { id:"home",  icon:"🏡", name:"Whole Home Refresh",       desc:"Carpet + Upholstery + Windows",   tag:"Best Value",   color:"#2e7d32",
-    services:{ carpet:2, chairs:1, sofas:1, windows:8 }, addons:{}, price: 386 },
-  { id:"pet",   icon:"🐾", name:"Pet Recovery Package",     desc:"Carpet + Deodorizer + Protector", tag:"🐾 Pet Homes", color:"#e65100",
-    services:{ carpet:2 }, addons:{ scotchgard:true, carpetDeod:true }, price: 248 },
-  { id:"coast", icon:"🪟", name:"Coastal Window Package",   desc:"Inside & Out + Screen & Track",   tag:"Beach Homes",  color:"#0277bd",
-    services:{ windows:12 }, addons:{ screens:true }, price: 204 },
-  { id:"move",  icon:"📦", name:"Move-In / Move-Out Clean", desc:"Full deep clean package",         tag:"Full Clean",   color:"#7b1fa2",
-    services:{ carpet:3, tile:1, windows:10 }, addons:{ carpetDeod:true, grout:true }, price: 649 },
-];
-
-const SEASONS = [
-  { months:[2,3,4],  icon:"🌸", name:"Spring", bg:"#2e7d32" },
-  { months:[5,6,7],  icon:"☀️",  name:"Summer", bg:"#e65100" },
-  { months:[8,9,10], icon:"🍂", name:"Fall",   bg:"#bf360c" },
-  { months:[11,0,1], icon:"❄️",  name:"Winter", bg:"#0277bd" },
-];
-
-const TRUST = [
-  { icon:"⭐", label:"200+ Reviews" },
-  { icon:"💧", label:"Residue-Free" },
-  { icon:"⚡", label:"4–6hr Dry" },
-  { icon:"🛡️", label:"Fully Insured" },
-];
-
-const SOCIAL = [
-
-  (n: number) => `<strong>${n} people</strong> booked in the last hour`,
-  (n: number) => `<strong>${n} neighbors</strong> booked this week`,
-  (n: number) => `Someone just booked <strong>${n} rooms</strong> nearby`,
-];
-
-const STEPS = ["Ask AI", "Services", "Review", "Your Info"];
-const T_MODAL = 149, T_MULTI = 400;
-
-// ─── AI SUGGESTION PARSER ─────────────────────────────────────────────────────
-function parseAISuggestion(text) {
-  const lower = text.toLowerCase();
-  const result = {
-    counts: { carpet:0, tile:0, chairs:0, loveseats:0, sofas:0, windows:0 },
-    addons: { scotchgard:false, carpetDeod:false, grout:false, fabricProt:false, upDeod:false, screens:false },
-    reasoning: [],
-  };
-
-  // Extract JSON if present
-  const jsonMatch = text.match(/```json([\s\S]*?)```/) || text.match(/\{[\s\S]*"services"[\s\S]*\}/);
-  if (jsonMatch) {
-    try {
-      const parsed = JSON.parse(jsonMatch[1] || jsonMatch[0]);
-      if (parsed.services) {
-        if (parsed.services.carpet) result.counts.carpet = parsed.services.carpet;
-        if (parsed.services.tile) result.counts.tile = parsed.services.tile;
-        if (parsed.services.windows) result.counts.windows = parsed.services.windows;
-        if (parsed.services.chairs) result.counts.chairs = parsed.services.chairs;
-        if (parsed.services.sofas) result.counts.sofas = parsed.services.sofas;
-      }
-      if (parsed.addons) {
-        if (parsed.addons.deodorizer) { result.addons.carpetDeod = true; result.addons.upDeod = true; }
-        if (parsed.addons.scotchgard) result.addons.scotchgard = true;
-        if (parsed.addons.fabric_protector) result.addons.fabricProt = true;
-        if (parsed.addons.grout_sealing) result.addons.grout = true;
-        if (parsed.addons.screen_cleaning) result.addons.screens = true;
-      }
-      if (parsed.reasoning) result.reasoning = parsed.reasoning;
-      return result;
-    } catch(e) {}
-  }
-
-  // Fallback keyword parsing
-  if (lower.includes("carpet") || lower.includes("stain") || lower.includes("rug")) result.counts.carpet = 2;
-  if (lower.includes("tile") || lower.includes("grout") || lower.includes("bathroom")) result.counts.tile = 1;
-  if (lower.includes("window")) result.counts.windows = 8;
-  if (lower.includes("sofa") || lower.includes("couch") || lower.includes("upholster") || lower.includes("furniture")) result.counts.sofas = 1;
-  if (lower.includes("chair")) result.counts.chairs = 1;
-  if (lower.includes("pet") || lower.includes("dog") || lower.includes("cat") || lower.includes("odor") || lower.includes("smell")) {
-    result.addons.carpetDeod = true; result.addons.upDeod = true;
-  }
-  if (lower.includes("protect") || lower.includes("scotchgard") || lower.includes("stain guard")) result.addons.scotchgard = true;
-  if (lower.includes("grout seal")) result.addons.grout = true;
-  if (lower.includes("screen") || lower.includes("track")) result.addons.screens = true;
-
-  return result;
+// ── CALC ──────────────────────────────────────────────────────────────────────
+function calcTotal(s: BookingState): number {
+  let t = 0;
+  const cr = s.carpetRooms.length;
+  if (cr > 0) t += 99 + Math.max(0, cr-1)*50;
+  if (s.scotchgard) t += 30*cr;
+  if (s.deodorizer) t += 25*cr;
+  t += s.hardwoodSqft;
+  const tc = s.tileRooms.length + s.bathrooms.length;
+  t += tc*125;
+  if (s.groutSealing) t += tc*125*0.5;
+  if (s.colorSeal) t += tc*125;
+  t += s.sofas*85 + s.loveseats*75 + s.chairs*50 + s.ottomans*35;
+  t += s.diningChairs*(s.diningChairType==="seat_only"?10:13);
+  t += s.sectionalFt*11;
+  const up = s.sofas+s.loveseats+s.chairs+s.ottomans;
+  if (s.upholProtect && up>0) t += up*20;
+  if (s.upholDeodor && up>0) t += up*25;
+  t += s.windows*13 + s.glassDoors*25 + s.ezBreeze*15;
+  if (s.ezBreeze>0) t += 35;
+  t += s.rugSmall*150 + s.rugMedium*200 + s.rugLarge*270 + s.rugOversized*370;
+  const svcTypes = [cr>0,s.hardwoodSqft>0,tc>0,up>0,(s.windows+s.ezBreeze)>0,(s.rugSmall+s.rugMedium+s.rugLarge+s.rugOversized)>0].filter(Boolean).length;
+  if (svcTypes>=2) t *= 0.95;
+  t *= (1-SPRING);
+  return Math.round(t);
 }
 
-// ─── HELPERS ──────────────────────────────────────────────────────────────────
-function Counter({ value, onChange }) {
-  return (
-    <div style={{display:"flex",alignItems:"center",border:"1.5px solid #e0e6ea",borderRadius:10,overflow:"hidden"}}>
-      <button onClick={()=>onChange(Math.max(0,value-1))} style={{width:34,height:34,background:"#f4f7f8",border:"none",cursor:"pointer",fontSize:17,fontWeight:700,color:"#006978"}}>−</button>
-      <span style={{width:36,textAlign:"center",fontWeight:700,fontSize:14}}>{value}</span>
-      <button onClick={()=>onChange(value+1)} style={{width:34,height:34,background:"#f4f7f8",border:"none",cursor:"pointer",fontSize:17,fontWeight:700,color:"#006978"}}>+</button>
-    </div>
-  );
+function buildLineItems(s: BookingState): LineItem[] {
+  const lines: LineItem[] = [];
+  const cr = s.carpetRooms.length;
+  if (cr>0) {
+    lines.push({label:`Carpet - 1st Room (${s.carpetRooms[0]||"LR"})`,value:99});
+    for (let i=1;i<cr;i++) lines.push({label:`Carpet - Additional (${s.carpetRooms[i]})`,value:50});
+  }
+  if (s.scotchgard&&cr>0) lines.push({label:`Scotchgard x${cr}`,value:cr*30});
+  if (s.deodorizer&&cr>0) lines.push({label:`Carpet Deodorizer x${cr}`,value:cr*25});
+  if (s.hardwoodSqft>0) lines.push({label:`Hardwood - ${s.hardwoodSqft} sq ft`,value:s.hardwoodSqft});
+  s.tileRooms.forEach(r=>lines.push({label:`Tile - ${r}`,value:125}));
+  s.bathrooms.forEach(r=>lines.push({label:`Bathroom Tile - ${r}`,value:125}));
+  const tc=s.tileRooms.length+s.bathrooms.length;
+  if (s.groutSealing&&tc>0) lines.push({label:"Grout Sealing",value:Math.round(tc*125*0.5)});
+  if (s.colorSeal&&tc>0) lines.push({label:`Color Seal${s.groutColor?" - "+s.groutColor:""}`,value:tc*125});
+  if (s.sofas>0) lines.push({label:`Sofas x${s.sofas}`,value:s.sofas*85});
+  if (s.loveseats>0) lines.push({label:`Loveseats x${s.loveseats}`,value:s.loveseats*75});
+  if (s.chairs>0) lines.push({label:`Chairs x${s.chairs}`,value:s.chairs*50});
+  if (s.ottomans>0) lines.push({label:`Ottomans x${s.ottomans}`,value:s.ottomans*35});
+  if (s.diningChairs>0) lines.push({label:`Dining Chairs x${s.diningChairs}`,value:s.diningChairs*(s.diningChairType==="seat_only"?10:13)});
+  if (s.sectionalFt>0) lines.push({label:`Sectional - ${s.sectionalFt}ft`,value:s.sectionalFt*11});
+  const up=s.sofas+s.loveseats+s.chairs+s.ottomans;
+  if (s.upholProtect&&up>0) lines.push({label:`Fabric Protector x${up}`,value:up*20});
+  if (s.upholDeodor&&up>0) lines.push({label:`Upholstery Deodorizer x${up}`,value:up*25});
+  if (s.windows>0) lines.push({label:`Windows x${s.windows}`,value:s.windows*13});
+  if (s.glassDoors>0) lines.push({label:`Glass Doors x${s.glassDoors}`,value:s.glassDoors*25});
+  if (s.ezBreeze>0) lines.push({label:`EZ Breeze x${s.ezBreeze}`,value:s.ezBreeze*15+35});
+  if (s.rugSmall>0) lines.push({label:`Small Rugs x${s.rugSmall}`,value:s.rugSmall*150});
+  if (s.rugMedium>0) lines.push({label:`Medium Rugs x${s.rugMedium}`,value:s.rugMedium*200});
+  if (s.rugLarge>0) lines.push({label:`Large Rugs x${s.rugLarge}`,value:s.rugLarge*270});
+  if (s.rugOversized>0) lines.push({label:`Oversized Rugs x${s.rugOversized}`,value:s.rugOversized*370});
+  const subtotal = lines.reduce((a,l)=>a+l.value,0);
+  if (subtotal>0) {
+    const svcCount=[cr>0,s.hardwoodSqft>0,(s.tileRooms.length+s.bathrooms.length)>0,up>0,(s.windows+s.ezBreeze)>0,(s.rugSmall+s.rugMedium+s.rugLarge+s.rugOversized)>0].filter(Boolean).length;
+    if (svcCount>=2) lines.push({label:"Mix & Match Discount (5%)",value:-Math.round(subtotal*0.05),cls:"disc"});
+    lines.push({label:"Spring Discount (10%)",value:-Math.round(subtotal*0.10),cls:"disc"});
+  }
+  return lines;
 }
 
-function Addon({ icon, title, desc, price, selected, onToggle, tag }) {
+// ── SUB COMPONENTS ────────────────────────────────────────────────────────────
+function Counter({label,price,value,onChange}:{label:string;price:string;value:number;onChange:(n:number)=>void}) {
   return (
-    <div onClick={onToggle} style={{display:"flex",alignItems:"center",gap:10,padding:"9px 12px",borderRadius:10,border:selected?"1.5px solid #0097A7":"1.5px solid #e0e6ea",background:selected?"#E0F7FA":"white",cursor:"pointer",marginBottom:7,userSelect:"none",position:"relative"}}>
-      {tag && <span style={{position:"absolute",top:-8,right:8,fontSize:9,fontWeight:700,background:"#FF6F00",color:"white",padding:"1px 7px",borderRadius:10}}>{tag}</span>}
-      <div style={{width:20,height:20,borderRadius:5,border:selected?"2px solid #0097A7":"2px solid #d1d5db",background:selected?"#0097A7":"white",display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,color:"white",fontWeight:700,flexShrink:0}}>{selected?"✓":""}</div>
-      <span style={{fontSize:17,flexShrink:0}}>{icon}</span>
-      <div style={{flex:1}}>
-        <div style={{fontWeight:700,fontSize:13}}>{title}</div>
-        <div style={{fontSize:11,color:"#6b7280",marginTop:1}}>{desc}</div>
+    <div className="flex items-center py-3 border-b border-gray-100 last:border-0">
+      <div className="flex-1">
+        <span className="font-semibold text-sm text-gray-800">{label}</span>
+        <span className="text-xs text-gray-400 ml-1">{price}</span>
       </div>
-      <span style={{fontWeight:800,fontSize:13,color:"#006978",whiteSpace:"nowrap"}}>+${price}</span>
+      <div className="flex items-center gap-3">
+        <button onClick={()=>onChange(Math.max(0,value-1))} className="w-8 h-8 rounded-full border-2 border-teal-600 text-teal-600 font-bold text-lg flex items-center justify-center hover:bg-teal-50 transition-colors">−</button>
+        <span className="w-6 text-center font-bold text-gray-800">{value}</span>
+        <button onClick={()=>onChange(value+1)} className="w-8 h-8 rounded-full border-2 border-teal-600 text-teal-600 font-bold text-lg flex items-center justify-center hover:bg-teal-50 transition-colors">+</button>
+      </div>
     </div>
   );
 }
 
-// ─── MAIN ─────────────────────────────────────────────────────────────────────
-export default function BookingPage() {
-  const [step, setStep] = useState(0);
-  const [counts, setCounts] = useState({carpet:0,tile:0,chairs:0,loveseats:0,sofas:0,windows:0});
-  const [hw, setHw] = useState("");
-  const [sf, setSf] = useState("");
-  const [addons, setAddons] = useState({scotchgard:false,carpetDeod:false,grout:false,fabricProt:false,upDeod:false,screens:false});
-  const [modal, setModal] = useState({bundle:false,multi:false});
-  const [modalOpen, setModalOpen] = useState(false);
-  const [mShown, setMShown] = useState(false);
-  const [mmShown, setMmShown] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [sending, setSending] = useState(false);
-  const [social, setSocial] = useState("");
-  const [revIdx, setRevIdx] = useState(0);
-  const [form, setForm] = useState({name:"",phone:"",email:"",date:"",time:"",street:"",city:"",state:"",zip:"",notes:""});
-  const [drawerOpen, setDrawerOpen] = useState(false);
-
-  // AI state
-  const [aiInput, setAiInput] = useState("");
-  const [aiLoading, setAiLoading] = useState(false);
-  const [aiResponse, setAiResponse] = useState(null);
-  const [aiApplied, setAiApplied] = useState(false);
-  const [aiError, setAiError] = useState("");
-  const inputRef = useRef(null);
-
-  const month = new Date().getMonth();
-  const season = SEASONS.find(s=>s.months.includes(month))||SEASONS[0];
-  const hwN = parseFloat(hw)||0, sfN = parseFloat(sf)||0;
-  const upActive = counts.chairs+counts.loveseats+counts.sofas+sfN>0;
-  const upPcs = counts.chairs+counts.loveseats+counts.sofas;
-
-  const P = PRICING;
-  const carpetCost = counts.carpet>0 ? P.carpet_first_room+(counts.carpet-1)*P.carpet_additional : 0;
-  const tileCost = counts.tile * P.tile_per_room;
-  const upCost = counts.chairs*P.chair + counts.loveseats*P.loveseat + counts.sofas*P.sofa + Math.round(sfN*P.sectional_per_ft);
-  const winCost = counts.windows * P.window;
-  const base = carpetCost + Math.round(hwN*P.hardwood_per_sqft) + tileCost + upCost + winCost;
-  let inline = 0;
-  if(addons.scotchgard) inline += counts.carpet * P.scotchgard_per_room;
-  if(addons.carpetDeod) inline += counts.carpet * P.carpet_deod_per_room;
-  if(addons.grout) inline += counts.tile * P.grout_per_room;
-  if(addons.screens) inline += counts.windows * P.screens_per_window;
-  if(addons.fabricProt) inline += upPcs*P.fabric_protector_per_piece + Math.round(sfN*P.fabric_protector_per_ft);
-  if(addons.upDeod) inline += upPcs*P.upholstery_deod_per_piece + Math.round(sfN*P.upholstery_deod_per_ft);
-  const sub = base + inline;
-  const seaDisc = sub > 0 ? Math.round(sub * P.seasonal_discount) : 0;
-  const multiDisc = modal.multi ? Math.round(base * P.multiservice_discount) : 0;
-  const bundleAdd = modal.bundle ? P.starter_pack : 0;
-  const grand = Math.max(0, sub - seaDisc - multiDisc + bundleAdd);
-  const saved = seaDisc + multiDisc;
-  const activeSvcs = [counts.carpet>0,hwN>0,counts.tile>0,upActive,counts.windows>0].filter(Boolean).length;
-
-  const summaryItems = [];
-  if(counts.carpet>0) summaryItems.push(`🏠 ${counts.carpet} carpet room${counts.carpet>1?"s":""}`);
-  if(hwN>0) summaryItems.push(`🪵 Hardwood ${hwN} sqft`);
-  if(counts.tile>0) summaryItems.push(`⬜ ${counts.tile} tile room${counts.tile>1?"s":""}`);
-  if(upActive){ const u=[]; if(counts.chairs)u.push(`${counts.chairs} chair${counts.chairs>1?"s":""}`); if(counts.loveseats)u.push(`${counts.loveseats} loveseat${counts.loveseats>1?"s":""}`); if(counts.sofas)u.push(`${counts.sofas} sofa${counts.sofas>1?"s":""}`); summaryItems.push(`🛋️ ${u.join(", ")}`); }
-  if(counts.windows>0) summaryItems.push(`🪟 ${counts.windows} windows`);
-  if(addons.scotchgard) summaryItems.push("🛡️ Scotchgard™");
-  if(addons.carpetDeod||addons.upDeod) summaryItems.push("🌬️ Deodorizer");
-  if(addons.grout) summaryItems.push("🔒 Grout Seal");
-  if(addons.fabricProt) summaryItems.push("🛡️ Fabric Guard");
-  if(addons.screens) summaryItems.push("🕸️ Screen & Track");
-
-  const hint = base<=0?"":base<T_MULTI?`Add $${T_MULTI-base} more to unlock Mix & Match 5% off!`:"✅ Mix & Match discount unlocked!";
-
-  useEffect(()=>{ if(base>0&&step===1) return; },[base]);
-  useEffect(()=>{
-    if(base>=T_MODAL&&!mShown){setMShown(true);setTimeout(()=>setModalOpen(true),700);}
-    else if(base>=T_MULTI&&!mmShown){setMmShown(true);setTimeout(()=>setModalOpen(true),900);}
-  },[base]);
-  useEffect(()=>{ const t=()=>{const n=Math.floor(Math.random()*8)+2;setSocial(SOCIAL[Math.floor(Math.random()*SOCIAL.length)](n));}; t();const id=setInterval(t,7000);return()=>clearInterval(id); },[]);
-
-  const applyPackage = (pkg) => {
-    setCounts(p=>({...p,...{carpet:0,tile:0,chairs:0,loveseats:0,sofas:0,windows:0},...pkg.services}));
-    setAddons(p=>({...p,...{scotchgard:false,carpetDeod:false,grout:false,fabricProt:false,upDeod:false,screens:false},...(pkg.addons||{})}));
-    setStep(2);
-  };
-
-  const applyAISuggestion = (suggestion) => {
-    setCounts(p=>({...p,...suggestion.counts}));
-    setAddons(p=>({...p,...suggestion.addons}));
-    setAiApplied(true);
-    setStep(2);
-  };
-
-  const askAI = async () => {
-    if (!aiInput.trim()) return;
-    setAiLoading(true);
-    setAiError("");
-    setAiResponse(null);
-
-    const systemPrompt = `You are a booking assistant for Tropical Breeze RF™, a residue-free cleaning company serving Maryland and Delaware.
-
-When a customer describes their problem, analyze it and respond with:
-1. A friendly 1-2 sentence empathetic response
-2. Your service recommendations in JSON format
-
-Available services and pricing:
-- Carpet cleaning: $${P.carpet_first_room} first room, $${P.carpet_additional} each additional
-- Hardwood floors: $${P.hardwood_per_sqft}/sq ft
-- Tile & grout: $${P.tile_per_room}/room
-- Upholstery: chairs $${P.chair}, loveseats $${P.loveseat}, sofas $${P.sofa}
-- Windows: $${P.window}/window
-
-Add-ons:
-- Scotchgard protector: $${P.scotchgard_per_room}/room (best for stain protection)
-- Deodorizer: $${P.carpet_deod_per_room}/room (best for odors/pets)
-- Grout sealing: $${P.grout_per_room}/room
-- Fabric protector: $${P.fabric_protector_per_piece}/piece
-
-Always respond with your message first, then the JSON block like this:
-\`\`\`json
-{
-  "services": {
-    "carpet": 2,
-    "tile": 0,
-    "windows": 0,
-    "chairs": 0,
-    "sofas": 0
-  },
-  "addons": {
-    "deodorizer": false,
-    "scotchgard": false,
-    "fabric_protector": false,
-    "grout_sealing": false,
-    "screen_cleaning": false
-  },
-  "reasoning": ["reason 1", "reason 2"]
+function RoomGrid({rooms,selected,onToggle}:{rooms:string[];selected:string[];onToggle:(r:string)=>void}) {
+  return (
+    <div className="flex flex-wrap gap-2 mb-2">
+      {rooms.map(r=>(
+        <button key={r} onClick={()=>onToggle(r)}
+          className={`px-3 py-1.5 rounded-lg text-xs font-bold border-2 transition-all ${selected.includes(r)?"bg-teal-600 text-white border-teal-600":"bg-gray-50 text-gray-500 border-gray-200 hover:border-teal-300"}`}>
+          {r}
+        </button>
+      ))}
+    </div>
+  );
 }
-\`\`\``;
 
-    try {
-      const response = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          model: "claude-sonnet-4-20250514",
-          max_tokens: 1000,
-          system: systemPrompt,
-          messages: [{ role: "user", content: aiInput }],
-        }),
-      });
-      const data = await response.json();
-      const text = data.content?.[0]?.text || "";
-      const parsed = parseAISuggestion(text);
+function EnhanceToggle({icon,name,desc,price,active,onToggle}:{icon:string;name:string;desc:string;price:string;active:boolean;onToggle:()=>void}) {
+  return (
+    <div onClick={onToggle} className={`flex items-center gap-3 p-3 rounded-xl border-2 cursor-pointer transition-all ${active?"border-teal-500 bg-teal-50":"border-gray-200 bg-gray-50 hover:border-teal-300"}`}>
+      <span className="text-xl">{icon}</span>
+      <div className="flex-1">
+        <div className="font-bold text-sm text-gray-800">{name}</div>
+        <div className="text-xs text-gray-500">{desc}</div>
+      </div>
+      <div className="text-right">
+        <div className="text-xs font-bold text-teal-600">{price}</div>
+        <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center text-white text-xs font-bold mt-1 ml-auto ${active?"bg-teal-600 border-teal-600":"border-gray-300"}`}>
+          {active?"✓":""}
+        </div>
+      </div>
+    </div>
+  );
+}
 
-      // Extract the friendly message (text before JSON block)
-      const friendlyMsg = text.split("```")[0].trim();
-      setAiResponse({ ...parsed, message: friendlyMsg, raw: text });
-    } catch(e) {
-      setAiError("Couldn't connect right now. Try one of the quick options below.");
-      // Still show fallback suggestions
-      const fallback = parseAISuggestion(aiInput);
-      setAiResponse({ ...fallback, message: "Based on what you described, here's what I recommend:", raw: "" });
+// ── MAIN COMPONENT ────────────────────────────────────────────────────────────
+export default function BookingPage() {
+  const [s, setS] = useState<BookingState>(defaultState);
+  const [modal, setModal] = useState<"builder"|"upsell"|"confirm"|null>(null);
+  const [selectedPkg, setSelectedPkg] = useState<typeof PACKAGES[0]|null>(null);
+  const [form, setForm] = useState({name:"",phone:"",email:"",date:"",time:"",street:"",city:"",state:"MD",zip:"",notes:"",sms:true,promo:""});
+  const [errors, setErrors] = useState<Record<string,string>>({});
+  const [promoStatus, setPromoStatus] = useState<"idle"|"ok"|"err">("idle");
+  const [submitting, setSubmitting] = useState(false);
+  const [done, setDone] = useState<{confNum:string;date:string;time:string}|null>(null);
+  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedSlot, setSelectedSlot] = useState("");
+  const [calYear, setCalYear] = useState(new Date().getFullYear());
+  const [calMonth, setCalMonth] = useState(new Date().getMonth());
+  const modalRef = useRef<HTMLDivElement>(null);
+  const total = calcTotal(s);
+
+  // Close modal on backdrop click
+  useEffect(()=>{
+    function handleClick(e:MouseEvent) {
+      if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
+        // Don't close builder — too much data loss
+      }
     }
-    setAiLoading(false);
-  };
+    document.addEventListener("mousedown",handleClick);
+    return ()=>document.removeEventListener("mousedown",handleClick);
+  },[]);
 
-  const QUICK_PROBLEMS = [
-    { label:"🐾 Pet stains & odors", text:"My dog had accidents on the carpet and the couch smells like pets" },
-    { label:"🏠 Dirty carpet", text:"My carpet is dirty and needs a deep clean, 3 bedrooms" },
-    { label:"🪟 Grimy windows", text:"My windows are covered in salt spray and grime, need inside and outside cleaned" },
-    { label:"⬜ Dark grout lines", text:"My kitchen and bathroom tile grout is very dark and needs cleaning and sealing" },
-    { label:"🚪 Moving out", text:"I'm moving out and need everything cleaned — carpet, tile, and windows" },
-    { label:"✨ Full refresh", text:"I want a full home refresh, carpet, upholstery, and windows throughout the house" },
-  ];
+  // Lock body scroll when modal open
+  useEffect(()=>{
+    document.body.style.overflow = modal ? "hidden" : "";
+    return ()=>{document.body.style.overflow=""};
+  },[modal]);
 
-  const s = {
-    card:(a)=>({background:"white",borderRadius:16,padding:"15px 16px",marginBottom:10,border:a?"2px solid #0097A7":"2px solid transparent",boxShadow:"0 2px 10px rgba(0,0,0,.07)"}),
-    inp:{width:"100%",border:"1.5px solid #e0e6ea",borderRadius:10,padding:"9px 12px",fontSize:14,outline:"none",fontFamily:"inherit",boxSizing:"border-box"},
-    lbl:{fontSize:11,fontWeight:700,color:"#6b7280",textTransform:"uppercase",letterSpacing:"0.5px",marginBottom:4,display:"block"},
-    row:{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:8},
-    sec:{fontSize:11,fontWeight:700,color:"#006978",textTransform:"uppercase",letterSpacing:.6,marginBottom:8,marginTop:12,paddingTop:10,borderTop:"1.5px dashed #e0e6ea"},
-  };
+  const TODAY = new Date(); TODAY.setHours(0,0,0,0);
+  const BOOKED: Record<string,string[]> = {};
+  const fmt=(d:Date)=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+  const dayOffset=(n:number)=>{const d=new Date(TODAY);d.setDate(d.getDate()+n);return d;};
+  BOOKED[fmt(TODAY)]=["morning"];
+  BOOKED[fmt(dayOffset(1))]=["morning","midday"];
+  BOOKED[fmt(dayOffset(3))]=["morning","midday","afternoon"];
+  BOOKED[fmt(dayOffset(7))]=["morning"];
+
+  function getDayStatus(ds:string) {
+    const b=BOOKED[ds]||[];
+    const d=new Date(ds);
+    if(d.getDay()===0) return "full";
+    if(b.length===0) return "avail";
+    if(b.length<=2) return "limited";
+    return "full";
+  }
+
+  function openBuilder(pkg:typeof PACKAGES[0]|null) {
+    if (pkg) {
+      setSelectedPkg(pkg);
+      setS(pkg.apply({...defaultState}));
+    } else {
+      setSelectedPkg(null);
+    }
+    setModal("builder");
+  }
+
+  function validateForm() {
+    const errs:Record<string,string> = {};
+    if (!form.name.trim()) errs.name = "Name is required";
+    if (form.phone.replace(/\D/g,"").length!==10) errs.phone = "Valid 10-digit phone required";
+    if (!form.street.trim()) errs.street = "Street address required";
+    if (!form.city.trim()) errs.city = "City required";
+    if (!/^\d{5}$/.test(form.zip)) errs.zip = "Valid ZIP required";
+    if (!selectedDate) errs.date = "Please select a date";
+    else if (!selectedSlot) errs.date = "Please select a time slot";
+    setErrors(errs);
+    return Object.keys(errs).length === 0;
+  }
+
+  async function handleSubmit() {
+    if (!validateForm()) return;
+    setSubmitting(true);
+    const lineItems = buildLineItems(s);
+    const payload = {
+      customer: {name:form.name,phone:form.phone,email:form.email,date:selectedDate,time:selectedSlot,street:form.street,city:form.city,state:form.state,zip:form.zip,notes:form.notes,sms_optin:form.sms},
+      services: {counts:{carpet:s.carpetRooms.length,tile:s.tileRooms.length,bath_tile:s.bathrooms.length,windows:s.windows,ezbreeze:s.ezBreeze,sofas:s.sofas,loveseats:s.loveseats,chairs:s.chairs,dining:s.diningChairs,rug_small:s.rugSmall,rug_medium:s.rugMedium,rug_large:s.rugLarge,rug_oversized:s.rugOversized},hardwood_sqft:s.hardwoodSqft,sectional_ft:s.sectionalFt},
+      addons:{scotchgard:s.scotchgard,carpetDeod:s.deodorizer,grout:s.groutSealing,colorSeal:s.colorSeal,fabricProt:s.upholProtect,upDeod:s.upholDeodor},
+      grout_color:s.groutColor||null,
+      promo_code:form.promo||null,
+      hear_source:s.referral,
+      grand_total:total,
+      line_items:lineItems,
+      season:"Spring",
+      source:"booking_nextjs",
+      timestamp:new Date().toISOString(),
+    };
+    try { await fetch("/api/booking",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)}); } catch{}
+    const confNum = "TB"+Math.floor(100000+Math.random()*900000);
+    setDone({confNum,date:selectedDate,time:selectedSlot});
+    setModal(null);
+    setSubmitting(false);
+  }
+
+  // ── RENDER ────────────────────────────────────────────────────────────────
+  if (done) {
+    return (
+      <main className="min-h-screen bg-gradient-to-br from-[#0a1628] to-[#006978] flex items-center justify-center p-6">
+        <div className="bg-white rounded-3xl p-10 max-w-md w-full text-center shadow-2xl">
+          <div className="text-6xl mb-4">✅</div>
+          <h1 className="font-black text-[#0a1628] text-3xl mb-2">You're All Set!</h1>
+          <p className="text-teal-600 font-bold text-lg mb-1">Confirmation #{done.confNum}</p>
+          <p className="text-gray-500 mb-6">We'll see you on <strong>{done.date}</strong> · {done.time}</p>
+          <p className="text-sm text-gray-500 mb-6">We will call to confirm within 2-4 hours.</p>
+          <a href="tel:4438563244" className="block bg-teal-600 text-white font-bold py-3 rounded-full mb-3 hover:bg-teal-700 transition-colors">📞 Questions? (443) 856-3244</a>
+          <button onClick={()=>{setDone(null);setS(defaultState);setForm({name:"",phone:"",email:"",date:"",time:"",street:"",city:"",state:"MD",zip:"",notes:"",sms:true,promo:""});}} className="text-sm text-gray-400 underline">Book Another Service</button>
+        </div>
+      </main>
+    );
+  }
 
   return (
-    <div style={{fontFamily:"'Segoe UI',sans-serif",background:"#f4f7f8",minHeight:"100vh",paddingBottom:90}}>
+    <main className="min-h-screen bg-[#f4f3ef] pb-24 font-sans">
 
       {/* HEADER */}
-      <div style={{background:"linear-gradient(135deg,#006978,#0097A7)",color:"white",textAlign:"center",padding:"24px 16px 20px"}}>
-        <div style={{fontSize:10,fontWeight:700,letterSpacing:2,opacity:.7,textTransform:"uppercase",marginBottom:5}}>RF™ Certified Residue-Free</div>
-        <h1 style={{margin:0,fontSize:22,fontWeight:900}}>🌴 Book Your Cleaning</h1>
-        <p style={{margin:"3px 0 0",fontSize:12,opacity:.85,fontStyle:"italic"}}>Residue Doesn't Survive Here™</p>
-        <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:6,marginTop:10,flexWrap:"wrap"}}>
-          {TRUST.map((t,i)=><span key={i} style={{background:"rgba(255,255,255,.15)",borderRadius:20,padding:"2px 9px",fontSize:10,fontWeight:600}}>{t.icon} {t.label}</span>)}
-          <span style={{background:"#FF6F00",borderRadius:20,padding:"2px 9px",fontSize:10,fontWeight:700}}>🌸 {season.name} 10% OFF</span>
+      <div className="bg-gradient-to-b from-[#145f5b] to-[#1a7f7a] text-white rounded-b-3xl overflow-hidden">
+        <div className="text-center px-5 pt-8 pb-0">
+          <p className="text-xs tracking-widest uppercase opacity-70 font-semibold mb-1">RF Residue-Free Cleaning</p>
+          <h1 className="text-3xl font-black mb-1">Book Your Cleaning</h1>
+          <p className="text-sm opacity-80 mb-4">Eastern Shore · Maryland · Delaware</p>
+          <a href="tel:4438563244" className="inline-flex items-center gap-2 bg-white/15 border border-white/25 text-white font-bold px-5 py-2.5 rounded-full text-sm mb-4 hover:bg-white/25 transition-colors">
+            📞 (443) 856-3244
+          </a>
+          <div className="bg-white/10 border border-white/20 rounded-xl px-4 py-2.5 text-sm font-medium mb-4">
+            🌸 <strong>Spring Special</strong> — Save 10% Automatically
+          </div>
+        </div>
+
+        {/* Trust bar */}
+        <div className="bg-white flex flex-wrap gap-x-4 gap-y-1 justify-center px-4 py-3 text-xs font-medium text-gray-600">
+          <span>⭐ 219 Five-Star Reviews</span>
+          <span>🧼 RF Residue-Free</span>
+          <span>📍 33+ Cities Served</span>
+          <span>⚡ Fast Scheduling</span>
+        </div>
+
+        {/* Testimonial */}
+        <div className="bg-white px-5 py-4 border-t border-gray-100">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-9 h-9 rounded-full bg-teal-600 text-white flex items-center justify-center font-bold text-sm flex-shrink-0">S</div>
+            <div>
+              <div className="font-bold text-sm text-gray-800">sistaofZion</div>
+              <div className="text-xs text-gray-400">Local Guide · 57 reviews</div>
+            </div>
+            <div className="ml-auto text-yellow-400 text-sm">★★★★★</div>
+          </div>
+          <p className="text-xs text-gray-600 italic leading-relaxed">"My agent suggested Tropical Breeze and stated <strong>'I prefer No One Else!'</strong> Call Dalton — he believes in superior service."</p>
         </div>
       </div>
 
-      {/* PROGRESS */}
-      <div style={{background:"white",borderBottom:"1px solid #e0e6ea",padding:"8px 12px",position:"sticky",top:0,zIndex:30,boxShadow:"0 2px 8px rgba(0,0,0,.06)"}}>
-        <div style={{display:"flex",alignItems:"center",maxWidth:680,margin:"0 auto"}}>
-          {STEPS.map((st,i)=>(
-            <div key={st} style={{display:"flex",alignItems:"center",flex:1}}>
-              <button onClick={()=>i<step&&setStep(i)} style={{display:"flex",alignItems:"center",gap:4,background:"none",border:"none",cursor:i<step?"pointer":"default",padding:0}}>
-                <span style={{width:20,height:20,borderRadius:10,display:"flex",alignItems:"center",justifyContent:"center",fontSize:9,fontWeight:800,border:"2px solid",borderColor:i<=step?"#006978":"#e0e6ea",background:i<step?"#006978":"white",color:i<step?"white":i===step?"#006978":"#d1d5db"}}>{i<step?"✓":i+1}</span>
-                <span style={{fontSize:10,fontWeight:700,color:i<=step?"#006978":"#d1d5db"}}>{st}</span>
+      {/* PACKAGES */}
+      <div className="px-4 pt-6">
+        <h2 className="font-black text-xl text-gray-900 mb-1">⚡ Book in Under 30 Seconds</h2>
+        <p className="text-sm text-gray-500 mb-5">Pick a package — we handle the rest 🌸</p>
+
+        <div className="flex flex-col gap-3 mb-4">
+          {PACKAGES.map(pkg=>(
+            <div key={pkg.id} className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 active:scale-[0.99] transition-transform">
+              <span className="inline-block text-xs font-bold px-3 py-1 rounded-full mb-3" style={{background:pkg.badgeBg,color:pkg.badgeColor}}>{pkg.badge}</span>
+              <div className="text-3xl mb-2">{pkg.emoji}</div>
+              <h3 className="font-black text-lg text-gray-900 mb-1">{pkg.name}</h3>
+              <p className="text-sm text-gray-500 mb-3">{pkg.sub}</p>
+              <div className="mb-3">
+                {pkg.features.map(f=>(
+                  <div key={f} className="text-sm text-gray-600 py-0.5 before:content-['✓_'] before:text-teal-600 before:font-bold">{f}</div>
+                ))}
+              </div>
+              <div className="flex items-baseline gap-2 mb-4">
+                <span className="text-sm text-gray-300 line-through">${pkg.original}</span>
+                <span className="text-3xl font-black text-teal-600">${pkg.price}</span>
+              </div>
+              <button onClick={()=>openBuilder(pkg)} className="w-full bg-teal-600 text-white font-bold py-3 rounded-xl hover:bg-teal-700 active:bg-teal-800 transition-colors text-sm">
+                TAP TO BOOK →
               </button>
-              {i<STEPS.length-1&&<div style={{flex:1,height:2,margin:"0 4px",background:"#f0f0f0",borderRadius:2,overflow:"hidden"}}><div style={{width:i<step?"100%":"0%",height:"100%",background:"#006978",transition:"width .4s"}}/></div>}
             </div>
           ))}
         </div>
-      </div>
 
-      <div style={{maxWidth:680,margin:"0 auto",padding:"12px 12px 0"}}>
-
-        {/* ── STEP 0: AI ASSISTANT ── */}
-        {step===0&&(
-          <div>
-            {/* AI Input card */}
-            <div style={{background:"white",borderRadius:18,padding:"20px 16px",marginBottom:12,boxShadow:"0 4px 20px rgba(0,105,120,.12)",border:"2px solid #E0F7FA"}}>
-              <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:14}}>
-                <div style={{width:40,height:40,borderRadius:20,background:"linear-gradient(135deg,#006978,#0097A7)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,flexShrink:0}}>🤖</div>
-                <div>
-                  <p style={{margin:0,fontWeight:800,fontSize:15,color:"#1a2e35"}}>RF™ Booking Assistant</p>
-                  <p style={{margin:"2px 0 0",fontSize:12,color:"#6b7280"}}>What problem are you trying to solve?</p>
-                </div>
-              </div>
-
-              <textarea
-                ref={inputRef}
-                value={aiInput}
-                onChange={e=>setAiInput(e.target.value)}
-                placeholder="Example: My dog had accidents on the carpet and the couch smells like pets..."
-                style={{...s.inp,height:90,resize:"none",fontSize:14,lineHeight:1.5}}
-              />
-
-              <button
-                onClick={askAI}
-                disabled={!aiInput.trim()||aiLoading}
-                style={{width:"100%",marginTop:10,padding:"12px",background:!aiInput.trim()?"#d1d5db":"linear-gradient(135deg,#006978,#0097A7)",color:"white",border:"none",borderRadius:12,fontWeight:800,fontSize:14,cursor:!aiInput.trim()?"not-allowed":"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:8}}
-              >
-                {aiLoading ? (
-                  <><span style={{animation:"spin 1s linear infinite",display:"inline-block"}}>⟳</span> Analyzing your situation...</>
-                ) : "✨ Get My Recommendation"}
-              </button>
-            </div>
-
-            {/* Quick problems */}
-            {!aiResponse&&(
-              <div style={{background:"white",borderRadius:14,padding:"14px 14px",marginBottom:12,border:"1.5px solid #e0e6ea"}}>
-                <p style={{margin:"0 0 10px",fontSize:12,fontWeight:700,color:"#6b7280",textTransform:"uppercase",letterSpacing:.5}}>Or pick a common situation</p>
-                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:7}}>
-                  {QUICK_PROBLEMS.map((p,i)=>(
-                    <button key={i} onClick={()=>{setAiInput(p.text);setTimeout(()=>inputRef.current?.focus(),100);}}
-                      style={{padding:"8px 10px",background:"#f4f7f8",border:"1.5px solid #e0e6ea",borderRadius:10,fontSize:12,fontWeight:600,cursor:"pointer",textAlign:"left",color:"#1a2e35",lineHeight:1.3}}>
-                      {p.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* AI Response */}
-            {aiLoading&&(
-              <div style={{background:"white",borderRadius:14,padding:16,marginBottom:12,textAlign:"center"}}>
-                <div style={{fontSize:28,marginBottom:8}}>🤔</div>
-                <p style={{margin:0,fontSize:13,color:"#6b7280"}}>Analyzing your situation and building your recommendation...</p>
-                <div style={{display:"flex",justifyContent:"center",gap:4,marginTop:10}}>
-                  {[0,1,2].map(i=><div key={i} style={{width:6,height:6,borderRadius:3,background:"#0097A7",animation:`bounce 1s ease ${i*.2}s infinite`}}/>)}
-                </div>
-              </div>
-            )}
-
-            {aiResponse&&!aiLoading&&(
-              <div style={{background:"white",borderRadius:16,overflow:"hidden",marginBottom:12,boxShadow:"0 4px 16px rgba(0,105,120,.1)",border:"2px solid #0097A7"}}>
-                {/* AI message */}
-                <div style={{background:"linear-gradient(135deg,#006978,#0097A7)",padding:"14px 16px",color:"white"}}>
-                  <div style={{display:"flex",alignItems:"flex-start",gap:10}}>
-                    <span style={{fontSize:20,flexShrink:0}}>🤖</span>
-                    <p style={{margin:0,fontSize:13,lineHeight:1.6,opacity:.95}}>{aiResponse.message || "Based on what you described, here's what I recommend:"}</p>
-                  </div>
-                </div>
-
-                {/* Recommended services */}
-                <div style={{padding:"14px 16px"}}>
-                  <p style={{margin:"0 0 10px",fontSize:11,fontWeight:700,color:"#006978",textTransform:"uppercase",letterSpacing:.5}}>✅ Recommended for you</p>
-
-                  {Object.entries(aiResponse.counts).some(([,v])=>v>0)&&(
-                    <div style={{marginBottom:10}}>
-                      {aiResponse.counts.carpet>0&&<div style={recItem("🏠",`Carpet Cleaning (${aiResponse.counts.carpet} room${aiResponse.counts.carpet>1?"s":""})`,`$${aiResponse.counts.carpet>1?P.carpet_first_room+(aiResponse.counts.carpet-1)*P.carpet_additional:P.carpet_first_room}`)}/>}
-                      {aiResponse.counts.tile>0&&<div style={recItem("⬜",`Tile & Grout (${aiResponse.counts.tile} room${aiResponse.counts.tile>1?"s":""})`,`$${aiResponse.counts.tile*P.tile_per_room}`)}/>}
-                      {aiResponse.counts.windows>0&&<div style={recItem("🪟",`Window Cleaning (${aiResponse.counts.windows})`,`$${aiResponse.counts.windows*P.window}`)}/>}
-                      {aiResponse.counts.sofas>0&&<div style={recItem("🛋️","Sofa Cleaning",`$${aiResponse.counts.sofas*P.sofa}`)}/>}
-                      {aiResponse.counts.chairs>0&&<div style={recItem("🪑","Chair Cleaning",`$${aiResponse.counts.chairs*P.chair}`)}/>}
-                    </div>
-                  )}
-
-                  {Object.values(aiResponse.addons).some(Boolean)&&(<>
-                    <p style={{margin:"0 0 8px",fontSize:11,fontWeight:700,color:"#FF6F00",textTransform:"uppercase",letterSpacing:.5}}>🎁 Recommended add-ons</p>
-                    {aiResponse.addons.carpetDeod&&<div style={recItem("🌬️","Deodorizer Treatment","Removes odors at source")}/>}
-                    {aiResponse.addons.scotchgard&&<div style={recItem("🛡️","Scotchgard™ Protector","Prevents future stains")}/>}
-                    {aiResponse.addons.fabricProt&&<div style={recItem("🛡️","Fabric Protector","Guards furniture")}/>}
-                    {aiResponse.addons.grout&&<div style={recItem("🔒","Grout Sealing","Seals after cleaning")}/>}
-                    {aiResponse.addons.screens&&<div style={recItem("🕸️","Screen & Track Cleaning","Full window detail")}/>}
-                  </>)}
-
-                  {aiResponse.reasoning?.length>0&&(
-                    <div style={{background:"#f4f7f8",borderRadius:10,padding:"10px 12px",marginTop:10,marginBottom:12}}>
-                      <p style={{margin:"0 0 6px",fontSize:11,fontWeight:700,color:"#6b7280"}}>Why I recommended this:</p>
-                      {aiResponse.reasoning.map((r,i)=><p key={i} style={{margin:"2px 0",fontSize:12,color:"#4b5563"}}>• {r}</p>)}
-                    </div>
-                  )}
-
-                  <button onClick={()=>applyAISuggestion(aiResponse)}
-                    style={{width:"100%",padding:13,background:"linear-gradient(135deg,#FF6F00,#e65100)",color:"white",border:"none",borderRadius:12,fontWeight:800,fontSize:14,cursor:"pointer",marginBottom:8}}>
-                    ✅ Apply This Recommendation →
-                  </button>
-                  <button onClick={()=>{setAiResponse(null);setAiInput("");}}
-                    style={{width:"100%",padding:10,background:"none",border:"1.5px solid #e0e6ea",borderRadius:12,color:"#6b7280",fontWeight:600,cursor:"pointer",fontSize:13}}>
-                    ↩ Ask something else
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {/* Skip to packages or manual */}
-            <div style={{display:"flex",gap:8,marginBottom:12}}>
-              <button onClick={()=>setStep(1)} style={{flex:1,padding:"11px",background:"white",border:"1.5px solid #e0e6ea",borderRadius:12,fontWeight:700,fontSize:13,cursor:"pointer",color:"#1a2e35"}}>
-                🔧 Build My Own
-              </button>
-              <button onClick={()=>setStep(1)} style={{flex:1,padding:"11px",background:"white",border:"1.5px solid #e0e6ea",borderRadius:12,fontWeight:700,fontSize:13,cursor:"pointer",color:"#1a2e35"}}>
-                📦 Quick Packages
-              </button>
-            </div>
-
-            {/* Packages */}
-            <div style={{background:"white",borderRadius:14,padding:"14px",marginBottom:12,border:"1.5px solid #e0e6ea"}}>
-              <p style={{margin:"0 0 10px",fontSize:12,fontWeight:700,color:"#1a2e35"}}>📦 Or choose a package</p>
-              {PACKAGES.map(pkg=>(
-                <div key={pkg.id} onClick={()=>applyPackage(pkg)} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 12px",borderRadius:12,border:"1.5px solid #e0e6ea",marginBottom:7,cursor:"pointer",background:"#f9fafb"}}>
-                  <span style={{fontSize:22}}>{pkg.icon}</span>
-                  <div style={{flex:1}}>
-                    <div style={{fontWeight:700,fontSize:13}}>{pkg.name}</div>
-                    <div style={{fontSize:11,color:"#6b7280"}}>{pkg.desc}</div>
-                  </div>
-                  <div style={{textAlign:"right"}}>
-                    <span style={{fontSize:11,fontWeight:700,background:pkg.color,color:"white",padding:"1px 7px",borderRadius:10,display:"block",marginBottom:2}}>{pkg.tag}</span>
-                    <span style={{fontSize:13,fontWeight:800,color:pkg.color}}>~${typeof pkg.price==="function"?pkg.price():pkg.price}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
+        {/* Custom quote */}
+        <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex items-center gap-3 mb-4">
+          <span className="text-2xl">🔧</span>
+          <div className="flex-1">
+            <div className="font-bold text-sm text-gray-800">Build a Custom Quote</div>
+            <div className="text-xs text-gray-500">Choose exactly what you need</div>
           </div>
-        )}
-
-        {/* ── STEP 1: BUILD SERVICES ── */}
-        {step===1&&(<>
-          {aiApplied&&(
-            <div style={{background:"#E0F7FA",border:"1.5px solid #0097A7",borderRadius:12,padding:"10px 14px",marginBottom:10,display:"flex",alignItems:"center",gap:8}}>
-              <span>✅</span>
-              <p style={{margin:0,fontSize:12,fontWeight:700,color:"#006978"}}>AI recommendations applied — review and adjust below</p>
-              <button onClick={()=>{setAiApplied(false);setStep(0);}} style={{marginLeft:"auto",background:"none",border:"none",color:"#006978",cursor:"pointer",fontSize:11,fontWeight:600}}>Edit</button>
-            </div>
-          )}
-
-          {summaryItems.length>0&&(
-            <div style={{background:"linear-gradient(135deg,#006978,#0097A7)",color:"white",borderRadius:13,padding:"11px 14px",marginBottom:10}}>
-              <div style={{fontSize:10,fontWeight:700,opacity:.75,textTransform:"uppercase",letterSpacing:.5,marginBottom:6}}>📋 Your Order</div>
-              <div style={{display:"flex",flexWrap:"wrap",gap:5}}>
-                {summaryItems.map((item,i)=><span key={i} style={{background:"rgba(255,255,255,.18)",borderRadius:20,padding:"2px 9px",fontSize:11,fontWeight:600}}>{item}</span>)}
-              </div>
-            </div>
-          )}
-
-          {/* CARPET */}
-          <div style={s.card(counts.carpet>0)}>
-            <h3 style={{margin:"0 0 2px",fontSize:15,fontWeight:800,display:"flex",alignItems:"center",gap:7}}>🏠 Carpet Cleaning <span style={{fontSize:10,background:"#E0F7FA",color:"#006978",fontWeight:700,padding:"2px 7px",borderRadius:20}}>RF99™</span></h3>
-            <p style={{fontSize:11,color:"#9ca3af",margin:"0 0 10px"}}>1st room ${P.carpet_first_room} • Additional ${P.carpet_additional}/room</p>
-            <div style={s.row}><span style={{fontSize:13,fontWeight:600}}>Number of Rooms</span><Counter value={counts.carpet} onChange={v=>setCounts(p=>({...p,carpet:v}))}/></div>
-            {counts.carpet>0&&(<>
-              <p style={s.sec}>✨ Enhance carpet cleaning</p>
-              <Addon icon="🛡️" title="Scotchgard™ Protector" desc="Repels stains — extends RF™ clean 3X longer." price={counts.carpet*P.scotchgard_per_room} selected={addons.scotchgard} onToggle={()=>setAddons(p=>({...p,scotchgard:!p.scotchgard}))} tag="Recommended"/>
-              <Addon icon="🌬️" title="Deodorizer Treatment" desc="Eliminates pet odors & musty smells." price={counts.carpet*P.carpet_deod_per_room} selected={addons.carpetDeod} onToggle={()=>setAddons(p=>({...p,carpetDeod:!p.carpetDeod}))}/>
-            </>)}
-          </div>
-
-          {/* HARDWOOD */}
-          <div style={s.card(hwN>0)}>
-            <h3 style={{margin:"0 0 2px",fontSize:15,fontWeight:800}}>🪵 Hardwood Floor Cleaning</h3>
-            <p style={{fontSize:11,color:"#9ca3af",margin:"0 0 10px"}}>${P.hardwood_per_sqft.toFixed(2)}/sq ft</p>
-            <div style={{display:"flex",alignItems:"center",gap:10}}>
-              <span style={{flex:1,fontSize:13,fontWeight:600}}>Square Feet</span>
-              <input type="number" min="0" placeholder="0 sq ft" value={hw} onChange={e=>setHw(e.target.value)} style={{...s.inp,width:110,textAlign:"center"}}/>
-            </div>
-          </div>
-
-          {/* TILE */}
-          <div style={s.card(counts.tile>0)}>
-            <h3 style={{margin:"0 0 2px",fontSize:15,fontWeight:800}}>⬜ Tile & Grout Cleaning</h3>
-            <p style={{fontSize:11,color:"#9ca3af",margin:"0 0 10px"}}>${P.tile_per_room}/room</p>
-            <div style={s.row}><span style={{fontSize:13,fontWeight:600}}>Number of Rooms</span><Counter value={counts.tile} onChange={v=>setCounts(p=>({...p,tile:v}))}/></div>
-            {counts.tile>0&&(<>
-              <p style={s.sec}>✨ Enhance tile cleaning</p>
-              <Addon icon="🔒" title="Grout Sealing" desc="Seals pores — locks out dirt long-term." price={counts.tile*P.grout_per_room} selected={addons.grout} onToggle={()=>setAddons(p=>({...p,grout:!p.grout}))} tag="Best Protection"/>
-            </>)}
-          </div>
-
-          {/* UPHOLSTERY */}
-          <div style={s.card(upActive)}>
-            <h3 style={{margin:"0 0 2px",fontSize:15,fontWeight:800}}>🛋️ Upholstery Cleaning</h3>
-            <p style={{fontSize:11,color:"#9ca3af",margin:"0 0 10px"}}>Chairs ${P.chair} • Loveseats ${P.loveseat} • Sofas ${P.sofa} • Sectionals ${P.sectional_per_ft}/ft</p>
-            {["chairs","loveseats","sofas"].map(k=>(
-              <div key={k} style={s.row}><span style={{fontSize:13,fontWeight:600,textTransform:"capitalize"}}>{k}</span><Counter value={counts[k]} onChange={v=>setCounts(p=>({...p,[k]:v}))}/></div>
-            ))}
-            {upActive&&(<>
-              <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:8}}>
-                <span style={{flex:1,fontSize:13,fontWeight:600}}>Sectional (linear ft)</span>
-                <input type="number" min="0" placeholder="0 ft" value={sf} onChange={e=>setSf(e.target.value)} style={{...s.inp,width:110,textAlign:"center"}}/>
-              </div>
-              <p style={s.sec}>✨ Enhance upholstery cleaning</p>
-              <Addon icon="🛡️" title="Fabric Protector" desc="Guards against future spills & stains." price={upPcs*P.fabric_protector_per_piece+Math.round(sfN*P.fabric_protector_per_ft)} selected={addons.fabricProt} onToggle={()=>setAddons(p=>({...p,fabricProt:!p.fabricProt}))} tag="🐾 Pet homes"/>
-              <Addon icon="🌬️" title="Deodorizer Treatment" desc="Banishes pet, food & smoke odors." price={upPcs*P.upholstery_deod_per_piece+Math.round(sfN*P.upholstery_deod_per_ft)} selected={addons.upDeod} onToggle={()=>setAddons(p=>({...p,upDeod:!p.upDeod}))}/>
-            </>)}
-          </div>
-
-          {/* WINDOWS */}
-          <div style={s.card(counts.windows>0)}>
-            <h3 style={{margin:"0 0 2px",fontSize:15,fontWeight:800}}>🪟 Window Cleaning</h3>
-            <p style={{fontSize:11,color:"#9ca3af",margin:"0 0 10px"}}>Inside & Outside • ${P.window}/window</p>
-            <div style={s.row}><span style={{fontSize:13,fontWeight:600}}>Number of Windows</span><Counter value={counts.windows} onChange={v=>setCounts(p=>({...p,windows:v}))}/></div>
-            {counts.windows>0&&(<>
-              <p style={s.sec}>✨ Enhance window cleaning</p>
-              <Addon icon="🕸️" title="Screen & Track Cleaning" desc="Removes dust, mold & grime." price={counts.windows*P.screens_per_window} selected={addons.screens} onToggle={()=>setAddons(p=>({...p,screens:!p.screens}))} tag="Recommended"/>
-            </>)}
-          </div>
-
-          {base>0&&<button onClick={()=>setStep(2)} style={{width:"100%",padding:13,background:"#006978",color:"white",border:"none",borderRadius:14,fontWeight:800,fontSize:14,cursor:"pointer",marginBottom:10}}>Continue to Review →</button>}
-        </>)}
-
-        {/* ── STEP 2: REVIEW ── */}
-        {step===2&&(<>
-          {/* Savings celebration */}
-          {seaDisc>0&&(
-            <div style={{background:"linear-gradient(135deg,#1b5e20,#2e7d32)",color:"white",borderRadius:14,padding:"12px 16px",marginBottom:10,textAlign:"center"}}>
-              <p style={{margin:0,fontWeight:800,fontSize:14}}>🎉 {season.icon} {season.name} Savings Unlocked!</p>
-              <p style={{margin:"2px 0 0",fontSize:12,opacity:.85}}>10% off applied automatically — you're saving ${seaDisc}</p>
-            </div>
-          )}
-
-          {/* Pricing drawer */}
-          <div style={{background:"white",borderRadius:14,border:"1.5px solid #e0e6ea",marginBottom:10,overflow:"hidden"}}>
-            <button onClick={()=>setDrawerOpen(p=>!p)} style={{width:"100%",padding:"12px 16px",background:"none",border:"none",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"space-between",fontWeight:700,fontSize:14,color:"#1a2e35"}}>
-              <span>📊 Price Breakdown</span>
-              <span style={{fontSize:12,color:"#006978"}}>{drawerOpen?"▲":"▼"} {drawerOpen?"Hide":"Show"}</span>
-            </button>
-            {drawerOpen&&(
-              <div style={{padding:"0 16px 14px"}}>
-                {carpetCost>0&&<PriceRow label={`Carpet (${counts.carpet} room${counts.carpet>1?"s":""})`} price={carpetCost}/>}
-                {hwN>0&&<PriceRow label={`Hardwood (${hwN} sq ft)`} price={Math.round(hwN*P.hardwood_per_sqft)}/>}
-                {tileCost>0&&<PriceRow label={`Tile & Grout (${counts.tile} room${counts.tile>1?"s":""})`} price={tileCost}/>}
-                {upCost>0&&<PriceRow label="Upholstery" price={upCost}/>}
-                {winCost>0&&<PriceRow label={`Windows (${counts.windows})`} price={winCost}/>}
-                {inline>0&&<>
-                  <div style={{borderTop:"1px solid #f0f0f0",marginTop:6,paddingTop:6}}>
-                    {addons.scotchgard&&<PriceRow label="Scotchgard™" price={counts.carpet*P.scotchgard_per_room} accent/>}
-                    {addons.carpetDeod&&<PriceRow label="Carpet Deodorizer" price={counts.carpet*P.carpet_deod_per_room} accent/>}
-                    {addons.grout&&<PriceRow label="Grout Sealing" price={counts.tile*P.grout_per_room} accent/>}
-                    {addons.fabricProt&&<PriceRow label="Fabric Protector" price={upPcs*P.fabric_protector_per_piece+Math.round(sfN*P.fabric_protector_per_ft)} accent/>}
-                    {addons.upDeod&&<PriceRow label="Upholstery Deodorizer" price={upPcs*P.upholstery_deod_per_piece+Math.round(sfN*P.upholstery_deod_per_ft)} accent/>}
-                    {addons.screens&&<PriceRow label="Screen & Track" price={counts.windows*P.screens_per_window} accent/>}
-                    {modal.bundle&&<PriceRow label="RF99™ Starter Pack" price={P.starter_pack} accent/>}
-                  </div>
-                </>}
-                {(seaDisc>0||multiDisc>0)&&<div style={{borderTop:"1px solid #f0f0f0",marginTop:6,paddingTop:6}}>
-                  {seaDisc>0&&<PriceRow label={`${season.icon} ${season.name} Discount (10%)`} price={-seaDisc} discount/>}
-                  {multiDisc>0&&<PriceRow label="Mix & Match (5%)" price={-multiDisc} discount/>}
-                </div>}
-                <div style={{borderTop:"2px solid #e0e6ea",marginTop:8,paddingTop:8,display:"flex",justifyContent:"space-between",fontSize:15,fontWeight:900,color:"#006978"}}>
-                  <span>Estimated Total</span><span>${grand}</span>
-                </div>
-                <p style={{margin:"4px 0 0",fontSize:10,color:"#9ca3af",textAlign:"right"}}>Final price confirmed on-site</p>
-              </div>
-            )}
-          </div>
-
-          {/* Social proof */}
-          <div style={{background:"white",border:"1.5px solid #e0e6ea",borderRadius:12,padding:"8px 12px",marginBottom:10,display:"flex",alignItems:"center",gap:8,fontSize:12,color:"#6b7280"}}>
-            <span style={{width:7,height:7,borderRadius:4,background:"#ef4444",flexShrink:0}}/>
-            <span dangerouslySetInnerHTML={{__html:social}}/>
-          </div>
-
-          <button onClick={()=>setStep(3)} style={{width:"100%",padding:13,background:"#006978",color:"white",border:"none",borderRadius:14,fontWeight:800,fontSize:14,cursor:"pointer",marginBottom:10}}>Continue to Your Info →</button>
-        </>)}
-
-        {/* ── STEP 3: FORM ── */}
-        {step===3&&(<>
-          <div style={{background:"white",borderRadius:16,padding:"16px 14px",marginBottom:12,boxShadow:"0 2px 10px rgba(0,0,0,.06)"}}>
-            <h3 style={{margin:"0 0 12px",fontSize:15,fontWeight:800,color:"#006978"}}>📋 Your Information</h3>
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:9}}>
-              {[{l:"Name *",k:"name",t:"text",p:"Full name",c:2},{l:"Phone *",k:"phone",t:"tel",p:"(410) 555-0000",c:1},{l:"Email",k:"email",t:"email",p:"you@email.com",c:1},{l:"Date *",k:"date",t:"date",p:"",c:1}].map(f=>(
-                <div key={f.k} style={{gridColumn:f.c===2?"1/-1":"auto"}}>
-                  <label style={s.lbl}>{f.l}</label>
-                  <input type={f.t} placeholder={f.p} value={form[f.k]} onChange={e=>setForm(p=>({...p,[f.k]:e.target.value}))} style={s.inp}/>
-                </div>
-              ))}
-              <div><label style={s.lbl}>Time *</label>
-                <select value={form.time} onChange={e=>setForm(p=>({...p,time:e.target.value}))} style={s.inp}>
-                  <option value="">Select</option>
-                  {["8:00 AM","10:00 AM","12:00 PM","2:00 PM","4:00 PM"].map(t=><option key={t}>{t}</option>)}
-                </select>
-              </div>
-              <div style={{gridColumn:"1/-1"}}><label style={s.lbl}>Street Address *</label><input type="text" placeholder="123 Main St" value={form.street} onChange={e=>setForm(p=>({...p,street:e.target.value}))} style={s.inp}/></div>
-              <div><label style={s.lbl}>City *</label><input type="text" placeholder="Ocean City" value={form.city} onChange={e=>setForm(p=>({...p,city:e.target.value}))} style={s.inp}/></div>
-              <div><label style={s.lbl}>State *</label>
-                <select value={form.state} onChange={e=>setForm(p=>({...p,state:e.target.value}))} style={s.inp}>
-                  <option value="">Select</option><option>MD</option><option>DE</option>
-                </select>
-              </div>
-              <div style={{gridColumn:"1/-1"}}><label style={s.lbl}>Zip *</label><input type="text" placeholder="21842" value={form.zip} onChange={e=>setForm(p=>({...p,zip:e.target.value}))} style={s.inp}/></div>
-              <div style={{gridColumn:"1/-1"}}><label style={s.lbl}>Notes</label><textarea placeholder="Pets, parking, access info..." value={form.notes} onChange={e=>setForm(p=>({...p,notes:e.target.value}))} style={{...s.inp,height:60,resize:"none"}}/></div>
-            </div>
-          </div>
-        </>)}
-      </div>
-
-      {/* STICKY BAR */}
-      <div style={{position:"fixed",bottom:0,left:0,right:0,zIndex:40,background:"white",borderTop:"1.5px solid #e0e6ea",boxShadow:"0 -4px 20px rgba(0,0,0,.1)",padding:"10px 12px"}}>
-        <div style={{maxWidth:680,margin:"0 auto",display:"flex",alignItems:"center",gap:10}}>
-          <div style={{flex:1}}>
-            <div style={{display:"flex",alignItems:"baseline",gap:5}}>
-              <span style={{fontSize:22,fontWeight:900,color:"#006978"}}>${grand}</span>
-              {saved>0&&<span style={{fontSize:11,color:"#2e7d32",fontWeight:700}}>−${saved} saved</span>}
-            </div>
-            {hint&&<p style={{margin:0,fontSize:10,color:"#e65100",fontWeight:600,lineHeight:1.2}}>{hint}</p>}
-          </div>
-          {step<3?(
-            <button onClick={()=>setStep(s=>Math.min(3,s+1))} disabled={step===0?false:base===0} style={{padding:"11px 16px",background:step>0&&base===0?"#d1d5db":"linear-gradient(135deg,#006978,#0097A7)",color:"white",border:"none",borderRadius:12,fontWeight:800,fontSize:13,cursor:step>0&&base===0?"not-allowed":"pointer",whiteSpace:"nowrap"}}>
-              {step===0?"Skip →":step===1?"Review →":"Continue →"}
-            </button>
-          ):(
-            <button onClick={async()=>{
-              if(!form.name||!form.phone||!form.street||!form.city||!form.state||!form.zip||!form.date||!form.time){alert("Please fill in all required fields.");return;}
-              setSending(true);
-              try {
-                const res = await fetch("/api/booking", {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({
-                    ...form,
-                    services: {
-                      [`Carpet (${counts.carpet} rooms)`]: counts.carpet > 0 ? `$${carpetCost}` : null,
-                      [`Hardwood (${hw} sqft)`]: hwN > 0 ? `$${Math.round(hwN*P.hardwood_per_sqft)}` : null,
-                      [`Tile & Grout (${counts.tile} rooms)`]: counts.tile > 0 ? `$${tileCost}` : null,
-                      ["Upholstery"]: upActive ? `$${upCost}` : null,
-                      [`Windows (${counts.windows})`]: counts.windows > 0 ? `$${winCost}` : null,
-                    },
-                    addons: {
-                      "Scotchgard": addons.scotchgard || null,
-                      "Carpet Deodorizer": addons.carpetDeod || null,
-                      "Grout Sealing": addons.grout || null,
-                      "Fabric Protector": addons.fabricProt || null,
-                      "Upholstery Deodorizer": addons.upDeod || null,
-                      "Screen and Track": addons.screens || null,
-                    },
-                    total: grand,
-                    saved: saved > 0 ? saved : null,
-                  }),
-                });
-                const data = await res.json();
-                if (data.success) { setSuccess(true); } else { alert("Something went wrong. Please call 443-856-3244 to book."); }
-              } catch(e) { alert("Something went wrong. Please call 443-856-3244 to book."); }
-              setSending(false);
-            }} disabled={sending} style={{padding:"11px 16px",background:"linear-gradient(135deg,#FF6F00,#e65100)",color:"white",border:"none",borderRadius:12,fontWeight:800,fontSize:13,cursor:"pointer",whiteSpace:"nowrap",boxShadow:"0 4px 14px rgba(255,111,0,.3)"}}>
-              {sending?"Sending...":"Confirm — $"+grand}
-            </button>
-          )}
+          <button onClick={()=>openBuilder(null)} className="bg-teal-600 text-white font-semibold text-xs px-4 py-2 rounded-full hover:bg-teal-700 transition-colors">
+            Build Quote
+          </button>
         </div>
       </div>
 
-      {/* SUCCESS */}
-      {success&&(
-        <div style={{position:"fixed",inset:0,background:"rgba(0,105,120,.94)",zIndex:50,display:"flex",alignItems:"center",justifyContent:"center",padding:14,overflowY:"auto"}}>
-          <div style={{background:"white",borderRadius:22,maxWidth:400,width:"100%",overflow:"hidden"}}>
-            <div style={{background:"linear-gradient(135deg,#006978,#0097A7)",color:"white",textAlign:"center",padding:"24px 18px"}}>
-              <div style={{fontSize:40,marginBottom:5}}>🎉</div>
-              <h2 style={{margin:0,fontSize:20,fontWeight:900}}>You're All Set, {form.name.split(" ")[0]||"there"}!</h2>
-              <p style={{margin:"4px 0 0",fontSize:12,opacity:.88}}>Booking request received</p>
-            </div>
-            <div style={{background:"#FF6F00",color:"white",textAlign:"center",padding:6,fontSize:10,fontWeight:700,letterSpacing:"1px",textTransform:"uppercase"}}>
-              Confirmation # TB{Math.floor(100000+Math.random()*900000)}
-            </div>
-            <div style={{padding:18}}>
-              <div style={{background:"#f4f7f8",borderRadius:12,padding:"11px 13px",marginBottom:12}}>
-                <p style={{margin:"0 0 8px",fontSize:12,fontWeight:800,color:"#1a2e35"}}>📋 What happens next</p>
-                {["We'll call within 2–4 hours to confirm","Tech arrives on time with all equipment","RF™ clean with zero residue left behind","Dry in 4–6 hours — enjoy your clean home!"].map((t,i)=>(
-                  <div key={i} style={{display:"flex",gap:7,marginBottom:4}}>
-                    <span style={{width:16,height:16,borderRadius:8,background:"#006978",color:"white",fontSize:9,fontWeight:700,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{i+1}</span>
-                    <span style={{fontSize:12,color:"#4b5563"}}>{t}</span>
-                  </div>
-                ))}
-              </div>
-              <div style={{background:"#E0F7FA",borderRadius:12,padding:"11px 13px",marginBottom:12}}>
-                {form.date&&<div style={{display:"flex",justifyContent:"space-between",fontSize:13,marginBottom:4}}><span style={{color:"#006978",fontWeight:700}}>📅</span><strong>{form.date} at {form.time}</strong></div>}
-                {form.street&&<div style={{display:"flex",justifyContent:"space-between",fontSize:12,marginBottom:4}}><span style={{color:"#006978",fontWeight:700}}>📍</span><span>{form.street}, {form.city} {form.state}</span></div>}
-                <div style={{display:"flex",justifyContent:"space-between",fontSize:14,fontWeight:900,color:"#006978",marginTop:6,paddingTop:6,borderTop:"1px solid rgba(0,150,167,.2)"}}><span>💰 Total</span><span>${grand}{saved>0&&<span style={{fontSize:11,color:"#2e7d32",marginLeft:6}}>−${saved} saved</span>}</span></div>
-              </div>
-              <a href="tel:443-856-3244" style={{display:"flex",alignItems:"center",justifyContent:"center",gap:8,padding:11,background:"#006978",color:"white",borderRadius:12,fontWeight:800,fontSize:14,textDecoration:"none",marginBottom:7}}>📞 Call Us — 443-856-3244</a>
-              <button onClick={()=>setSuccess(false)} style={{width:"100%",padding:10,border:"1.5px solid #e0e6ea",borderRadius:12,background:"white",color:"#6b7280",fontWeight:600,cursor:"pointer",fontSize:13}}>Book another service</button>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* MODAL BACKDROP */}
+      {modal && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex flex-col justify-end md:justify-center md:items-center">
+          <div ref={modalRef} className="bg-white w-full max-w-lg rounded-t-3xl md:rounded-3xl max-h-[92vh] overflow-hidden flex flex-col shadow-2xl"
+            style={{animation:"slideUp 0.3s ease-out"}}>
 
-      {/* UPSELL MODAL */}
-      {modalOpen&&(
-        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.55)",zIndex:40,display:"flex",alignItems:"center",justifyContent:"center",padding:12}} onClick={e=>e.target===e.currentTarget&&setModalOpen(false)}>
-          <div style={{background:"white",borderRadius:20,maxWidth:420,width:"100%",overflow:"hidden",maxHeight:"90vh",overflowY:"auto"}}>
-            <div style={{background:"linear-gradient(135deg,#006978,#0097A7)",color:"white",textAlign:"center",padding:"16px 14px 12px"}}>
-              <div style={{fontSize:24,marginBottom:2}}>🎁</div>
-              <h2 style={{margin:0,fontSize:16,fontWeight:900}}>One Last Upgrade!</h2>
-              <p style={{margin:"2px 0 0",fontSize:11,opacity:.88}}>Add before you confirm</p>
+            {/* Modal header */}
+            <div className="flex items-center justify-between px-5 pt-4 pb-3 border-b border-gray-100 flex-shrink-0">
+              <div>
+                <div className="font-black text-lg text-gray-900">
+                  {modal==="builder" ? (selectedPkg ? `${selectedPkg.emoji} ${selectedPkg.name}` : "Custom Quote") :
+                   modal==="upsell" ? "🎁 One Last Upgrade" :
+                   "📋 Confirm Booking"}
+                </div>
+                {modal==="builder" && (
+                  <div className="text-xs text-gray-400">Select your services below</div>
+                )}
+              </div>
+              <div className="flex items-center gap-3">
+                {modal==="builder" && (
+                  <div className="text-right">
+                    <div className="text-xs text-gray-400">Estimate</div>
+                    <div className="text-xl font-black text-teal-600">${total.toLocaleString()}</div>
+                  </div>
+                )}
+                <button onClick={()=>setModal(null)} className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-gray-200 transition-colors text-sm font-bold">✕</button>
+              </div>
             </div>
-            <div style={{padding:"10px 12px 4px"}}>
-              {!mmShown&&(
-                <div onClick={()=>setModal(p=>({...p,bundle:!p.bundle}))} style={{position:"relative",display:"flex",alignItems:"center",gap:10,padding:"12px",borderRadius:12,border:modal.bundle?"2px solid #FF6F00":"2px solid #ffd9b5",background:"#FFF8F0",cursor:"pointer",marginBottom:8}}>
-                  <span style={{position:"absolute",top:-8,left:12,background:"#FF6F00",color:"white",fontSize:9,fontWeight:700,padding:"1px 8px",borderRadius:20}}>🔥 Most Popular</span>
-                  <div style={{width:20,height:20,borderRadius:10,border:modal.bundle?"2px solid #0097A7":"2px solid #d1d5db",background:modal.bundle?"#0097A7":"white",display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,color:"white",fontWeight:700,flexShrink:0}}>{modal.bundle?"✓":""}</div>
-                  <div style={{flex:1}}><p style={{margin:0,fontWeight:700,fontSize:13}}>RF99™ Spring Starter Pack</p><p style={{margin:"2px 0 0",fontSize:11,color:"#6b7280"}}>Priority scheduling + free re-clean guarantee</p></div>
-                  <span style={{fontWeight:800,fontSize:13,color:"#006978"}}>+${P.starter_pack}</span>
+
+            {/* Modal body */}
+            <div className="overflow-y-auto flex-1 px-5 py-4">
+
+              {/* ── BUILDER ── */}
+              {modal==="builder" && (
+                <div className="space-y-4">
+
+                  {selectedPkg && (
+                    <div className="bg-teal-50 border border-teal-200 rounded-xl px-4 py-2.5 flex justify-between items-center text-sm">
+                      <span className="text-teal-800 font-semibold">{selectedPkg.name} applied</span>
+                      <button onClick={()=>setSelectedPkg(null)} className="text-gray-400 text-xs underline">Clear</button>
+                    </div>
+                  )}
+
+                  {/* Carpet */}
+                  <div className="bg-gray-50 rounded-2xl p-4">
+                    <div className="font-bold text-gray-800 mb-1">🧹 Carpet Cleaning RF99</div>
+                    <div className="text-xs text-gray-500 mb-3">$99 first room · $50 each additional</div>
+                    <RoomGrid rooms={CARPET_ROOMS} selected={s.carpetRooms} onToggle={r=>{const a=s.carpetRooms;setS({...s,carpetRooms:a.includes(r)?a.filter(x=>x!==r):[...a,r]});}} />
+                    <div className="text-xs text-gray-400 mb-3">Selected: <strong>{s.carpetRooms.length}</strong> rooms</div>
+                    <div className="space-y-2">
+                      <EnhanceToggle icon="🛡️" name="Scotchgard Protector" desc="Extends your RF clean 3x longer" price={s.carpetRooms.length>0?`+$${s.carpetRooms.length*30}`:"+$30/room"} active={s.scotchgard} onToggle={()=>setS({...s,scotchgard:!s.scotchgard})} />
+                      <EnhanceToggle icon="🌬️" name="Deodorizer Treatment" desc="Eliminates pet odors at the source" price={s.carpetRooms.length>0?`+$${s.carpetRooms.length*25}`:"+$25/room"} active={s.deodorizer} onToggle={()=>setS({...s,deodorizer:!s.deodorizer})} />
+                    </div>
+                  </div>
+
+                  {/* Hardwood */}
+                  <div className="bg-gray-50 rounded-2xl p-4">
+                    <div className="font-bold text-gray-800 mb-1">🪵 Hardwood Floor Cleaning</div>
+                    <div className="text-xs text-gray-500 mb-3">$1.00 per square foot</div>
+                    <input type="number" min={0} value={s.hardwoodSqft||""} onChange={e=>setS({...s,hardwoodSqft:parseFloat(e.target.value)||0})} placeholder="Square feet (e.g. 400)" className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:border-teal-400" />
+                  </div>
+
+                  {/* Tile */}
+                  <div className="bg-gray-50 rounded-2xl p-4">
+                    <div className="font-bold text-gray-800 mb-1">⬜ Tile & Grout Cleaning</div>
+                    <div className="text-xs text-gray-500 mb-2">$125 per room</div>
+                    <div className="text-xs font-semibold text-teal-600 mb-2">Kitchen / Living Tile</div>
+                    <RoomGrid rooms={TILE_ROOMS} selected={s.tileRooms} onToggle={r=>{const a=s.tileRooms;setS({...s,tileRooms:a.includes(r)?a.filter(x=>x!==r):[...a,r]});}} />
+                    <div className="text-xs font-semibold text-teal-600 mt-3 mb-2">🚿 Bathroom Tile</div>
+                    <RoomGrid rooms={BATH_ROOMS} selected={s.bathrooms} onToggle={r=>{const a=s.bathrooms;setS({...s,bathrooms:a.includes(r)?a.filter(x=>x!==r):[...a,r]});}} />
+                    <div className="text-xs text-gray-400 mt-2 mb-3">Selected: <strong>{s.tileRooms.length+s.bathrooms.length}</strong> rooms</div>
+                    <div className="space-y-2">
+                      <EnhanceToggle icon="🔒" name="Grout Sealing" desc="Locks out dirt long-term" price={`+$${Math.round((s.tileRooms.length+s.bathrooms.length)*125*0.5)||"TBD"}`} active={s.groutSealing} onToggle={()=>setS({...s,groutSealing:!s.groutSealing})} />
+                      <EnhanceToggle icon="🎨" name="Color Seal" desc="Restore & lock in grout color permanently" price={`+$${(s.tileRooms.length+s.bathrooms.length)*125||"TBD"}`} active={s.colorSeal} onToggle={()=>setS({...s,colorSeal:!s.colorSeal})} />
+                    </div>
+                    {s.colorSeal && (
+                      <div className="mt-3">
+                        <div className="text-xs font-semibold text-teal-600 mb-2">Pick Your Grout Color</div>
+                        <div className="grid grid-cols-5 gap-2">
+                          {GROUT_COLORS.map(c=>(
+                            <button key={c.id} onClick={()=>setS({...s,groutColor:c.name})}
+                              className={`aspect-square rounded-xl flex items-center justify-center text-xs font-bold border-2 transition-all ${s.groutColor===c.name?"border-teal-500 scale-105":"border-gray-200"}`}
+                              style={{background:c.hex,color:c.light?"#333":"#fff"}}>
+                              {s.groutColor===c.name?"✓":c.name.slice(0,3)}
+                            </button>
+                          ))}
+                        </div>
+                        {s.groutColor && <p className="text-xs text-teal-600 font-semibold mt-2">Selected: {s.groutColor}</p>}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Upholstery */}
+                  <div className="bg-gray-50 rounded-2xl p-4">
+                    <div className="font-bold text-gray-800 mb-3">🛋️ Upholstery Cleaning</div>
+                    <Counter label="Sofas" price="$85/sofa" value={s.sofas} onChange={v=>setS({...s,sofas:v})} />
+                    <Counter label="Loveseats" price="$75/loveseat" value={s.loveseats} onChange={v=>setS({...s,loveseats:v})} />
+                    <Counter label="Chairs" price="$50/chair" value={s.chairs} onChange={v=>setS({...s,chairs:v})} />
+                    <Counter label="Ottomans" price="$35/ottoman" value={s.ottomans} onChange={v=>setS({...s,ottomans:v})} />
+                    <Counter label="Dining Chairs" price="$10-13 each" value={s.diningChairs} onChange={v=>setS({...s,diningChairs:v})} />
+                    {s.diningChairs>0 && (
+                      <div className="flex gap-2 mt-2 mb-1">
+                        <button onClick={()=>setS({...s,diningChairType:"seat_back"})} className={`flex-1 text-xs font-bold py-2 rounded-lg border-2 transition-all ${s.diningChairType==="seat_back"?"bg-teal-600 text-white border-teal-600":"border-gray-200 text-gray-500"}`}>Seat & Back $13</button>
+                        <button onClick={()=>setS({...s,diningChairType:"seat_only"})} className={`flex-1 text-xs font-bold py-2 rounded-lg border-2 transition-all ${s.diningChairType==="seat_only"?"bg-teal-600 text-white border-teal-600":"border-gray-200 text-gray-500"}`}>Seat Only $10</button>
+                      </div>
+                    )}
+                    <div className="mt-3">
+                      <label className="text-xs text-gray-500 block mb-1">Sectional Linear Feet · $11/ft</label>
+                      <input type="number" min={0} value={s.sectionalFt||""} onChange={e=>setS({...s,sectionalFt:parseFloat(e.target.value)||0})} placeholder="0" className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm outline-none focus:border-teal-400" />
+                    </div>
+                    <div className="space-y-2 mt-3">
+                      <EnhanceToggle icon="🛡️" name="Fabric Protector" desc="Guards against spills per piece" price={`+$${(s.sofas+s.loveseats+s.chairs+s.ottomans)*20||20}/piece`} active={s.upholProtect} onToggle={()=>setS({...s,upholProtect:!s.upholProtect})} />
+                      <EnhanceToggle icon="🌬️" name="Upholstery Deodorizer" desc="Eliminates pet & smoke odors" price={`+$${(s.sofas+s.loveseats+s.chairs+s.ottomans)*25||25}/piece`} active={s.upholDeodor} onToggle={()=>setS({...s,upholDeodor:!s.upholDeodor})} />
+                    </div>
+                  </div>
+
+                  {/* Windows */}
+                  <div className="bg-gray-50 rounded-2xl p-4">
+                    <div className="font-bold text-gray-800 mb-3">🪟 Window Cleaning</div>
+                    <Counter label="Standard Windows" price="$13/window" value={s.windows} onChange={v=>setS({...s,windows:v})} />
+                    <Counter label="EZ Breeze Panels" price="$15/panel + $35 track" value={s.ezBreeze} onChange={v=>setS({...s,ezBreeze:v})} />
+                    <Counter label="Glass Sliding Doors" price="$25/panel" value={s.glassDoors} onChange={v=>setS({...s,glassDoors:v})} />
+                  </div>
+
+                  {/* Rugs */}
+                  <div className="bg-gray-50 rounded-2xl p-4">
+                    <div className="font-bold text-gray-800 mb-1">🪄 Rug Cleaning</div>
+                    <div className="text-xs text-gray-500 mb-3">Pickup & delivery included</div>
+                    <Counter label="Small Rug" price="$75 + $75 pickup" value={s.rugSmall} onChange={v=>setS({...s,rugSmall:v})} />
+                    <Counter label="Medium Rug" price="$125 + $75 pickup" value={s.rugMedium} onChange={v=>setS({...s,rugMedium:v})} />
+                    <Counter label="Large Rug" price="$195 + $75 pickup" value={s.rugLarge} onChange={v=>setS({...s,rugLarge:v})} />
+                    <Counter label="Oversized Rug" price="$295 + $75 pickup" value={s.rugOversized} onChange={v=>setS({...s,rugOversized:v})} />
+                  </div>
+
+                  {/* Referral */}
+                  <div className="bg-gray-50 rounded-2xl p-4">
+                    <div className="font-bold text-gray-800 mb-3">💬 How Did You Hear About Us?</div>
+                    <div className="flex flex-wrap gap-2">
+                      {REFERRAL_OPTIONS.map(r=>(
+                        <button key={r.id} onClick={()=>setS({...s,referral:r.id})}
+                          className={`px-3 py-1.5 rounded-full text-xs font-bold border-2 transition-all ${s.referral===r.id?"bg-teal-600 text-white border-teal-600":"border-gray-200 text-gray-500 hover:border-teal-300"}`}>
+                          {r.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Estimate */}
+                  <div className="bg-gradient-to-br from-teal-600 to-teal-800 rounded-2xl p-5 text-center text-white">
+                    <div className="text-sm opacity-80 mb-1">Your Estimate</div>
+                    <div className="text-5xl font-black">${total.toLocaleString()}</div>
+                    <div className="text-xs opacity-70 mt-2">Final price confirmed on-site. Spring 10% applied.</div>
+                  </div>
+
+                  {/* Customer Info */}
+                  <div className="bg-gray-50 rounded-2xl p-4">
+                    <div className="font-bold text-gray-800 mb-4">👤 Your Information</div>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="col-span-2 md:col-span-1">
+                        <label className="text-xs font-semibold text-gray-500 block mb-1">Name *</label>
+                        <input value={form.name} onChange={e=>setForm({...form,name:e.target.value})} placeholder="Full name" className={`w-full border rounded-xl px-3 py-2.5 text-sm outline-none focus:border-teal-400 ${errors.name?"border-red-400":"border-gray-200"}`} />
+                        {errors.name && <p className="text-xs text-red-500 mt-1">{errors.name}</p>}
+                      </div>
+                      <div className="col-span-2 md:col-span-1">
+                        <label className="text-xs font-semibold text-gray-500 block mb-1">Phone *</label>
+                        <input value={form.phone} onChange={e=>setForm({...form,phone:e.target.value})} placeholder="(443) 000-0000" type="tel" className={`w-full border rounded-xl px-3 py-2.5 text-sm outline-none focus:border-teal-400 ${errors.phone?"border-red-400":"border-gray-200"}`} />
+                        {errors.phone && <p className="text-xs text-red-500 mt-1">{errors.phone}</p>}
+                      </div>
+                      <div className="col-span-2">
+                        <label className="text-xs font-semibold text-gray-500 block mb-1">Email</label>
+                        <input value={form.email} onChange={e=>setForm({...form,email:e.target.value})} placeholder="Optional" type="email" className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:border-teal-400" />
+                      </div>
+                    </div>
+
+                    {/* Calendar */}
+                    <div className="mt-4">
+                      <label className="text-xs font-semibold text-gray-500 block mb-2">Preferred Date *</label>
+                      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+                        <div className="flex items-center justify-between px-4 py-3 bg-teal-600 text-white">
+                          <button onClick={()=>{let m=calMonth-1,y=calYear;if(m<0){m=11;y--;}setCalMonth(m);setCalYear(y);}} className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center font-bold">‹</button>
+                          <span className="font-bold text-sm">{["January","February","March","April","May","June","July","August","September","October","November","December"][calMonth]} {calYear}</span>
+                          <button onClick={()=>{let m=calMonth+1,y=calYear;if(m>11){m=0;y++;}setCalMonth(m);setCalYear(y);}} className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center font-bold">›</button>
+                        </div>
+                        <div className="grid grid-cols-7 bg-gray-50 px-2 py-1">
+                          {["Su","Mo","Tu","We","Th","Fr","Sa"].map(d=><div key={d} className="text-center text-xs font-bold text-gray-400 py-1">{d}</div>)}
+                        </div>
+                        <div className="grid grid-cols-7 gap-1 p-2">
+                          {Array.from({length:new Date(calYear,calMonth,1).getDay()}).map((_,i)=><div key={i}/>)}
+                          {Array.from({length:new Date(calYear,calMonth+1,0).getDate()}).map((_,i)=>{
+                            const d=new Date(calYear,calMonth,i+1);
+                            const ds=fmt(d);
+                            const isPast=d<TODAY;
+                            const status=getDayStatus(ds);
+                            const isSelected=selectedDate===ds;
+                            return (
+                              <button key={i} disabled={isPast||status==="full"}
+                                onClick={()=>{setSelectedDate(ds);setSelectedSlot("");}}
+                                className={`aspect-square rounded-lg text-xs font-bold flex flex-col items-center justify-center gap-0.5 transition-all
+                                  ${isSelected?"bg-teal-600 text-white scale-105":
+                                    isPast?"text-gray-200 cursor-not-allowed":
+                                    status==="avail"?"bg-green-50 text-green-700 hover:bg-green-100":
+                                    status==="limited"?"bg-yellow-50 text-yellow-700 hover:bg-yellow-100":
+                                    "bg-red-50 text-red-300 cursor-not-allowed"}`}>
+                                <span>{i+1}</span>
+                                {!isPast&&<span className={`w-1 h-1 rounded-full ${isSelected?"bg-white/60":status==="avail"?"bg-green-500":status==="limited"?"bg-yellow-500":"bg-red-300"}`}/>}
+                              </button>
+                            );
+                          })}
+                        </div>
+                        <div className="flex justify-center gap-4 px-3 pb-2 text-xs text-gray-400">
+                          <span><span className="inline-block w-2 h-2 rounded-full bg-green-500 mr-1"/>Available</span>
+                          <span><span className="inline-block w-2 h-2 rounded-full bg-yellow-500 mr-1"/>Limited</span>
+                          <span><span className="inline-block w-2 h-2 rounded-full bg-red-400 mr-1"/>Booked</span>
+                        </div>
+                      </div>
+                      {errors.date && <p className="text-xs text-red-500 mt-1">{errors.date}</p>}
+
+                      {selectedDate && (
+                        <div className="mt-3">
+                          <p className="text-xs font-semibold text-gray-500 mb-2">Available times on <strong>{new Date(selectedDate).toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric"})}</strong></p>
+                          <div className="grid grid-cols-3 gap-2">
+                            {[{id:"morning",label:"Morning",sub:"8-11am"},{id:"midday",label:"Midday",sub:"11am-2pm"},{id:"afternoon",label:"Afternoon",sub:"2-5pm"}].map(slot=>{
+                              const booked=(BOOKED[selectedDate]||[]).includes(slot.id);
+                              return (
+                                <button key={slot.id} disabled={booked} onClick={()=>setSelectedSlot(slot.label+" ("+slot.sub+")")}
+                                  className={`py-2.5 rounded-xl text-xs font-bold border-2 transition-all ${selectedSlot.startsWith(slot.label)?"bg-teal-600 text-white border-teal-600":booked?"text-gray-300 border-gray-100 line-through cursor-not-allowed":"border-gray-200 text-gray-600 hover:border-teal-400"}`}>
+                                  <div>{slot.label}</div><div className="opacity-60 font-normal">{slot.sub}</div>
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3 mt-4">
+                      <div className="col-span-2">
+                        <label className="text-xs font-semibold text-gray-500 block mb-1">Street Address *</label>
+                        <input value={form.street} onChange={e=>setForm({...form,street:e.target.value})} placeholder="123 Main St" className={`w-full border rounded-xl px-3 py-2.5 text-sm outline-none focus:border-teal-400 ${errors.street?"border-red-400":"border-gray-200"}`} />
+                        {errors.street && <p className="text-xs text-red-500 mt-1">{errors.street}</p>}
+                      </div>
+                      <div>
+                        <label className="text-xs font-semibold text-gray-500 block mb-1">City *</label>
+                        <input value={form.city} onChange={e=>setForm({...form,city:e.target.value})} placeholder="Salisbury" className={`w-full border rounded-xl px-3 py-2.5 text-sm outline-none focus:border-teal-400 ${errors.city?"border-red-400":"border-gray-200"}`} />
+                        {errors.city && <p className="text-xs text-red-500 mt-1">{errors.city}</p>}
+                      </div>
+                      <div>
+                        <label className="text-xs font-semibold text-gray-500 block mb-1">ZIP *</label>
+                        <input value={form.zip} onChange={e=>setForm({...form,zip:e.target.value})} placeholder="21801" maxLength={5} className={`w-full border rounded-xl px-3 py-2.5 text-sm outline-none focus:border-teal-400 ${errors.zip?"border-red-400":"border-gray-200"}`} />
+                        {errors.zip && <p className="text-xs text-red-500 mt-1">{errors.zip}</p>}
+                      </div>
+                      <div>
+                        <label className="text-xs font-semibold text-gray-500 block mb-1">State</label>
+                        <select value={form.state} onChange={e=>setForm({...form,state:e.target.value})} className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:border-teal-400">
+                          <option>MD</option><option>DE</option><option>VA</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="text-xs font-semibold text-gray-500 block mb-1">Promo Code</label>
+                        <div className="flex gap-2">
+                          <input value={form.promo} onChange={e=>setForm({...form,promo:e.target.value})} placeholder="Code" className="flex-1 border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:border-teal-400" />
+                          <button onClick={()=>{const c=form.promo.toUpperCase().trim();setPromoStatus(["BREEZE15","RF99","SHORE10"].includes(c)?"ok":"err");}} className="bg-gray-100 font-semibold text-xs px-3 rounded-xl hover:bg-gray-200 transition-colors">Apply</button>
+                        </div>
+                        {promoStatus==="ok"&&<p className="text-xs text-green-600 mt-1 font-medium">✓ Code applied!</p>}
+                        {promoStatus==="err"&&<p className="text-xs text-red-500 mt-1">Invalid code. Try BREEZE15</p>}
+                      </div>
+                      <div className="col-span-2">
+                        <label className="text-xs font-semibold text-gray-500 block mb-1">Special Instructions</label>
+                        <textarea value={form.notes} onChange={e=>setForm({...form,notes:e.target.value})} placeholder="Gate codes, pets, parking..." rows={3} className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:border-teal-400 resize-none" />
+                      </div>
+                    </div>
+
+                    <label className="flex items-start gap-3 mt-3 cursor-pointer">
+                      <input type="checkbox" checked={form.sms} onChange={e=>setForm({...form,sms:e.target.checked})} className="mt-0.5 accent-teal-600 w-4 h-4 flex-shrink-0" />
+                      <span className="text-xs text-gray-600 leading-relaxed">📱 Text me my confirmation + reminder the day before<br/><span className="text-gray-400">Standard rates apply · Opt out anytime</span></span>
+                    </label>
+                  </div>
+
+                  <button onClick={()=>setModal("upsell")} className="w-full bg-teal-600 text-white font-black py-4 rounded-2xl text-base hover:bg-teal-700 active:bg-teal-800 transition-colors">
+                    Continue — ${total.toLocaleString()}
+                  </button>
                 </div>
               )}
-              {activeSvcs>=2&&base>=T_MULTI&&(
-                <div onClick={()=>setModal(p=>({...p,multi:!p.multi}))} style={{position:"relative",display:"flex",alignItems:"center",gap:10,padding:"12px",borderRadius:12,border:modal.multi?"2px solid #7b1fa2":"2px solid #e1bee7",background:"#f3e5f5",cursor:"pointer",marginBottom:8}}>
-                  <span style={{position:"absolute",top:-8,left:12,background:"#7b1fa2",color:"white",fontSize:9,fontWeight:700,padding:"1px 8px",borderRadius:20}}>🎉 Best Savings</span>
-                  <div style={{width:20,height:20,borderRadius:10,border:modal.multi?"2px solid #7b1fa2":"2px solid #d1d5db",background:modal.multi?"#7b1fa2":"white",display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,color:"white",fontWeight:700,flexShrink:0}}>{modal.multi?"✓":""}</div>
-                  <div style={{flex:1}}><p style={{margin:0,fontWeight:700,fontSize:13}}>Mix & Match Discount</p><p style={{margin:"2px 0 0",fontSize:11,color:"#6b7280"}}>5% off your total — you've earned it!</p></div>
-                  <span style={{fontWeight:800,fontSize:13,color:"#7b1fa2"}}>−${Math.round(base*P.multiservice_discount)}</span>
+
+              {/* ── UPSELL ── */}
+              {modal==="upsell" && (
+                <div className="space-y-4">
+                  <div className="text-center py-4">
+                    <div className="text-4xl mb-2">🎁</div>
+                    <p className="text-gray-500 text-sm">Popular add-ons before you confirm</p>
+                  </div>
+
+                  <div onClick={()=>setS({...s,upsellStarter:!s.upsellStarter})} className={`flex items-center gap-3 p-4 rounded-2xl border-2 cursor-pointer transition-all ${s.upsellStarter?"border-teal-500 bg-teal-50":"border-gray-200 hover:border-teal-300"}`}>
+                    <span className="text-3xl">🧴</span>
+                    <div className="flex-1">
+                      <div className="font-bold text-gray-800">RF99 Starter Pack</div>
+                      <div className="text-xs text-gray-500">Take-home maintenance kit</div>
+                    </div>
+                    <div className="text-right">
+                      <div className="font-black text-teal-600">+$49</div>
+                      <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center text-white text-xs font-bold mt-1 ml-auto ${s.upsellStarter?"bg-teal-600 border-teal-600":"border-gray-300"}`}>{s.upsellStarter?"✓":""}</div>
+                    </div>
+                  </div>
+
+                  {/* Line items preview */}
+                  <div className="bg-gray-50 rounded-2xl p-4">
+                    <div className="font-bold text-gray-800 mb-3 text-sm">Order Summary</div>
+                    {buildLineItems(s).map((item,i)=>(
+                      <div key={i} className={`flex justify-between text-sm py-1.5 border-b border-gray-100 last:border-0 ${item.cls==="disc"?"text-green-600 font-semibold":"text-gray-700"}`}>
+                        <span>{item.label}</span>
+                        <span className="font-bold">{item.value<0?`-$${Math.abs(item.value)}`:`$${item.value}`}</span>
+                      </div>
+                    ))}
+                    {s.upsellStarter && <div className="flex justify-between text-sm py-1.5 text-gray-700"><span>RF99 Starter Pack</span><span className="font-bold">$49</span></div>}
+                    <div className="flex justify-between mt-3 pt-3 border-t-2 border-teal-500">
+                      <span className="font-black text-gray-900">Total</span>
+                      <span className="font-black text-teal-600 text-xl">${(total+(s.upsellStarter?49:0)).toLocaleString()}</span>
+                    </div>
+                  </div>
+
+                  <button onClick={handleSubmit} disabled={submitting} className="w-full bg-teal-600 text-white font-black py-4 rounded-2xl text-base hover:bg-teal-700 disabled:opacity-50 transition-colors">
+                    {submitting?"Submitting...":"Confirm Booking ✓"}
+                  </button>
+                  <button onClick={handleSubmit} disabled={submitting} className="w-full text-sm text-gray-400 underline py-2">
+                    No thanks, skip upgrades
+                  </button>
                 </div>
               )}
-            </div>
-            <div style={{padding:"4px 12px 14px",display:"flex",flexDirection:"column",gap:6}}>
-              <button onClick={()=>setModalOpen(false)} style={{padding:12,background:"linear-gradient(135deg,#FF6F00,#e65100)",color:"white",border:"none",borderRadius:11,fontWeight:800,fontSize:13,cursor:"pointer"}}>
-                {modal.bundle||modal.multi?"Add Selected & Continue":"Continue to Booking"}
-              </button>
-              <button onClick={()=>{setModal({bundle:false,multi:false});setModalOpen(false);}} style={{padding:9,border:"1.5px solid #e0e6ea",borderRadius:11,background:"white",color:"#6b7280",fontWeight:600,cursor:"pointer",fontSize:12}}>No thanks, skip</button>
             </div>
           </div>
         </div>
       )}
 
       <style>{`
-        @keyframes spin { to { transform: rotate(360deg); } }
-        @keyframes bounce { 0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)} }
+        @keyframes slideUp {
+          from { transform: translateY(100%); opacity: 0; }
+          to { transform: translateY(0); opacity: 1; }
+        }
+        @media (min-width: 768px) {
+          @keyframes slideUp {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+          }
+        }
       `}</style>
-    </div>
-  );
-}
 
-// Helper components
-function PriceRow({ label, price, accent, discount }) {
-  return (
-    <div style={{display:"flex",justifyContent:"space-between",fontSize:13,padding:"3px 0",borderBottom:"1px solid #f9fafb"}}>
-      <span style={{color:discount?"#2e7d32":accent?"#FF6F00":"#4b5563"}}>{label}</span>
-      <span style={{fontWeight:700,color:discount?"#2e7d32":accent?"#FF6F00":"#1a2e35"}}>{discount?"−":""}{discount?`$${Math.abs(price)}`:`$${price}`}</span>
-    </div>
-  );
-}
+      {/* Footer */}
+      <div className="text-center py-6 px-4 mt-4">
+        <a href="tel:4438563244" className="block font-bold text-teal-600 text-base mb-1">📞 (443) 856-3244</a>
+        <p className="text-xs text-gray-400">tropicalbreezerf.com · Salisbury, MD · Eastern Shore</p>
+      </div>
 
-function recItem(icon, label, price) {
-  return {
-    display:"flex",alignItems:"center",gap:8,padding:"6px 0",borderBottom:"1px solid #f0f0f0",fontSize:13
-  };
+    </main>
+  );
 }

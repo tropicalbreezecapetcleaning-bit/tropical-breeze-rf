@@ -1,2171 +1,32 @@
-ï»¿<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Book Your Cleaning Ã¢â¬â Tropical Breeze RFÃ¢âÂ¢</title>
-<!-- Google Analytics placeholder -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-<script>
-  window.dataLayer=window.dataLayer||[];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js',new Date());
-  gtag('config','G-XXXXXXXXXX'); // Ã¢â Â swap your GA4 ID here
-  // Meta Pixel placeholder
-  // fbq('init','YOUR_PIXEL_ID'); fbq('track','PageView');
-</script>
-<style>
-:root{
-  --teal:#006978;--teal-dark:#004d59;--teal-light:#0097A7;
-  --teal-pale:#e8f4f5;--teal-faint:#f0f9ff;
-  --green:#15803d;--green-bg:#f0fdf4;--green-light:#22c55e;
-  --gold:#f59e0b;--gold-bg:#fef3c7;
-  --red:#ef4444;--red-bg:#fff5f5;
-  --purple:#a855f7;
-  --slate:#334155;--slate-light:#64748b;--slate-faint:#94a3b8;
-  --border:#e2e8f0;--bg:#f4f8f9;
-  --shadow:0 2px 16px rgba(0,105,120,0.08);
-  --radius:14px;
-  --font:'Segoe UI',system-ui,-apple-system,sans-serif;
-}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:var(--font);background:var(--bg);color:var(--slate);min-height:100vh;padding-bottom:110px;}
-
-/* HEADER */
-.header{background:linear-gradient(135deg,var(--teal-dark) 0%,var(--teal) 55%,var(--teal-light) 100%);color:white;text-align:center;padding:28px 16px 22px;position:relative;overflow:hidden;}
-.header-eyebrow{font-size:10px;font-weight:800;letter-spacing:3px;opacity:.75;margin-bottom:6px;text-transform:uppercase;}
-.header h1{font-size:26px;font-weight:900;letter-spacing:-.5px;margin-bottom:4px;}
-.header-sub{font-size:14px;opacity:.85;margin-bottom:10px;}
-.header-phone{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.15);border-radius:20px;padding:6px 14px;font-size:14px;font-weight:700;color:white;text-decoration:none;margin-bottom:10px;}
-.season-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.18);border-radius:20px;padding:6px 14px;font-size:13px;font-weight:600;backdrop-filter:blur(4px);}
-
-/* REVIEWS TICKER */
-.reviews-bar{background:#004d59;padding:10px 0;overflow:hidden;}
-.reviews-track{display:flex;gap:28px;animation:ticker 55s linear infinite;white-space:nowrap;width:max-content;}
-.reviews-bar:hover .reviews-track{animation-play-state:paused;}
-@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-.review-chip{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border-radius:20px;padding:5px 14px;flex-shrink:0;}
-.review-stars{color:#facc15;font-size:11px;}
-.review-text{font-size:12px;color:rgba(255,255,255,.88);font-weight:500;}
-.review-city{font-size:11px;color:rgba(255,255,255,.45);}
-
-/* STICKY */
-.sticky-bar{position:sticky;top:0;z-index:40;background:white;border-bottom:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,.05);padding:10px 16px;}
-.sticky-inner{max-width:680px;margin:0 auto;display:flex;align-items:center;gap:12px;}
-.sticky-price{font-size:22px;font-weight:900;color:var(--teal);line-height:1;flex:1;}
-.sticky-savings{font-size:12px;color:var(--green);font-weight:600;margin-top:2px;}
-
-/* TOAST */
-#toast-stack{position:fixed;top:70px;right:12px;z-index:999;display:flex;flex-direction:column;gap:8px;pointer-events:none;max-width:280px;}
-.toast{background:white;border-radius:14px;padding:12px 16px;box-shadow:0 8px 30px rgba(0,0,0,.18);border-left:4px solid var(--teal);font-size:13px;line-height:1.4;pointer-events:all;animation:toastIn .35s cubic-bezier(.34,1.56,.64,1);transition:opacity .3s,transform .3s;}
-.toast.out{opacity:0;transform:translateX(120%);}
-.toast.savings{border-left-color:var(--green-light);background:linear-gradient(135deg,#f0fdf4,white);}
-.toast.milestone{border-left-color:var(--gold);background:linear-gradient(135deg,#fffbeb,white);}
-.toast.celebrate{border-left-color:var(--purple);background:linear-gradient(135deg,#faf5ff,white);}
-@keyframes toastIn{from{opacity:0;transform:translateX(120%)}to{opacity:1;transform:translateX(0)}}
-.toast-icon{font-size:18px;margin-bottom:4px;display:block;}
-.toast-title{font-weight:800;color:#1e293b;font-size:13px;}
-.toast-body{color:var(--slate-light);font-size:12px;margin-top:2px;}
-
-/* SAVINGS POPUP */
-.spop{position:fixed;inset:0;z-index:300;display:none;place-items:center;padding:20px;background:rgba(0,0,0,.45);backdrop-filter:blur(4px);}
-.spop.open{display:grid;animation:fadeIn .25s ease;}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.spop-box{background:white;border-radius:22px;padding:28px 24px;max-width:340px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.25);}
-.spop-confetti{font-size:42px;margin-bottom:8px;animation:bounce .6s ease infinite alternate;}
-@keyframes bounce{from{transform:translateY(0)}to{transform:translateY(-8px)}}
-.spop-title{font-size:22px;font-weight:900;color:var(--green);margin-bottom:6px;}
-.spop-amt{font-size:52px;font-weight:900;color:var(--green);line-height:1;margin:8px 0;}
-.spop-detail{font-size:14px;color:var(--slate-light);line-height:1.6;margin-bottom:20px;}
-
-/* EXIT INTENT POPUP */
-.exit-box{background:white;border-radius:22px;padding:0;max-width:360px;width:100%;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.3);}
-.exit-header{background:linear-gradient(135deg,var(--teal-dark),var(--teal));color:white;padding:24px 20px;text-align:center;}
-.exit-emoji{font-size:40px;margin-bottom:8px;}
-.exit-title{font-size:20px;font-weight:900;margin-bottom:4px;}
-.exit-sub{font-size:13px;opacity:.85;}
-.exit-body{padding:20px;}
-.exit-offer{background:var(--teal-faint);border-radius:12px;padding:14px;text-align:center;margin-bottom:16px;border:1px solid var(--teal-pale);}
-.exit-offer-pct{font-size:48px;font-weight:900;color:var(--teal);line-height:1;}
-.exit-offer-label{font-size:13px;color:var(--slate-light);margin-top:4px;}
-.exit-code{font-size:18px;font-weight:900;color:var(--teal-dark);letter-spacing:2px;margin-top:8px;padding:8px 16px;background:white;border-radius:8px;border:2px dashed var(--teal);}
-
-/* BUTTONS */
-.btn{background:var(--teal);color:white;border:none;border-radius:12px;padding:13px 22px;font-size:15px;font-weight:800;cursor:pointer;transition:background .15s,transform .1s;white-space:nowrap;}
-.btn:hover{background:var(--teal-dark);}
-.btn:active{transform:scale(.98);}
-
-/* CONTENT */
-.content{max-width:680px;margin:0 auto;padding:16px 12px;}
-
-/* CARDS */
-.card{background:white;border-radius:var(--radius);padding:20px;margin-bottom:14px;box-shadow:var(--shadow);border:1px solid var(--teal-pale);}
-.card-title{font-size:16px;font-weight:800;color:#1e293b;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
-
-/* AI CARD */
-.ai-card{background:linear-gradient(135deg,#004d59 0%,#006978 60%,#0097A7 100%);border-radius:var(--radius);padding:22px 20px;margin-bottom:14px;color:white;position:relative;overflow:hidden;}
-.ai-card::after{content:'Ã¢ÅÂ¨';position:absolute;right:16px;top:16px;font-size:32px;opacity:.15;}
-.ai-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.15);border-radius:20px;padding:3px 10px;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;}
-.ai-title{font-size:18px;font-weight:900;margin-bottom:4px;}
-.ai-sub{font-size:13px;opacity:.8;margin-bottom:14px;line-height:1.5;}
-.ai-textarea{width:100%;padding:13px 50px 13px 14px;border-radius:12px;border:none;font-size:14px;font-family:var(--font);background:rgba(255,255,255,.13);color:white;outline:none;resize:none;min-height:80px;line-height:1.5;}
-.ai-textarea::placeholder{color:rgba(255,255,255,.38);}
-.ai-textarea:focus{background:rgba(255,255,255,.2);}
-.ai-send-btn{position:absolute;bottom:9px;right:9px;width:36px;height:36px;border-radius:50%;background:white;border:none;color:var(--teal-dark);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.2);}
-.ai-chip{padding:9px 14px;background:rgba(255,255,255,.12);color:rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.2);border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;transition:background .15s;white-space:nowrap;}
-.ai-chip:hover{background:rgba(255,255,255,.22);}
-.ai-thinking{display:none;align-items:center;gap:8px;margin-top:12px;opacity:.75;font-size:13px;}
-.ai-thinking.show{display:flex;}
-.gem-dot{width:8px;height:8px;border-radius:50%;background:white;animation:gemdot 1.4s ease-in-out infinite;}
-.gem-dot:nth-child(2){animation-delay:.16s;}.gem-dot:nth-child(3){animation-delay:.32s;}
-@keyframes gemdot{0%,80%,100%{transform:scale(.4);opacity:.3}40%{transform:scale(1);opacity:1}}
-.ai-response{display:none;margin-top:14px;padding:16px;background:rgba(255,255,255,.14);border-radius:13px;font-size:14px;line-height:1.7;border:1px solid rgba(255,255,255,.18);}
-.ai-response.show{display:block;}
-.ai-response-lbl{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;opacity:.55;margin-bottom:8px;}
-.ai-cursor{display:inline-block;width:2px;height:1em;background:white;margin-left:2px;animation:blink .7s step-end infinite;vertical-align:text-bottom;}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
-.ai-apply-btn{margin-top:12px;padding:9px 16px;background:rgba(255,255,255,.9);color:var(--teal-dark);border:none;border-radius:9px;font-size:13px;font-weight:800;cursor:pointer;display:none;}
-.ai-apply-btn.show{display:inline-block;}
-
-/* COUNTER */
-.counter-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #f1f5f9;}
-.counter-label{font-size:15px;font-weight:600;color:#1e293b;}
-.counter-sub{font-size:12px;color:var(--slate-faint);margin-top:2px;}
-.counter-controls{display:flex;align-items:center;gap:12px;}
-.cbtn{width:36px;height:36px;border-radius:9px;border:1.5px solid var(--border);background:white;font-size:22px;cursor:pointer;color:var(--teal);font-weight:700;display:flex;align-items:center;justify-content:center;transition:background .1s;user-select:none;line-height:1;}
-.cbtn:hover{background:var(--teal-faint);border-color:var(--teal);}
-.cval{font-size:18px;font-weight:900;color:var(--teal);min-width:24px;text-align:center;}
-.cval.pop{animation:valpop .25s cubic-bezier(.34,1.56,.64,1);}
-@keyframes valpop{0%{transform:scale(1)}50%{transform:scale(1.35)}100%{transform:scale(1)}}
-
-/* INPUTS */
-.flbl{display:block;font-size:11px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--slate);margin-bottom:6px;margin-top:14px;}
-.finput{width:100%;padding:11px 14px;border-radius:10px;border:1.5px solid var(--border);font-size:15px;font-family:var(--font);background:#fafbfc;color:var(--slate);outline:none;transition:border-color .15s;}
-.finput:focus{border-color:var(--teal);}
-.finput.error{border-color:var(--red);background:var(--red-bg);}
-.errmsg{font-size:12px;color:var(--red);margin-top:4px;display:none;}
-.errmsg.show{display:block;}
-select.finput{cursor:pointer;appearance:auto;}
-textarea.finput{resize:vertical;min-height:80px;}
-
-/* ADDON PANEL */
-.addon-panel{margin-top:10px;padding:13px 14px;background:var(--teal-faint);border-radius:13px;border-left:3px solid var(--teal-light);display:none;}
-.addon-panel.visible{display:block;animation:slideDown .2s ease;}
-@keyframes slideDown{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
-.ap-title{font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal-light);margin-bottom:10px;}
-.addon-row{display:flex;align-items:flex-start;gap:10px;padding:9px 0;cursor:pointer;border-bottom:1px solid rgba(0,105,120,.08);}
-.addon-row:hover{background:rgba(0,105,120,.03);}
-.addon-row:last-child{border-bottom:none;padding-bottom:0;}
-.acheck{width:20px;height:20px;border-radius:6px;border:2px solid #cbd5e1;background:white;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;transition:all .15s;}
-.acheck.on{background:var(--teal);border-color:var(--teal);animation:checkpop .2s cubic-bezier(.34,1.56,.64,1);}
-@keyframes checkpop{0%{transform:scale(1)}50%{transform:scale(1.3)}100%{transform:scale(1)}}
-.acheck svg{display:none;}.acheck.on svg{display:block;}
-.aname{font-size:14px;font-weight:700;color:#1e293b;}
-.adesc{font-size:12px;color:var(--slate-light);margin-top:1px;line-height:1.4;}
-.aprice{font-size:13px;font-weight:800;color:var(--teal);white-space:nowrap;margin-top:2px;flex-shrink:0;}
-
-/* ROOM CHIPS */
-.rslbl{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--slate-faint);margin-bottom:8px;}
-.room-grid{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;}
-.rchip{padding:6px 11px;border-radius:20px;border:1.5px solid var(--border);background:white;font-size:12px;font-weight:700;color:var(--slate);cursor:pointer;transition:all .15s;user-select:none;}
-.rchip:hover{border-color:var(--teal);color:var(--teal);}
-.rchip.on{background:var(--teal);color:white;border-color:var(--teal);}
-.rsel{margin-top:6px;padding:7px 12px;background:var(--teal-faint);border-radius:9px;font-size:12px;color:var(--teal-dark);font-weight:600;display:none;}
-.rsel.show{display:block;}
-.row-count{display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:1px solid #f1f5f9;}
-
-/* COLOR PICKER */
-.color-picker{display:none;margin-top:13px;padding-top:13px;border-top:1px solid rgba(0,105,120,.12);}
-.color-picker.visible{display:block;animation:slideDown .2s ease;}
-.cp-label{font-size:10px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--teal);margin-bottom:10px;}
-.color-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px;}
-.swatch{border-radius:11px;padding:8px 4px;text-align:center;cursor:pointer;border:2px solid transparent;transition:all .18s;position:relative;}
-.swatch:hover{transform:scale(1.07);}
-.swatch.picked{border-color:var(--teal);box-shadow:0 0 0 2px rgba(0,105,120,.25);transform:scale(1.05);}
-.swatch.picked::after{content:'Ã¢Åâ';position:absolute;top:4px;right:6px;font-size:10px;font-weight:900;color:var(--teal);}
-.sdot{width:36px;height:36px;border-radius:8px;margin:0 auto 5px;box-shadow:inset 0 2px 4px rgba(0,0,0,.2);}
-.sname{font-size:10px;font-weight:700;color:var(--slate);line-height:1.2;}
-.color-chosen{display:none;align-items:center;gap:10px;padding:10px 14px;background:white;border-radius:10px;border:1.5px solid var(--border);margin-top:8px;}
-.color-chosen.show{display:flex;}
-
-/* ESTIMATE */
-.est-box{background:linear-gradient(135deg,var(--teal-faint),var(--teal-pale));border:1px solid #bae6f0;border-radius:13px;padding:16px;margin-top:4px;}
-.est-line{display:flex;justify-content:space-between;font-size:14px;padding:5px 0;border-bottom:1px solid rgba(0,105,120,.1);color:var(--slate);}
-.est-line:last-child{border-bottom:none;}
-.est-line.disc{color:var(--green);}
-.est-line.sub{color:var(--slate-light);font-size:13px;}
-.est-total{display:flex;justify-content:space-between;align-items:center;padding-top:10px;border-top:2px solid rgba(0,105,120,.15);margin-top:6px;}
-.est-total-price{font-size:28px;font-weight:900;color:var(--teal);}
-.est-note{font-size:11px;color:var(--slate-faint);margin-top:6px;}
-
-/* FORM GRIDS */
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px;}
-.grid3{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px;margin-top:14px;}
-
-/* HOW DID YOU HEAR */
-.hear-card{background:linear-gradient(135deg,#f8faff,white);border-radius:var(--radius);padding:16px 20px;margin-bottom:14px;box-shadow:var(--shadow);border:1px solid var(--teal-pale);}
-.hear-options{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
-.hear-chip{padding:8px 14px;border-radius:20px;border:1.5px solid var(--border);background:white;font-size:13px;font-weight:600;color:var(--slate);cursor:pointer;transition:all .15s;}
-.hear-chip:hover{border-color:var(--teal);color:var(--teal);}
-.hear-chip.on{background:var(--teal);color:white;border-color:var(--teal);}
-
-/* SMS OPT-IN */
-.sms-row{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:linear-gradient(135deg,#f0fdf4,#f8fffe);border-radius:12px;border:1.5px solid #bbf7d0;margin-top:12px;cursor:pointer;}
-.sms-check{width:22px;height:22px;border-radius:7px;border:2px solid #86efac;background:white;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;transition:all .15s;}
-.sms-check.on{background:var(--green);border-color:var(--green);}
-.sms-check svg{display:none;}.sms-check.on svg{display:block;}
-.sms-label{font-size:14px;font-weight:700;color:#166534;}
-.sms-desc{font-size:12px;color:#4ade80;margin-top:2px;}
-
-/* PROMO CODE */
-.promo-row{display:flex;gap:8px;margin-top:10px;}
-.promo-input{flex:1;padding:10px 14px;border-radius:10px;border:1.5px solid var(--border);font-size:14px;font-family:var(--font);background:#fafbfc;color:var(--slate);outline:none;text-transform:uppercase;letter-spacing:1px;}
-.promo-input:focus{border-color:var(--teal);}
-.promo-btn{padding:10px 16px;background:var(--teal-faint);border:1.5px solid var(--teal-pale);border-radius:10px;font-size:13px;font-weight:700;color:var(--teal);cursor:pointer;}
-.promo-btn:hover{background:var(--teal-pale);}
-.promo-success{font-size:12px;color:var(--green);font-weight:700;margin-top:6px;display:none;}
-.promo-success.show{display:block;}
-.promo-error{font-size:12px;color:var(--red);margin-top:6px;display:none;}
-.promo-error.show{display:block;}
-
-
-/* UPHOLSTERY PIECE BUILDER */
-.up-piece{background:white;border-radius:12px;border:1.5px solid var(--border);margin-bottom:10px;overflow:hidden;transition:border-color .15s;}
-.up-piece.active{border-color:var(--teal);}
-.up-piece-header{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;cursor:pointer;user-select:none;}
-.up-piece-left{display:flex;align-items:center;gap:10px;}
-.up-piece-icon{font-size:22px;}
-.up-piece-name{font-size:15px;font-weight:700;color:#1e293b;}
-.up-piece-sub{font-size:12px;color:var(--slate-faint);margin-top:1px;}
-.up-piece-count{display:flex;align-items:center;gap:8px;}
-.up-scbtn{width:30px;height:30px;border-radius:7px;border:1.5px solid var(--border);background:white;font-size:18px;cursor:pointer;color:var(--teal);font-weight:700;display:flex;align-items:center;justify-content:center;transition:background .1s;user-select:none;line-height:1;}
-.up-scbtn:hover{background:var(--teal-faint);border-color:var(--teal);}
-.up-cnt{font-size:17px;font-weight:900;color:var(--teal);min-width:20px;text-align:center;}
-.up-options{display:none;padding:0 14px 14px;border-top:1px solid #f1f5f9;}
-.up-options.open{display:block;animation:slideDown .18s ease;}
-.up-clean-row{display:flex;gap:8px;margin:10px 0 6px;}
-.up-clean-btn{flex:1;padding:9px 8px;border-radius:10px;border:1.5px solid var(--border);background:white;font-size:13px;font-weight:700;color:var(--slate);cursor:pointer;text-align:center;transition:all .15s;line-height:1.3;}
-.up-clean-btn:hover{border-color:var(--teal);color:var(--teal);}
-.up-clean-btn.sel{background:var(--teal);color:white;border-color:var(--teal);}
-.up-enhance-title{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--teal-light);margin:10px 0 6px;}
-.up-enhance-row{display:flex;gap:8px;}
-.up-enhance-btn{flex:1;padding:8px 10px;border-radius:9px;border:1.5px solid var(--border);background:white;font-size:12px;font-weight:700;color:var(--slate);cursor:pointer;text-align:center;transition:all .15s;}
-.up-enhance-btn:hover{border-color:var(--teal-light);}
-.up-enhance-btn.sel{background:var(--teal-faint);border-color:var(--teal-light);color:var(--teal);}
-.up-piece-total{font-size:13px;font-weight:800;color:var(--teal);margin-left:8px;}
-.up-summary{background:var(--teal-faint);border-radius:10px;padding:10px 14px;margin-top:10px;font-size:13px;color:var(--teal-dark);line-height:1.7;display:none;}
-.up-summary.show{display:block;}
-
-
-/* Ã¢ââ¬Ã¢ââ¬ LIVE CHAT BUBBLE Ã¢ââ¬Ã¢ââ¬ */
-.chat-bubble{position:fixed;bottom:90px;right:16px;z-index:60;display:flex;flex-direction:column;align-items:flex-end;gap:8px;}
-.chat-btn{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--teal-dark),var(--teal));border:none;cursor:pointer;box-shadow:0 4px 20px rgba(0,105,120,.4);display:flex;align-items:center;justify-content:center;font-size:26px;transition:transform .2s;position:relative;}
-.chat-btn:hover{transform:scale(1.08);}
-.chat-dot{position:absolute;top:4px;right:4px;width:12px;height:12px;border-radius:50%;background:#22c55e;border:2px solid white;animation:pulse-dot 2s ease infinite;}
-@keyframes pulse-dot{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.4);opacity:.7}}
-.chat-nudge{background:white;border-radius:14px;padding:10px 14px;box-shadow:0 4px 20px rgba(0,0,0,.15);font-size:13px;font-weight:600;color:var(--slate);max-width:200px;text-align:right;animation:toastIn .4s cubic-bezier(.34,1.56,.64,1);}
-.chat-nudge span{color:var(--teal);}
-
-/* Ã¢ââ¬Ã¢ââ¬ CHAT WINDOW Ã¢ââ¬Ã¢ââ¬ */
-.chat-window{position:fixed;bottom:160px;right:16px;z-index:61;width:320px;max-width:calc(100vw - 32px);background:white;border-radius:18px;box-shadow:0 8px 40px rgba(0,0,0,.18);display:none;flex-direction:column;overflow:hidden;animation:slideUp .25s cubic-bezier(.34,1.56,.64,1);}
-.chat-window.open{display:flex;}
-@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.chat-header{background:linear-gradient(135deg,var(--teal-dark),var(--teal));color:white;padding:14px 16px;display:flex;align-items:center;gap:10px;}
-.chat-avatar{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
-.chat-header-info{flex:1;}
-.chat-header-name{font-size:14px;font-weight:800;}
-.chat-header-status{font-size:11px;opacity:.85;display:flex;align-items:center;gap:4px;}
-.chat-status-dot{width:7px;height:7px;border-radius:50%;background:#22c55e;display:inline-block;}
-.chat-close{background:none;border:none;color:white;font-size:20px;cursor:pointer;opacity:.75;padding:0 4px;}
-.chat-close:hover{opacity:1;}
-.chat-messages{padding:14px;display:flex;flex-direction:column;gap:10px;max-height:260px;overflow-y:auto;}
-.chat-msg{display:flex;gap:8px;align-items:flex-start;}
-.chat-msg.me{flex-direction:row-reverse;}
-.chat-msg-avatar{width:28px;height:28px;border-radius:50%;background:var(--teal-faint);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;margin-top:2px;}
-.chat-msg-bubble{background:var(--teal-faint);border-radius:12px 12px 12px 2px;padding:9px 12px;font-size:13px;color:var(--slate);line-height:1.5;max-width:220px;}
-.chat-msg.me .chat-msg-bubble{background:var(--teal);color:white;border-radius:12px 12px 2px 12px;}
-.chat-typing{display:flex;gap:4px;align-items:center;padding:8px 12px;background:var(--teal-faint);border-radius:12px;width:fit-content;}
-.chat-typing-dot{width:6px;height:6px;border-radius:50%;background:var(--slate-faint);animation:gemdot 1.4s ease-in-out infinite;}
-.chat-typing-dot:nth-child(2){animation-delay:.16s;}
-.chat-typing-dot:nth-child(3){animation-delay:.32s;}
-.chat-quick-replies{display:flex;flex-wrap:wrap;gap:6px;padding:0 14px 10px;}
-.chat-qr{padding:7px 12px;background:var(--teal-faint);border:1.5px solid var(--teal-pale);border-radius:20px;font-size:12px;font-weight:600;color:var(--teal);cursor:pointer;transition:all .15s;white-space:nowrap;}
-.chat-qr:hover{background:var(--teal-pale);}
-.chat-input-row{display:flex;gap:8px;padding:10px 14px;border-top:1px solid var(--border);}
-.chat-input{flex:1;padding:9px 12px;border-radius:10px;border:1.5px solid var(--border);font-size:13px;font-family:var(--font);outline:none;background:#fafbfc;}
-.chat-input:focus{border-color:var(--teal);}
-.chat-send{width:34px;height:34px;border-radius:50%;background:var(--teal);border:none;color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-
-/* Ã¢ââ¬Ã¢ââ¬ CALLBACK WIDGET Ã¢ââ¬Ã¢ââ¬ */
-.callback-bar{background:white;border-top:2px solid var(--teal-pale);padding:14px 20px;margin-bottom:14px;border-radius:var(--radius);box-shadow:var(--shadow);}
-.callback-title{font-size:14px;font-weight:800;color:#1e293b;margin-bottom:4px;display:flex;align-items:center;gap:6px;}
-.callback-sub{font-size:12px;color:var(--slate-faint);margin-bottom:12px;}
-.callback-row{display:flex;gap:8px;flex-wrap:wrap;}
-.callback-input{flex:1;min-width:120px;padding:10px 12px;border-radius:10px;border:1.5px solid var(--border);font-size:14px;font-family:var(--font);background:#fafbfc;outline:none;}
-.callback-input:focus{border-color:var(--teal);}
-.callback-time{padding:10px 12px;border-radius:10px;border:1.5px solid var(--border);font-size:13px;font-family:var(--font);background:#fafbfc;color:var(--slate);cursor:pointer;outline:none;}
-.callback-btn{padding:10px 18px;background:var(--teal);color:white;border:none;border-radius:10px;font-size:14px;font-weight:800;cursor:pointer;white-space:nowrap;}
-.callback-btn:hover{background:var(--teal-dark);}
-.callback-sent{display:none;padding:12px 14px;background:var(--green-bg);border-radius:10px;border:1px solid #bbf7d0;font-size:13px;color:var(--green);font-weight:600;text-align:center;}
-.callback-sent.show{display:block;}
-
-
-/* Ã¢ââ¬Ã¢ââ¬ QUICK BOOK POPUP Ã¢ââ¬Ã¢ââ¬ */
-.qb-overlay{position:fixed;inset:0;z-index:500;background:rgba(0,30,40,.75);backdrop-filter:blur(8px);display:none;place-items:center;padding:16px;}
-.qb-overlay.open{display:grid;animation:fadeIn .3s ease;}
-.qb-box{background:#f0f4f0;border-radius:22px;width:100%;max-width:480px;max-height:92vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,.35);}
-.qb-header{background:linear-gradient(135deg,#004d59,#006978,#0097A7);color:white;padding:20px 20px 18px;border-radius:22px 22px 0 0;text-align:center;position:relative;}
-.qb-header-eye{font-size:10px;font-weight:800;letter-spacing:3px;opacity:.7;text-transform:uppercase;margin-bottom:6px;}
-.qb-header-title{font-size:22px;font-weight:900;margin-bottom:4px;}
-.qb-header-sub{font-size:13px;opacity:.85;}
-.qb-timer{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.15);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:700;margin-top:10px;}
-/* Coupon tear edge bottom of header */
-.qb-header::after{content:'';display:block;position:absolute;bottom:-10px;left:0;right:0;height:20px;background:radial-gradient(circle at 10px -2px,#f0f4f0 8px,transparent 8px),radial-gradient(circle at 10px -2px,#f0f4f0 8px,transparent 8px);background-size:20px 20px;background-position:0 0,10px 0;}
-.qb-packages{padding:20px 14px 10px;display:flex;flex-direction:column;gap:10px;}
-
-/* COUPON CARD */
-.qb-card{background:white;border-radius:12px;cursor:pointer;border:2px dashed #006978;transition:all .18s;position:relative;display:flex;overflow:hidden;box-shadow:0 2px 12px rgba(0,105,120,.1);-webkit-tap-highlight-color:rgba(0,105,120,.1);}
-.qb-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,105,120,.2);border-style:solid;}
-.qb-card:active{transform:scale(.98);}
-
-/* Left color strip */
-.qb-strip{width:44px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:14px 0;position:relative;}
-.qb-strip::after{content:'';position:absolute;right:0;top:14px;bottom:14px;border-right:2px dashed rgba(255,255,255,.4);pointer-events:none;}
-.qb-strip-icon{font-size:22px;}
-
-/* Coupon circle cutouts on left strip */
-.qb-card::before{content:'';position:absolute;left:34px;top:-10px;width:20px;height:20px;border-radius:50%;background:#f0f4f0;z-index:2;pointer-events:none;}
-.qb-card::after{content:'';position:absolute;left:34px;bottom:-10px;width:20px;height:20px;border-radius:50%;background:#f0f4f0;z-index:2;pointer-events:none;}
-
-/* Card body */
-.qb-body{flex:1;padding:12px 14px 12px 10px;}
-.qb-badge{display:inline-block;font-size:9px;font-weight:800;letter-spacing:.5px;padding:2px 8px;border-radius:4px;text-transform:uppercase;margin-bottom:5px;}
-.qb-badge.hot{background:#fef2f2;color:#ef4444;border:1px solid #fecaca;}
-.qb-badge.best{background:#fef3c7;color:#92400e;border:1px solid #fde68a;}
-.qb-badge.new{background:#f5f3ff;color:#6d28d9;border:1px solid #ddd6fe;}
-.qb-badge.shore{background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;}
-.qb-name{font-size:16px;font-weight:900;color:#1e293b;line-height:1.2;}
-.qb-tagline{font-size:11px;color:#64748b;margin-top:2px;margin-bottom:8px;}
-.qb-includes{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px;}
-.qb-tag{padding:3px 8px;background:#f0f9ff;border-radius:4px;font-size:10px;font-weight:700;color:#006978;border:1px solid #bae6f0;}
-.qb-savings{font-size:11px;color:#15803d;font-weight:700;}
-
-/* Right price block */
-.qb-price-block{width:80px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:12px 8px;border-left:2px dashed #e2e8f0;text-align:center;pointer-events:none;}
-.qb-strike{font-size:12px;color:#94a3b8;font-weight:700;text-decoration:line-through;line-height:1;}
-.qb-price-amt{font-size:24px;font-weight:900;color:#006978;line-height:1;margin:2px 0;}
-.qb-price-note{font-size:9px;color:#94a3b8;line-height:1.3;text-align:center;}
-.qb-tap{font-size:9px;font-weight:800;color:white;background:#006978;border-radius:20px;padding:3px 8px;margin-top:6px;letter-spacing:.3px;pointer-events:none;}
-
-/* Coupon barcode strip at bottom of each card */
-.qb-barcode{height:16px;background:repeating-linear-gradient(90deg,#e2e8f0 0,#e2e8f0 2px,white 2px,white 5px,#cbd5e1 5px,#cbd5e1 7px,white 7px,white 10px,#e2e8f0 10px,#e2e8f0 11px,white 11px,white 14px);border-radius:0 0 10px 10px;opacity:.6;margin:0 14px 10px;}
-
-/* Custom build */
-.qb-custom{background:white;border-radius:12px;cursor:pointer;border:2px dashed #cbd5e1;display:flex;align-items:center;justify-content:space-between;padding:14px 16px;transition:border-color .15s;}
-.qb-custom:hover{border-color:#006978;}
-.qb-skip{text-align:center;padding:8px 0 16px;font-size:12px;color:#94a3b8;cursor:pointer;}
-.qb-skip:hover{color:#006978;}
-
-/* Ã¢ââ¬Ã¢ââ¬ QUICK CHECKOUT (after package selected) Ã¢ââ¬Ã¢ââ¬ */
-.qc-overlay{position:fixed;inset:0;z-index:500;background:rgba(0,40,50,.7);backdrop-filter:blur(6px);display:none;place-items:center;padding:16px;}
-.qc-overlay.open{display:grid;animation:fadeIn .25s ease;}
-.qc-box{background:white;border-radius:22px;width:100%;max-width:420px;max-height:92vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,.3);}
-.qc-header{background:linear-gradient(135deg,#004d59,#006978);color:white;padding:16px 18px;border-radius:22px 22px 0 0;}
-.qc-pkg-name{font-size:18px;font-weight:900;margin-bottom:2px;}
-.qc-pkg-items{font-size:12px;opacity:.8;line-height:1.5;}
-.qc-pkg-price{font-size:26px;font-weight:900;margin-top:6px;}
-.qc-pkg-savings{font-size:12px;opacity:.8;}
-.qc-form{padding:16px 18px;}
-.qc-label{font-size:11px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:#334155;margin-bottom:5px;margin-top:12px;display:block;}
-.qc-input{width:100%;padding:12px 14px;border-radius:10px;border:1.5px solid #e2e8f0;font-size:15px;font-family:inherit;background:#fafbfc;color:#334155;outline:none;transition:border-color .15s;box-sizing:border-box;}
-.qc-input:focus{border-color:#006978;}
-.qc-input.err{border-color:#ef4444;background:#fff5f5;}
-.qc-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;}
-.qc-confirm-btn{width:100%;margin-top:16px;padding:15px;background:#006978;color:white;border:none;border-radius:12px;font-size:16px;font-weight:800;cursor:pointer;transition:background .15s;}
-.qc-confirm-btn:hover{background:#004d59;}
-.qc-confirm-btn:disabled{background:#94a3b8;cursor:not-allowed;}
-.qc-back{text-align:center;padding:10px 0 4px;font-size:12px;color:#94a3b8;cursor:pointer;}
-.qc-back:hover{color:#006978;}
-
-/* TRUST BAR */
-.trust-bar{background:white;border-radius:var(--radius);padding:14px 20px;margin-bottom:14px;box-shadow:var(--shadow);border:1px solid var(--teal-pale);}
-.trust-items{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;}
-.trust-item{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--slate);}
-
-/* UPSELL MODAL */
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;display:none;place-items:center;padding:20px;}
-.overlay.open{display:grid;animation:fadeIn .2s ease;}
-.modal{background:white;border-radius:20px;padding:24px;max-width:420px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.2);max-height:92vh;overflow-y:auto;}
-.ucard{border:2px solid var(--border);border-radius:13px;padding:14px;margin-bottom:10px;cursor:pointer;transition:border-color .15s,background .15s;display:flex;gap:12px;align-items:flex-start;}
-.ucard:hover,.ucard.on{border-color:var(--teal);background:var(--teal-faint);}
-.ubadge{font-size:10px;font-weight:800;background:var(--gold-bg);color:#92400e;border-radius:4px;padding:2px 6px;display:inline-block;margin-bottom:4px;}
-.mbtn{background:var(--teal);color:white;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:800;cursor:pointer;width:100%;margin-top:4px;}
-.mbtn:hover{background:var(--teal-dark);}
-.mskip{background:none;border:none;color:var(--slate-faint);font-size:13px;cursor:pointer;padding:8px;width:100%;text-align:center;}
-
-/* SUCCESS */
-.soverlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:none;place-items:center;padding:20px;}
-.soverlay.open{display:grid;animation:fadeIn .2s ease;}
-.sbox{background:white;border-radius:20px;padding:28px 24px;max-width:420px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.2);max-height:90vh;overflow-y:auto;}
-
-/* BOTTOM BAR */
-.bbar{position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid var(--border);box-shadow:0 -4px 20px rgba(0,0,0,.07);padding:10px 16px;z-index:50;}
-.binner{max-width:680px;margin:0 auto;display:flex;align-items:center;gap:12px;}
-.bprice{font-size:24px;font-weight:900;color:var(--teal);line-height:1;flex:1;}
-.bsave{font-size:12px;color:var(--green);font-weight:600;margin-top:3px;}
-
-.countdown-timer{font-size:18px;font-weight:900;letter-spacing:2px;margin-left:8px;}
-
-@media(max-width:480px){
-  .grid2{grid-template-columns:1fr;}
-  .grid3{grid-template-columns:1fr 1fr;}
-  .grid3>:first-child{grid-column:1/-1;}
-  .color-grid{grid-template-columns:repeat(3,1fr);}
-}
-</style>
-</head>
-<body>
-
-<!-- TOAST STACK -->
-<div id="toast-stack"></div>
-
-<!-- SAVINGS POPUP -->
-<div class="spop" id="savings-pop">
-  <div class="spop-box">
-    <div class="spop-confetti">Ã°Å¸Å½â°</div>
-    <div class="spop-title">You Unlocked a Discount!</div>
-    <div class="spop-amt" id="sp-amt">$0</div>
-    <div class="spop-detail" id="sp-detail"></div>
-    <button class="btn" style="width:100%;padding:13px" onclick="document.getElementById('savings-pop').classList.remove('open')">Awesome, Keep Building Ã¢â â</button>
-  </div>
-</div>
-
-
-<!-- QUICK BOOK POPUP -->
-<div class="qb-overlay" id="qb-overlay">
-  <div class="qb-box">
-    <div class="qb-header">
-      <div class="qb-header-eye">RFÃ¢âÂ¢ Residue-Free Cleaning</div>
-      <div class="qb-header-title">Ã¢Å¡Â¡ Book in Under 30 Seconds</div>
-      <div class="qb-header-sub">Pick your package Ã¢â¬â we handle the rest</div>
-      <div class="qb-timer">Ã°Å¸ÅÂ¸ Spring discount applied automatically</div>
-    </div>
-    <div class="qb-packages">
-
-      <!-- RF99 STARTER -->
-      <div class="qb-card" onclick="selectPackage('starter')">
-        <div class="qb-strip" style="background:linear-gradient(180deg,#004d59,#006978)">
-          <span class="qb-strip-icon">Ã°Å¸ÂÂ </span>
-        </div>
-        <div class="qb-body">
-          <div class="qb-badge hot">Ã°Å¸âÂ¥ Most Popular</div>
-          <div class="qb-name">RF99Ã¢âÂ¢ Starter</div>
-          <div class="qb-tagline">Perfect first-time clean Â· 1 room</div>
-          <div class="qb-includes">
-            <span class="qb-tag">Ã°Å¸ÂÂ  1 Carpet Room</span>
-            <span class="qb-tag">RF99Ã¢âÂ¢ Process</span>
-          </div>
-          <div class="qb-savings">Ã¢Åâ Save $26 off the regular price</div>
-        </div>
-        <div class="qb-price-block">
-          <div class="qb-strike">$125</div>
-          <div class="qb-price-amt">$99</div>
-          <div class="qb-price-note">RF99Ã¢âÂ¢ promo</div>
-          <div class="qb-tap">TAP TO BOOK</div>
-        </div>
-      </div>
-      <div class="qb-barcode"></div>
-
-      <!-- HOME CLEAN -->
-      <div class="qb-card" onclick="selectPackage('home')">
-        <div class="qb-strip" style="background:linear-gradient(180deg,#006978,#0097A7)">
-          <span class="qb-strip-icon">Ã°Å¸âºâ¹Ã¯Â¸Â</span>
-        </div>
-        <div class="qb-body">
-          <div class="qb-badge best">Ã¢Â­Â Best Value</div>
-          <div class="qb-name">Home Clean</div>
-          <div class="qb-tagline">3 bedrooms + tile Â· most booked</div>
-          <div class="qb-includes">
-            <span class="qb-tag">Ã°Å¸ÂÂ  3 Carpet Rooms</span>
-            <span class="qb-tag">Ã¢Â¬Å 1 Tile Room</span>
-          </div>
-          <div class="qb-savings">Ã¢Åâ Saves $47 with Mix & Match</div>
-        </div>
-        <div class="qb-price-block">
-          <div class="qb-price-amt" style="font-size:22px">$277</div>
-          <div class="qb-price-note">after discounts</div>
-          <div class="qb-tap">TAP TO BOOK</div>
-        </div>
-      </div>
-      <div class="qb-barcode"></div>
-
-      <!-- UPHOLSTERY REFRESH -->
-      <div class="qb-card" onclick="selectPackage('upholstery')">
-        <div class="qb-strip" style="background:linear-gradient(180deg,#7c3aed,#a855f7)">
-          <span class="qb-strip-icon">Ã°Å¸âºâ¹Ã¯Â¸Â</span>
-        </div>
-        <div class="qb-body">
-          <div class="qb-badge new">Ã¢ÅÂ¨ New Package</div>
-          <div class="qb-name">Upholstery Refresh</div>
-          <div class="qb-tagline">Sofa + loveseat + 2 chairs</div>
-          <div class="qb-includes">
-            <span class="qb-tag">Ã°Å¸âºâ¹Ã¯Â¸Â 1 Sofa</span>
-            <span class="qb-tag">Ã°Å¸âºâ¹Ã¯Â¸Â 1 Loveseat</span>
-            <span class="qb-tag">Ã°Å¸Âªâ 2 Chairs</span>
-            <span class="qb-tag">Ã°Å¸âºÂ¡Ã¯Â¸Â Fabric Protector</span>
-          </div>
-          <div class="qb-savings">Ã¢Åâ Saves $27 with Spring discount</div>
-        </div>
-        <div class="qb-price-block">
-          <div class="qb-price-amt" style="font-size:22px">$242</div>
-          <div class="qb-price-note">after discount</div>
-          <div class="qb-tap">TAP TO BOOK</div>
-        </div>
-      </div>
-      <div class="qb-barcode"></div>
-
-      <!-- FULL HOUSE -->
-      <div class="qb-card" onclick="selectPackage('fullhouse')">
-        <div class="qb-strip" style="background:linear-gradient(180deg,#0e7490,#0097A7)">
-          <span class="qb-strip-icon">Ã°Å¸ÂÂ¡</span>
-        </div>
-        <div class="qb-body">
-          <div class="qb-badge best">Ã°Å¸Ââ  Full Service</div>
-          <div class="qb-name">Full House</div>
-          <div class="qb-tagline">Whole home deep clean</div>
-          <div class="qb-includes">
-            <span class="qb-tag">Ã°Å¸ÂÂ  5 Carpet</span>
-            <span class="qb-tag">Ã¢Â¬Å 2 Tile</span>
-            <span class="qb-tag">Ã°Å¸ÂªÅ¸ 10 Windows</span>
-          </div>
-          <div class="qb-savings">Ã¢Åâ Saves $98 with Mix & Match</div>
-        </div>
-        <div class="qb-price-block">
-          <div class="qb-price-amt" style="font-size:22px">$581</div>
-          <div class="qb-price-note">after discounts</div>
-          <div class="qb-tap">TAP TO BOOK</div>
-        </div>
-      </div>
-      <div class="qb-barcode"></div>
-
-      <!-- PET HOME -->
-      <div class="qb-card" onclick="selectPackage('pet')">
-        <div class="qb-strip" style="background:linear-gradient(180deg,#b45309,#d97706)">
-          <span class="qb-strip-icon">Ã°Å¸ÂÂ¾</span>
-        </div>
-        <div class="qb-body">
-          <div class="qb-badge shore">Ã°Å¸ÂÂ¾ Pet Special</div>
-          <div class="qb-name">Pet Home</div>
-          <div class="qb-tagline">Odor & stain elimination</div>
-          <div class="qb-includes">
-            <span class="qb-tag">Ã°Å¸ÂÂ  3 Carpet</span>
-            <span class="qb-tag">Ã°Å¸ÅÂ¬Ã¯Â¸Â Deodorizer</span>
-            <span class="qb-tag">Ã°Å¸âºÂ¡Ã¯Â¸Â Scotchgard</span>
-          </div>
-          <div class="qb-savings">Ã¢Åâ Saves $33 with Spring discount</div>
-        </div>
-        <div class="qb-price-block">
-          <div class="qb-price-amt" style="font-size:22px">$301</div>
-          <div class="qb-price-note">after discount</div>
-          <div class="qb-tap">TAP TO BOOK</div>
-        </div>
-      </div>
-      <div class="qb-barcode"></div>
-
-      <!-- VACATION RENTAL -->
-      <div class="qb-card" onclick="selectPackage('rental')">
-        <div class="qb-strip" style="background:linear-gradient(180deg,#0f766e,#14b8a6)">
-          <span class="qb-strip-icon">Ã°Å¸ÂâÃ¯Â¸Â</span>
-        </div>
-        <div class="qb-body">
-          <div class="qb-badge shore">Ã°Å¸ÂâÃ¯Â¸Â Shore Special</div>
-          <div class="qb-name">Vacation Rental</div>
-          <div class="qb-tagline">Guest-ready in one visit</div>
-          <div class="qb-includes">
-            <span class="qb-tag">Ã°Å¸ÂÂ  3 Carpet</span>
-            <span class="qb-tag">Ã°Å¸Å¡Â¿ 2 Bathrooms</span>
-            <span class="qb-tag">Ã°Å¸ÂªÅ¸ 12 Windows</span>
-          </div>
-          <div class="qb-savings">Ã¢Åâ Saves $88 with Mix & Match</div>
-        </div>
-        <div class="qb-price-block">
-          <div class="qb-price-amt" style="font-size:22px">$517</div>
-          <div class="qb-price-note">after discounts</div>
-          <div class="qb-tap">TAP TO BOOK</div>
-        </div>
-      </div>
-      <div class="qb-barcode"></div>
-
-            <!-- CUSTOM -->
-      <div class="qb-custom" onclick="closeQB()">
-        <div>
-          <div class="qb-custom-txt">Ã°Å¸âÂ§ Build a Custom Quote</div>
-          <div style="font-size:11px;color:#94a3b8;margin-top:2px">Choose exactly what you need</div>
-        </div>
-        <span class="qb-custom-arrow">Ã¢â â</span>
-      </div>
-
-    </div>
-    <div class="qb-skip" onclick="closeQB()">Skip Ã¢â¬â I'll build my own quote</div>
-  </div>
-</div>
-
-<!-- QUICK CHECKOUT -->
-<div class="qc-overlay" id="qc-overlay">
-  <div class="qc-box">
-    <div class="qc-header">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start">
-        <div>
-          <div class="qc-pkg-name" id="qc-pkg-name">Home Clean</div>
-          <div class="qc-pkg-items" id="qc-pkg-items">3 Carpet Â· 1 Tile</div>
-          <div class="qc-pkg-price">$<span id="qc-pkg-price">179</span></div>
-          <div class="qc-pkg-savings" id="qc-pkg-savings">Ã°Å¸ÅÂ¸ Spring discount applied</div>
-        </div>
-        <div style="background:rgba(255,255,255,.15);border-radius:10px;padding:6px 10px;font-size:12px;font-weight:700;text-align:center;flex-shrink:0;">
-          Ã¢Å¡Â¡ 30 sec<br>checkout
-        </div>
-      </div>
-    </div>
-    <div class="qc-form">
-      <label class="qc-label" style="margin-top:0">Your Name *</label>
-      <input class="qc-input" id="qc-name" type="text" placeholder="Jane Smith">
-
-      <label class="qc-label">Phone Number *</label>
-      <input class="qc-input" id="qc-phone" type="tel" placeholder="(443) 555-0100" oninput="fmtQC(this)">
-
-      <label class="qc-label">Email</label>
-      <input class="qc-input" id="qc-email" type="email" placeholder="you@email.com">
-
-      <div class="qc-row">
-        <div>
-          <label class="qc-label" style="margin-top:0">Preferred Date *</label>
-          <input class="qc-input" id="qc-date" type="date">
-        </div>
-        <div>
-          <label class="qc-label" style="margin-top:0">Best Time</label>
-          <select class="qc-input" id="qc-time">
-            <option value="">Anytime</option>
-            <option>Morning (8Ã¢â¬â11am)</option>
-            <option>Midday (11amÃ¢â¬â2pm)</option>
-            <option>Afternoon (2Ã¢â¬â5pm)</option>
-          </select>
-        </div>
-      </div>
-
-      <label class="qc-label">Street Address *</label>
-      <input class="qc-input" id="qc-street" placeholder="123 Ocean Breeze Ln">
-
-      <div class="qc-row">
-        <div>
-          <label class="qc-label" style="margin-top:0">City *</label>
-          <input class="qc-input" id="qc-city" placeholder="Salisbury">
-        </div>
-        <div>
-          <label class="qc-label" style="margin-top:0">ZIP *</label>
-          <input class="qc-input" id="qc-zip" placeholder="21801" maxlength="5" oninput="this.value=this.value.replace(/\D/g,'')">
-        </div>
-      </div>
-
-      <!-- SMS opt-in -->
-      <div onclick="toggleQCSMS()" style="display:flex;align-items:flex-start;gap:10px;padding:11px 13px;background:#f0fdf4;border-radius:11px;border:1.5px solid #bbf7d0;margin-top:14px;cursor:pointer;">
-        <div id="qc-sms-check" style="width:20px;height:20px;border-radius:6px;border:2px solid #86efac;background:white;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;transition:all .15s;">
-          <svg id="qc-sms-svg" width="11" height="9" viewBox="0 0 11 9" fill="none" style="display:none"><path d="M1 4L4 7L10 1" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-        <div>
-          <div style="font-size:13px;font-weight:700;color:#166534;">Ã°Å¸âÂ± Text me a confirmation</div>
-          <div style="font-size:11px;color:#4ade80;margin-top:1px;">Day-before reminder included</div>
-        </div>
-      </div>
-
-      <button class="qc-confirm-btn" id="qc-btn" onclick="submitQuickBook()">
-        Confirm Booking Ã¢â¬â $<span id="qc-btn-price">0</span>
-      </button>
-      <div class="qc-back" onclick="backToPackages()">Ã¢â Â Back to packages</div>
-    </div>
-  </div>
-</div>
-
-
-<!-- HEADER -->
-<div class="header">
-  <div class="header-eyebrow">RFÃ¢âÂ¢ Residue-Free Cleaning</div>
-  <h1>Ã°Å¸ÅÂ´ Book Your Cleaning</h1>
-  <p class="header-sub">Eastern Shore Â· Maryland Â· Delaware</p>
-  <a href="tel:4438563244" class="header-phone">Ã°Å¸âÅ¾ (443) 856-3244</a><br>
-  <div class="season-pill" style="margin-top:8px">
-    <span id="season-emoji">Ã°Å¸ÅÂ¸</span>
-    <span id="season-label">Spring Special Ã¢â¬â Save 10% Automatically</span>
-  </div>
-</div>
-
-<!-- REVIEWS TICKER -->
-<div class="reviews-bar" aria-hidden="true">
-  <div class="reviews-track" id="rtk"></div>
-</div>
-
-<!-- STICKY BAR -->
-<div class="sticky-bar">
-  <div class="sticky-inner">
-    <div style="flex:1">
-      <div class="sticky-price">$<span id="sg">0</span></div>
-      <div class="sticky-savings" id="stag" style="display:none"></div>
-    </div>
-    <button class="btn" onclick="openUpsell()">Confirm Booking</button>
-  </div>
-</div>
-
-<div class="content">
-
-<!-- TRUST BAR -->
-<div class="trust-bar">
-  <div class="trust-items">
-    <div class="trust-item"><span style="font-size:18px">Ã¢Â­Â</span> 219 Five-Star Reviews</div>
-    <div class="trust-item"><span style="font-size:18px">Ã°Å¸Â§Â¼</span> RFÃ¢âÂ¢ Residue-Free</div>
-    <div class="trust-item"><span style="font-size:18px">Ã°Å¸âÂ</span> 33+ Cities Served</div>
-    <div class="trust-item"><span style="font-size:18px">Ã°Å¸ââ¦</span> Fast Scheduling</div>
-  </div>
-</div>
-
-
-<!-- FEATURED REVIEW -->
-<div style="background:linear-gradient(135deg,#004d59,#006978);border-radius:14px;padding:16px 18px;margin-bottom:14px;color:white;position:relative;overflow:hidden;">
-  <div style="position:absolute;right:14px;top:12px;font-size:36px;opacity:.12;font-family:Georgia,serif;line-height:1">"</div>
-  <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
-    <div style="width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">Ã°Å¸âÂ¤</div>
-    <div>
-      <div style="font-size:14px;font-weight:800;">sistaofZion</div>
-      <div style="font-size:11px;opacity:.7;">Local Guide Â· 57 reviews Â· 8 hours ago</div>
-    </div>
-    <div style="margin-left:auto;font-size:13px;color:#facc15;letter-spacing:1px;">Ã¢Ëâ¦Ã¢Ëâ¦Ã¢Ëâ¦Ã¢Ëâ¦Ã¢Ëâ¦</div>
-  </div>
-  <div style="font-size:13px;line-height:1.6;opacity:.92;font-style:italic;">
-    "My agent suggested Tropical Breeze and stated <strong style="font-style:normal">'I prefer No One Else!'</strong> Ã¢â¬â windows serviced, double pane, double the work. I was immediately impressed. Need windows cleaned? Floors and carpet? Call Dalton Ã¢â¬â he believes in superior service."
-  </div>
-  <div style="margin-top:10px;display:flex;align-items:center;gap:6px;">
-    <div style="width:6px;height:6px;border-radius:50%;background:#22c55e;"></div>
-    <div style="font-size:10px;font-weight:700;opacity:.7;letter-spacing:.5px;text-transform:uppercase;">Verified Google Review Â· Realtor Referral</div>
-  </div>
-</div>
-
-<!-- AI ASSISTANT -->
-<div class="ai-card">
-  <div class="ai-badge">Ã¢ÅÂ¨ AI Quote Builder</div>
-  <div class="ai-title">Tell us about your home</div>
-  <div class="ai-sub">Describe your space Ã¢â¬â rooms, pets, surfaces, rental Ã¢â¬â and our AI builds your quote instantly.</div>
-  <div style="position:relative">
-    <textarea class="ai-textarea" id="ai-inp" rows="3" placeholder="e.g. 3 bedrooms, sofa, pet odor, tile kitchen, 2 bathroomsÃ¢â¬Â¦"></textarea>
-    <button class="ai-send-btn" id="ai-btn" onclick="askAI()" title="Build My Quote">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M22 2L11 13" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-  </div>
-  <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
-    <button class="ai-chip" onclick="quickFill('pet')">Ã°Å¸ÂÂ¾ Pet home</button>
-    <button class="ai-chip" onclick="quickFill('rental')">Ã°Å¸ÂâÃ¯Â¸Â Vacation rental</button>
-    <button class="ai-chip" onclick="quickFill('move')">Ã°Å¸âÂ¦ Move-out</button>
-  </div>
-  <div class="ai-thinking" id="ai-think">
-    <div class="gem-dot"></div><div class="gem-dot"></div><div class="gem-dot"></div>
-    <span>Building your quoteÃ¢â¬Â¦</span>
-  </div>
-  <div class="ai-response" id="ai-resp">
-    <div class="ai-response-lbl">Ã¢ÅÂ¦ AI Recommendation</div>
-    <div id="ai-text"></div>
-    <button class="ai-apply-btn" id="ai-apply" onclick="applyAISuggestion()">Ã¢Åâ Apply these suggestions to my quote</button>
-  </div>
-</div>
-
-<!-- CARPET -->
-<div class="card">
-  <div class="card-title">Ã°Å¸ÂÂ  Carpet Cleaning RF99Ã¢âÂ¢</div>
-  <div class="counter-sub" style="margin-bottom:10px">$99 first room Â· $50 each additional</div>
-  <div class="rslbl">Tap rooms to select</div>
-  <div class="room-grid" id="g-carpet">
-    <div class="rchip" onclick="toggleRoom('carpet','LR',this)">LR</div>
-    <div class="rchip" onclick="toggleRoom('carpet','BR1',this)">BR 1</div>
-    <div class="rchip" onclick="toggleRoom('carpet','BR2',this)">BR 2</div>
-    <div class="rchip" onclick="toggleRoom('carpet','BR3',this)">BR 3</div>
-    <div class="rchip" onclick="toggleRoom('carpet','BR4',this)">BR 4</div>
-    <div class="rchip" onclick="toggleRoom('carpet','OF',this)">OF</div>
-    <div class="rchip" onclick="toggleRoom('carpet','DN',this)">DN</div>
-    <div class="rchip" onclick="toggleRoom('carpet','ST',this)">ST</div>
-    <div class="rchip" onclick="toggleRoom('carpet','HL',this)">HL</div>
-    <div class="rchip" onclick="toggleRoom('carpet','DR',this)">DR</div>
-    <div class="rchip" onclick="toggleRoom('carpet','LOFT',this)">LOFT</div>
-    <div class="rchip" onclick="toggleRoom('carpet','PORCH',this)">PORCH</div>
-    <div class="rchip" onclick="toggleRoom('carpet','BONUS',this)">BONUS</div>
-  </div>
-  <div class="rsel" id="rsel-carpet"></div>
-  <div class="row-count">
-    <span style="font-size:13px;font-weight:700;color:var(--slate)">Rooms selected:</span>
-    <div class="counter-controls">
-      <button class="cbtn" onclick="change('carpet',-1)">Ã¢Ëâ</button>
-      <div class="cval" id="val-carpet">0</div>
-      <button class="cbtn" onclick="change('carpet',1)">+</button>
-    </div>
-  </div>
-  <div class="addon-panel" id="panel-carpet">
-    <div class="ap-title">Ã¢ÅÂ¨ Enhance your carpet cleaning</div>
-    <div class="addon-row" onclick="tog('scotchgard')">
-      <div class="acheck" id="ck-scotchgard"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7L10 1" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div style="flex:1"><div class="aname">Ã°Å¸âºÂ¡Ã¯Â¸Â ScotchgardÃ¢âÂ¢ Protector</div><div class="adesc">Repels stains & spills Ã¢â¬â extends your RFÃ¢âÂ¢ clean 3Ãâ longer.</div></div>
-      <div class="aprice" id="pr-scotchgard">+$0</div>
-    </div>
-    <div class="addon-row" onclick="tog('carpetDeod')">
-      <div class="acheck" id="ck-carpetDeod"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7L10 1" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div style="flex:1"><div class="aname">Ã°Å¸ÅÂ¬Ã¯Â¸Â Deodorizer Treatment</div><div class="adesc">Eliminates pet odors, smoke & musty smells at the source.</div></div>
-      <div class="aprice" id="pr-carpetDeod">+$0</div>
-    </div>
-  </div>
-</div>
-
-<!-- HARDWOOD -->
-<div class="card">
-  <div class="card-title">Ã°Å¸ÂªÂµ Hardwood Floor Cleaning</div>
-  <div class="counter-sub" style="margin-bottom:10px">$1.00 per square foot</div>
-  <div class="rslbl">Tap rooms with hardwood</div>
-  <div class="room-grid">
-    <div class="rchip" onclick="this.classList.toggle('on')">LR</div>
-    <div class="rchip" onclick="this.classList.toggle('on')">DR</div>
-    <div class="rchip" onclick="this.classList.toggle('on')">KT</div>
-    <div class="rchip" onclick="this.classList.toggle('on')">HL</div>
-    <div class="rchip" onclick="this.classList.toggle('on')">OF</div>
-    <div class="rchip" onclick="this.classList.toggle('on')">BR 1</div>
-    <div class="rchip" onclick="this.classList.toggle('on')">ST</div>
-    <div class="rchip" onclick="this.classList.toggle('on')">LOFT</div>
-  </div>
-  <label class="flbl" style="margin-top:12px">Total Square Feet</label>
-  <input class="finput" type="number" id="hw" placeholder="e.g. 600" min="0" oninput="recalc()">
-</div>
-
-<!-- TILE -->
-<div class="card">
-  <div class="card-title">Ã¢Â¬Å Tile & Grout Cleaning</div>
-  <div class="rslbl">Kitchen / Living Tile Â· $125/room</div>
-  <div class="room-grid" id="g-tile">
-    <div class="rchip" onclick="toggleRoom('tile','KT',this)">KT</div>
-    <div class="rchip" onclick="toggleRoom('tile','LR',this)">LR</div>
-    <div class="rchip" onclick="toggleRoom('tile','DN',this)">DN</div>
-    <div class="rchip" onclick="toggleRoom('tile','HL',this)">HL</div>
-    <div class="rchip" onclick="toggleRoom('tile','PORCH',this)">PORCH</div>
-    <div class="rchip" onclick="toggleRoom('tile','LNDRY',this)">LNDRY</div>
-    <div class="rchip" onclick="toggleRoom('tile','MUD',this)">MUD</div>
-    <div class="rchip" onclick="toggleRoom('tile','SUNRM',this)">SUNRM</div>
-  </div>
-  <div class="rsel" id="rsel-tile"></div>
-  <div class="row-count">
-    <span style="font-size:13px;font-weight:700;color:var(--slate)">Tile rooms:</span>
-    <div class="counter-controls">
-      <button class="cbtn" onclick="change('tile',-1)">Ã¢Ëâ</button>
-      <div class="cval" id="val-tile">0</div>
-      <button class="cbtn" onclick="change('tile',1)">+</button>
-    </div>
-  </div>
-  <div style="margin-top:14px;padding-top:14px;border-top:1px solid #f1f5f9">
-    <div class="rslbl">Ã°Å¸Å¡Â¿ Bathroom Tile Â· $125/bath Â· floors, walls & shower</div>
-    <div class="room-grid" id="g-bath">
-      <div class="rchip" onclick="toggleRoom('bath_tile','MB',this)">MB</div>
-      <div class="rchip" onclick="toggleRoom('bath_tile','BT2',this)">BT 2</div>
-      <div class="rchip" onclick="toggleRoom('bath_tile','BT3',this)">BT 3</div>
-      <div class="rchip" onclick="toggleRoom('bath_tile','HALF',this)">HALF</div>
-      <div class="rchip" onclick="toggleRoom('bath_tile','POOL',this)">POOL</div>
-      <div class="rchip" onclick="toggleRoom('bath_tile','SHOW',this)">SHOW</div>
-    </div>
-    <div class="rsel" id="rsel-bath_tile"></div>
-    <div class="row-count">
-      <span style="font-size:13px;font-weight:700;color:var(--slate)">Bathrooms:</span>
-      <div class="counter-controls">
-        <button class="cbtn" onclick="change('bath_tile',-1)">Ã¢Ëâ</button>
-        <div class="cval" id="val-bath_tile">0</div>
-        <button class="cbtn" onclick="change('bath_tile',1)">+</button>
-      </div>
-    </div>
-  </div>
-  <div class="addon-panel" id="panel-tile">
-    <div class="ap-title">Ã¢ÅÂ¨ Enhance your tile cleaning</div>
-    <div class="addon-row" onclick="tog('grout')">
-      <div class="acheck" id="ck-grout"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7L10 1" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div style="flex:1"><div class="aname">Ã°Å¸ââ Grout Sealing</div><div class="adesc">Seals pores after cleaning Ã¢â¬â locks out dirt long-term.</div></div>
-      <div class="aprice" id="pr-grout">+$0</div>
-    </div>
-    <div class="addon-row" onclick="tog('colorSeal')">
-      <div class="acheck" id="ck-colorSeal"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7L10 1" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div style="flex:1"><div class="aname">Ã°Å¸Å½Â¨ Color Seal</div><div class="adesc">Restore & lock in your grout color permanently.</div></div>
-      <div class="aprice" id="pr-colorSeal">+$0</div>
-    </div>
-    <div class="color-picker" id="color-picker">
-      <div class="cp-label">Ã°Å¸Å½Â¨ Pick Your Grout Color</div>
-      <div class="color-grid" id="cgrid"></div>
-      <div class="color-chosen" id="color-chosen">
-        <div style="width:24px;height:24px;border-radius:6px;flex-shrink:0;box-shadow:inset 0 1px 3px rgba(0,0,0,.15)" id="cdot"></div>
-        <div><div style="font-size:13px;font-weight:600;color:var(--slate)" id="cname">Ã¢â¬â</div><div style="font-size:11px;color:var(--slate-faint);margin-top:1px">We'll confirm the exact match on-site</div></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- UPHOLSTERY -->
-<div class="card">
-  <div class="card-title">Ã°Å¸âºâ¹Ã¯Â¸Â Upholstery Cleaning</div>
-
-  <!-- SOFA -->
-  <div class="counter-row">
-    <div><div class="counter-label">Sofas</div><div class="counter-sub">$85/sofa</div></div>
-    <div class="counter-controls">
-      <button class="cbtn" onclick="upChange('sofa',-1)">Ã¢Ëâ</button>
-      <div class="cval" id="up-cnt-sofa">0</div>
-      <button class="cbtn" onclick="upChange('sofa',1)">+</button>
-    </div>
-  </div>
-
-  <!-- LOVESEAT -->
-  <div class="counter-row">
-    <div><div class="counter-label">Loveseats</div><div class="counter-sub">$75/loveseat</div></div>
-    <div class="counter-controls">
-      <button class="cbtn" onclick="upChange('loveseat',-1)">Ã¢Ëâ</button>
-      <div class="cval" id="up-cnt-loveseat">0</div>
-      <button class="cbtn" onclick="upChange('loveseat',1)">+</button>
-    </div>
-  </div>
-
-  <!-- CHAIR -->
-  <div class="counter-row">
-    <div><div class="counter-label">Chairs</div><div class="counter-sub">$50/chair</div></div>
-    <div class="counter-controls">
-      <button class="cbtn" onclick="upChange('chair',-1)">Ã¢Ëâ</button>
-      <div class="cval" id="up-cnt-chair">0</div>
-      <button class="cbtn" onclick="upChange('chair',1)">+</button>
-    </div>
-  </div>
-
-  <!-- DINING CHAIRS Ã¢â¬â seat/back choice -->
-  <div class="counter-row" style="border-bottom:none">
-    <div>
-      <div class="counter-label">Ã°Å¸ÂÂ½Ã¯Â¸Â Dining Room Chairs</div>
-      <div class="counter-sub">Seat & Back $13 Â· Seat Only $10</div>
-    </div>
-    <div class="counter-controls">
-      <button class="cbtn" onclick="upChange('dining',-1)">Ã¢Ëâ</button>
-      <div class="cval" id="up-cnt-dining">0</div>
-      <button class="cbtn" onclick="upChange('dining',1)">+</button>
-    </div>
-  </div>
-
-  <!-- DINING SEAT/BACK CHOICE Ã¢â¬â appears when qty > 0 -->
-  <div id="dining-type-row" style="display:none;margin-top:10px">
-    <div style="font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--slate-faint);margin-bottom:8px">Choose cleaning type</div>
-    <div style="display:flex;gap:8px">
-      <button class="up-clean-btn sel" id="dining-btn-full" onclick="setDiningType('full')">
-        Ã°Å¸ÂÂ½Ã¯Â¸Â Seat &amp; Back<br><span style="font-size:11px;font-weight:600">$13/chair</span>
-      </button>
-      <button class="up-clean-btn" id="dining-btn-seat" onclick="setDiningType('seat')">
-        Ã°Å¸âÂº Seat Only<br><span style="font-size:11px;font-weight:600">$10/chair</span>
-      </button>
-    </div>
-  </div>
-
-  <!-- SECTIONAL -->
-  <div style="margin-top:14px;padding-top:14px;border-top:1px solid #f1f5f9">
-    <label class="flbl" style="margin-top:0">Sectional Linear Feet</label>
-    <input class="finput" type="number" id="sf" placeholder="e.g. 10" min="0" oninput="recalc()">
-    <div class="counter-sub" style="margin-top:6px">$11/linear foot</div>
-    <!-- Sectional add-ons Ã¢â¬â appear when ft > 0 -->
-    <div id="sectional-addons" style="display:none;margin-top:10px">
-      <div style="font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--teal-light);margin-bottom:8px">Ã¢ÅÂ¨ Add for entire sectional</div>
-      <div style="display:flex;gap:8px">
-        <button class="up-clean-btn" id="sect-deod-btn" onclick="toggleSectAddon('deod')">
-          Ã°Å¸ÅÂ¬Ã¯Â¸Â Deodorizer<br><span style="font-size:11px;font-weight:600">+$49 flat</span>
-        </button>
-        <button class="up-clean-btn" id="sect-prot-btn" onclick="toggleSectAddon('prot')">
-          Ã°Å¸âºÂ¡Ã¯Â¸Â Protector<br><span style="font-size:11px;font-weight:600">+$49 flat</span>
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- UPHOLSTERY ENHANCEMENTS (sofa/loveseat/chair) -->
-  <div class="addon-panel" id="panel-upholstery">
-    <div class="ap-title">Ã¢ÅÂ¨ Enhance your upholstery cleaning</div>
-    <div class="addon-row" onclick="tog('fabricProt')">
-      <div class="acheck" id="ck-fabricProt"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7L10 1" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div style="flex:1"><div class="aname">Ã°Å¸âºÂ¡Ã¯Â¸Â Fabric Protector</div><div class="adesc">Guards against future spills & stains Ã¢â¬â per piece.</div></div>
-      <div class="aprice" id="pr-fabricProt">+$0</div>
-    </div>
-    <div class="addon-row" onclick="tog('upDeod')">
-      <div class="acheck" id="ck-upDeod"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7L10 1" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div style="flex:1"><div class="aname">Ã°Å¸ÅÂ¬Ã¯Â¸Â Deodorizer Treatment</div><div class="adesc">Banishes pet, food & smoke odors at the source.</div></div>
-      <div class="aprice" id="pr-upDeod">+$0</div>
-    </div>
-  </div>
-</div>
-
-<!-- WINDOWS -->
-<div class="card">
-  <div class="card-title">Ã°Å¸ÂªÅ¸ Window Cleaning</div>
-  <div class="counter-row"><div><div class="counter-label">Standard Windows</div><div class="counter-sub">Inside & outside Â· $13/window</div></div><div class="counter-controls"><button class="cbtn" onclick="change('windows',-1)">Ã¢Ëâ</button><div class="cval" id="val-windows">0</div><button class="cbtn" onclick="change('windows',1)">+</button></div></div>
-  <div class="counter-row"><div><div class="counter-label">EZ Breeze Panels</div><div class="counter-sub">$15/panel + $35 track (flat)</div></div><div class="counter-controls"><button class="cbtn" onclick="change('ezbreeze',-1)">Ã¢Ëâ</button><div class="cval" id="val-ezbreeze">0</div><button class="cbtn" onclick="change('ezbreeze',1)">+</button></div></div>
-  <div class="counter-row" style="border-bottom:none"><div><div class="counter-label">Ã°Å¸ÅÂ¨Ã¯Â¸Â Storm Windows</div><div class="counter-sub">Price TBD Ã¢â¬â we'll confirm on-site</div></div><div class="counter-controls"><button class="cbtn" onclick="change('storm',-1)">Ã¢Ëâ</button><div class="cval" id="val-storm">0</div><button class="cbtn" onclick="change('storm',1)">+</button></div></div>
-  <div class="addon-panel" id="panel-windows">
-    <div class="ap-title">Ã¢ÅÂ¨ Enhance your window cleaning</div>
-    <div class="addon-row" onclick="tog('screens')" style="border-bottom:none">
-      <div class="acheck" id="ck-screens"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7L10 1" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div style="flex:1"><div class="aname">Ã°Å¸â¢Â¸Ã¯Â¸Â Screen & Track Cleaning</div><div class="adesc">Removes dust, mold & grime from screens and tracks.</div></div>
-      <div class="aprice" id="pr-screens">+$0</div>
-    </div>
-  </div>
-</div>
-
-<!-- RUGS -->
-<div class="card">
-  <div class="card-title">Ã°Å¸Âªâ Rug Cleaning <span style="font-size:12px;font-weight:600;color:var(--slate-faint)">(Pickup Included)</span></div>
-  <div class="counter-row"><div><div class="counter-label">Small Rug</div><div class="counter-sub">$75 + $75 pickup</div></div><div class="counter-controls"><button class="cbtn" onclick="change('rug_small',-1)">Ã¢Ëâ</button><div class="cval" id="val-rug_small">0</div><button class="cbtn" onclick="change('rug_small',1)">+</button></div></div>
-  <div class="counter-row"><div><div class="counter-label">Medium Rug</div><div class="counter-sub">$125 + $75 pickup</div></div><div class="counter-controls"><button class="cbtn" onclick="change('rug_medium',-1)">Ã¢Ëâ</button><div class="cval" id="val-rug_medium">0</div><button class="cbtn" onclick="change('rug_medium',1)">+</button></div></div>
-  <div class="counter-row"><div><div class="counter-label">Large Rug</div><div class="counter-sub">$195 + $75 pickup</div></div><div class="counter-controls"><button class="cbtn" onclick="change('rug_large',-1)">Ã¢Ëâ</button><div class="cval" id="val-rug_large">0</div><button class="cbtn" onclick="change('rug_large',1)">+</button></div></div>
-  <div class="counter-row" style="border-bottom:none"><div><div class="counter-label">Oversized Rug</div><div class="counter-sub">$295 + $75 pickup</div></div><div class="counter-controls"><button class="cbtn" onclick="change('rug_oversized',-1)">Ã¢Ëâ</button><div class="cval" id="val-rug_oversized">0</div><button class="cbtn" onclick="change('rug_oversized',1)">+</button></div></div>
-</div>
-
-<!-- HOW DID YOU HEAR -->
-<div class="hear-card">
-  <div class="card-title" style="margin-bottom:4px">Ã°Å¸âÂ£ How Did You Hear About Us?</div>
-  <div style="font-size:13px;color:var(--slate-light);margin-bottom:2px">Tap one Ã¢â¬â helps us serve the Shore better</div>
-  <div class="hear-options" id="hear-options">
-    <div class="hear-chip" onclick="selectHear(this,'Google Search')">Ã°Å¸âÂ Google</div>
-    <div class="hear-chip" onclick="selectHear(this,'Facebook')">Ã°Å¸âË Facebook</div>
-    <div class="hear-chip" onclick="selectHear(this,'Instagram')">Ã°Å¸âÂ¸ Instagram</div>
-    <div class="hear-chip" onclick="selectHear(this,'Neighbor / Friend')">Ã°Å¸ÂËÃ¯Â¸Â Neighbor</div>
-    <div class="hear-chip" onclick="selectHear(this,'Returning Customer')">Ã°Å¸âÂ Returning</div>
-    <div class="hear-chip" onclick="selectHear(this,'Vacation Rental Platform')">Ã°Å¸ÂâÃ¯Â¸Â Airbnb / VRBO</div>
-    <div class="hear-chip" onclick="selectHear(this,'Business Card')">Ã°Å¸âÂ³ Business Card</div>
-    <div class="hear-chip" onclick="selectHear(this,'Bing / Copilot AI')">Ã°Å¸Â¤â Bing AI</div>
-    <div class="hear-chip" onclick="selectHear(this,'Other')">Ã¢ÅÂÃ¯Â¸Â Other</div>
-  </div>
-</div>
-
-<!-- ESTIMATE -->
-<div class="card" id="est-card" style="display:none">
-  <div class="card-title">Ã°Å¸âÂ° Your Estimate</div>
-  <div class="est-box">
-    <div id="est-lines"></div>
-    <div class="est-total"><span style="font-size:14px;font-weight:700">Estimated Total</span><span class="est-total-price">$<span id="gtotal">0</span></span></div>
-    <div class="est-note">Final price confirmed on-site. All discounts applied.</div>
-  </div>
-</div>
-
-<!-- CALLBACK WIDGET -->
-<div class="callback-bar">
-  <div class="callback-title">Ã°Å¸âÅ¾ Prefer a Call?</div>
-  <div class="callback-sub">Not ready to book online? Leave your number and we'll call you back.</div>
-  <div class="callback-row">
-    <input class="callback-input" type="tel" id="cb-phone" placeholder="(443) 555-0100" oninput="fmtCb(this)">
-    <select class="callback-time" id="cb-time">
-      <option value="">Best time</option>
-      <option>Morning (8Ã¢â¬â11am)</option>
-      <option>Midday (11amÃ¢â¬â2pm)</option>
-      <option>Afternoon (2Ã¢â¬â5pm)</option>
-      <option>Anytime</option>
-    </select>
-    <button class="callback-btn" onclick="submitCallback()">Call Me</button>
-  </div>
-  <div class="callback-sent" id="cb-sent">
-    Ã¢Åâ¦ Got it! We'll call you <span id="cb-time-confirm"></span>. Ã¢â¬â (443) 856-3244
-  </div>
-</div>
-
-<!-- FORM -->
-<div class="card">
-  <div class="card-title">Ã°Å¸ââ¹ Your Information</div>
-  <label class="flbl" style="margin-top:0">Name *</label>
-  <input class="finput" type="text" id="fn" placeholder="Jane Smith">
-  <div class="errmsg" id="en">Name is required</div>
-
-  <div class="grid2">
-    <div>
-      <label class="flbl" style="margin-top:0">Phone *</label>
-      <input class="finput" type="tel" id="fp" placeholder="(443) 555-0100" oninput="fmtPh(this)">
-      <div class="errmsg" id="ep">Valid 10-digit phone required</div>
-    </div>
-    <div>
-      <label class="flbl" style="margin-top:0">Email</label>
-      <input class="finput" type="email" id="fe" placeholder="you@email.com">
-    </div>
-  </div>
-
-  <!-- SMS OPT-IN -->
-  <div class="sms-row" onclick="toggleSMS()" id="sms-row">
-    <div class="sms-check" id="sms-check">
-      <svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7L10 1" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </div>
-    <div>
-      <div class="sms-label">Ã°Å¸âÂ± Text me my confirmation + a reminder the day before</div>
-      <div class="sms-desc">Standard messaging rates apply Â· Opt out anytime Â· We never spam</div>
-    </div>
-  </div>
-
-  <div class="grid2" style="margin-top:14px">
-    <div>
-      <label class="flbl" style="margin-top:0">Preferred Date *</label>
-      <input class="finput" type="date" id="fd">
-      <div class="errmsg" id="ed">Please pick a date</div>
-    </div>
-    <div>
-      <label class="flbl" style="margin-top:0">Preferred Time</label>
-      <select class="finput" id="ft">
-        <option value="">Anytime</option>
-        <option>Morning (8Ã¢â¬â11am)</option>
-        <option>Midday (11amÃ¢â¬â2pm)</option>
-        <option>Afternoon (2Ã¢â¬â5pm)</option>
-      </select>
-    </div>
-  </div>
-
-  <label class="flbl">Street Address *</label>
-  <input class="finput" type="text" id="fst" placeholder="123 Ocean Breeze Ln">
-  <div class="errmsg" id="est2">Street address required</div>
-
-  <div class="grid3">
-    <div><label class="flbl" style="margin-top:0">City *</label><input class="finput" type="text" id="fc" placeholder="Salisbury"><div class="errmsg" id="ec">City required</div></div>
-    <div><label class="flbl" style="margin-top:0">State</label><select class="finput" id="fstate"><option>MD</option><option>DE</option><option>VA</option></select></div>
-    <div><label class="flbl" style="margin-top:0">ZIP *</label><input class="finput" type="text" id="fz" placeholder="21801" maxlength="5" oninput="this.value=this.value.replace(/\D/g,'')"><div class="errmsg" id="ez">Valid ZIP required</div></div>
-  </div>
-
-  <!-- PROMO CODE -->
-  <label class="flbl">Promo Code</label>
-  <div class="promo-row">
-    <input class="promo-input" type="text" id="f-promo" placeholder="BREEZE15" maxlength="12" oninput="this.value=this.value.toUpperCase()">
-    <button class="promo-btn" onclick="applyPromo(document.getElementById('f-promo').value)">Apply</button>
-  </div>
-  <div class="promo-success" id="promo-success">Ã¢Åâ¦ Code applied! Discount will be reflected in your final quote.</div>
-  <div class="promo-error" id="promo-error">Ã¢ÂÅ Invalid code. Try BREEZE15 for 15% off your first booking.</div>
-
-  <label class="flbl">Special Instructions</label>
-  <textarea class="finput" id="fnotes" placeholder="Gate code, pets on premises, specific areas to focus onÃ¢â¬Â¦"></textarea>
-
-  <button class="btn" onclick="openUpsell()" style="width:100%;margin-top:16px;font-size:16px;padding:15px">
-    Confirm Booking Ã¢â¬â $<span id="bprice">0</span>
-  </button>
-</div>
-
-<!-- FOOTER -->
-<div style="text-align:center;padding:20px 0 10px;color:var(--slate-faint);font-size:13px">
-  <div style="font-weight:700;color:var(--slate);margin-bottom:4px">Questions? We're here.</div>
-  <a href="tel:4438563244" style="color:var(--teal);font-weight:800;font-size:16px;text-decoration:none">Ã°Å¸âÅ¾ (443) 856-3244</a>
-  <div style="margin-top:8px;font-size:12px">tropicalbreezerf.com Â· Salisbury, MD Â· Eastern Shore</div>
-</div>
-
-</div><!-- /content -->
-
-<!-- UPSELL MODAL -->
-<div class="overlay" id="umodal">
-  <div class="modal">
-    <div style="font-size:28px;margin-bottom:8px">Ã°Å¸Å½Â</div>
-    <div style="font-size:18px;font-weight:900;color:var(--teal);margin-bottom:4px">One Last Upgrade!</div>
-    <div style="font-size:13px;color:var(--slate-light);margin-bottom:16px">Popular add-ons Ã¢â¬â tap to include before you confirm</div>
-    <div class="ucard" id="uc-bundle" onclick="togU('bundle')">
-      <div class="acheck" id="uk-bundle"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7L10 1" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div><div class="ubadge">Ã°Å¸âÂ¥ Best Value</div><div style="font-size:15px;font-weight:800;color:#1e293b">Ã°Å¸ÅÂ´ RF99Ã¢âÂ¢ Starter Pack</div><div style="font-size:13px;color:var(--slate-light);margin-top:3px;line-height:1.4">Take-home maintenance kit Ã¢â¬â extends your results between visits.</div><div style="font-size:15px;font-weight:900;color:var(--teal);margin-top:4px">+$49</div></div>
-    </div>
-    <div class="ucard" id="uc-multi" onclick="togU('multi')">
-      <div class="acheck" id="uk-multi"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7L10 1" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div><div class="ubadge">Ã°Å¸Å½â° Mix & Match</div><div style="font-size:15px;font-weight:800;color:#1e293b">Ã°Å¸âÂ¸ Multi-Service Discount</div><div style="font-size:13px;color:var(--slate-light);margin-top:3px;line-height:1.4" id="mdesc">Combining services? Lock in an extra 5% off!</div><div style="font-size:15px;font-weight:900;color:var(--teal);margin-top:4px" id="mprice">Ã¢Ëâ5%</div></div>
-    </div>
-    <div style="margin-top:14px">
-      <button class="mbtn" id="mbtn" onclick="submitBooking()">Add Selected Ã¢â¬â $<span id="mtotal">0</span></button>
-      <button class="mskip" onclick="submitBooking(true)">No thanks, continue to booking</button>
-    </div>
-  </div>
-</div>
-
-<!-- SUCCESS -->
-<div class="soverlay" id="sovl">
-  <div class="sbox">
-    <div style="text-align:center;margin-bottom:16px">
-      <div style="font-size:52px;margin-bottom:10px">Ã¢Åâ¦</div>
-      <h2 style="font-size:22px;font-weight:900;color:var(--teal);margin-bottom:8px">You're All Set!</h2>
-      <div style="font-size:13px;color:var(--slate-faint);margin-bottom:14px">Confirmation # <strong id="cnum">TB000000</strong></div>
-    </div>
-    <div style="background:var(--teal-faint);border-radius:12px;padding:14px 16px;font-size:14px;color:var(--slate);margin-bottom:16px;line-height:1.8" id="sdet"></div>
-    <p style="font-size:13px;color:var(--slate-light);text-align:center;margin-bottom:16px">Questions? Call <a href="tel:4438563244" style="color:var(--teal);font-weight:700">(443) 856-3244</a></p>
-    <button class="btn" style="width:100%" onclick="doReset()">Ã°Å¸ââ¦ Book Another Service</button>
-  </div>
-</div>
-
-
-<!-- CHAT BUBBLE -->
-<div class="chat-bubble" id="chat-bubble">
-  <div class="chat-nudge" id="chat-nudge" style="display:none">
-    <span>Ã°Å¸ââ¹ Hey!</span> Questions about pricing?
-  </div>
-  <button class="chat-btn" onclick="toggleChat()">
-    Ã°Å¸âÂ¬
-    <div class="chat-dot"></div>
-  </button>
-</div>
-
-<!-- CHAT WINDOW -->
-<div class="chat-window" id="chat-window">
-  <div class="chat-header">
-    <div class="chat-avatar">Ã°Å¸ÅÂ´</div>
-    <div class="chat-header-info">
-      <div class="chat-header-name">Tropical Breeze RFÃ¢âÂ¢</div>
-      <div class="chat-header-status">
-        <span class="chat-status-dot"></span>
-        <span id="chat-status-txt">Typically replies in minutes</span>
-      </div>
-    </div>
-    <button class="chat-close" onclick="toggleChat()">Ãâ</button>
-  </div>
-  <div class="chat-messages" id="chat-msgs">
-    <div class="chat-msg">
-      <div class="chat-msg-avatar">Ã°Å¸ÅÂ´</div>
-      <div class="chat-msg-bubble">Hey! Ã°Å¸ââ¹ I'm Dalton Ã¢â¬â owner of Tropical Breeze RFÃ¢âÂ¢. What can I help you with today?</div>
-    </div>
-  </div>
-  <div class="chat-quick-replies" id="chat-qrs">
-    <div class="chat-qr" onclick="chatQuick('pricing')">Ã°Å¸âÂ° Pricing question</div>
-    <div class="chat-qr" onclick="chatQuick('area')">Ã°Å¸âÂ Do you service my area?</div>
-    <div class="chat-qr" onclick="chatQuick('pet')">Ã°Å¸ÂÂ¾ Pet odor help</div>
-    <div class="chat-qr" onclick="chatQuick('rental')">Ã°Å¸ÂâÃ¯Â¸Â Vacation rental</div>
-  </div>
-  <div class="chat-input-row">
-    <input class="chat-input" id="chat-input" placeholder="Type a messageÃ¢â¬Â¦" onkeydown="if(event.key==='Enter')sendChat()">
-    <button class="chat-send" onclick="sendChat()">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M22 2L11 13" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-  </div>
-</div>
-
-<!-- BOTTOM BAR -->
-<div class="bbar">
-  <div class="binner">
-    <div style="flex:1">
-      <div class="bprice">$<span id="bg">0</span></div>
-      <div class="bsave" id="bsave" style="display:none"></div>
-    </div>
-    <button class="btn" onclick="openUpsell()">Confirm Booking</button>
-  </div>
-</div>
-
-<script>
-const P={carpet_first:99,carpet_add:50,hardwood:1,tile:125,bath_tile:125,chair:50,loveseat:75,sofa:85,sectional:11,window:13,ezbreeze_panel:15,ezbreeze_track:35,scotchgard:25,carpetDeod:20,grout:63,colorSeal:250,fabricProt_piece:25,fabricProt_ft:3,upDeod_piece:25,upDeod_ft:2,screens:4,rug_small:75,rug_medium:125,rug_large:195,rug_oversized:295,rug_pickup:75,starter:49,sea:0.10,multi:0.05};
-const SEASONS=[{months:[11,0,1],emoji:'Ã¢ÂâÃ¯Â¸Â',label:'Winter Special Ã¢â¬â Save 10% Automatically'},{months:[2,3,4],emoji:'Ã°Å¸ÅÂ¸',label:'Spring Special Ã¢â¬â Save 10% Automatically'},{months:[5,6,7],emoji:'Ã¢Ëâ¬Ã¯Â¸Â',label:'Summer Special Ã¢â¬â Save 10% Automatically'},{months:[8,9,10],emoji:'Ã°Å¸Ââ',label:'Fall Special Ã¢â¬â Save 10% Automatically'}];
-const REVIEWS=[{t:'Absolutely spotless Ã¢â¬â my carpets look brand new!',c:'Salisbury, MD'},{t:'Finally found a cleaner who actually removes pet odor.',c:'Ocean City, MD'},{t:'Grout looks like the day we moved in.',c:'Rehoboth Beach, DE'},{t:'Vacation rental stays fully booked Ã¢â¬â guests always comment on cleanliness.',c:'Bethany Beach, DE'},{t:'Did carpet and tile in one visit. Both completely flawless.',c:'Berlin, MD'},{t:'The RFÃ¢âÂ¢ process is real Ã¢â¬â zero sticky residue left behind.',c:'Lewes, DE'},{t:'Sofa looks incredible. Fabric Protector was worth every penny.',c:'Easton, MD'},{t:'Fast, professional, and my floors smell absolutely amazing.',c:'Millsboro, DE'},{t:'219 five-star reviews for a reason. Absolutely the best.',c:'Cambridge, MD'},{t:'Whole vacation home done in one visit. Incredible team.',c:'Ocean Pines, MD'},{t:'Grout sealing made such a difference.',c:'Milford, DE'},{t:'Showed up on time, finished early, results were perfect.',c:'Princess Anne, MD'},{t:'Color seal on bathroom grout Ã¢â¬â looks brand new after 8 years.',c:'Salisbury, MD'},{t:'Best investment for our Airbnb. Guests rate cleanliness 5 stars.',c:'Fenwick Island, DE'},{t:'Called Monday, cleaned Wednesday. Lightning fast and spotless.',c:'Seaford, DE'},
-  {t:'My agent suggested Tropical Breeze and said "I prefer No One Else!" Ã¢â¬â immediately impressed. Dalton believes in superior service.',c:'Eastern Shore, MD'}];
-const COLORS=[{n:'Bright White',h:'#f5f5f5'},{n:'Bone',h:'#e8dcc8'},{n:'Linen',h:'#d4c4a8'},{n:'Almond',h:'#c8b48c'},{n:'Pewter',h:'#9ea8a0'},{n:'Platinum',h:'#b8bcc0'},{n:'Charcoal',h:'#5a5f60'},{n:'Graphite',h:'#3d4040'},{n:'Mocha',h:'#8b6f5a'},{n:'Chocolate',h:'#5c3d2e'},{n:'Sandstone',h:'#c4a882'},{n:'Natural Gray',h:'#8c8c8c'}];
-const VALID_PROMOS={'BREEZE15':{pct:15,label:'15% off first booking'},'RF99':{ pct:10,label:'RF99 loyalty discount'},'SHORE10':{pct:10,label:'Eastern Shore special'}};
-
-// STATE
-const counts={carpet:0,tile:0,bath_tile:0,chairs:0,loveseats:0,sofas:0,windows:0,ezbreeze:0,storm:0,rug_small:0,rug_medium:0,rug_large:0,rug_oversized:0};
-const addons={scotchgard:false,carpetDeod:false,grout:false,colorSeal:false,fabricProt:false,upDeod:false,screens:false};
-const upsells={bundle:false,multi:false};
-const roomSelections={carpet:[],tile:[],bath_tile:[],hw_room:[]};
-let selColor=null,prevSvcCount=0,multiPopShown=false,aiSuggestion=null,smsOptIn=false,hearSource='',promoCode='',promoDiscount=0;
-
-// Ã¢ââ¬Ã¢ââ¬ UPHOLSTERY STATE Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬
-// sofa/loveseat/chair: simple counters with shared add-ons (fabricProt, upDeod)
-// dining: counter + seat-only vs seat+back choice
-// sectional: linear feet + flat $49 deod/prot options
-const upCounts = {sofa:0, loveseat:0, chair:0, dining:0};
-let diningType = 'full'; // 'full'=$13 or 'seat'=$10
-const sectAddon = {deod:false, prot:false};
-
-const UP_PRICE = {sofa:85, loveseat:75, chair:50, dining_full:13, dining_seat:10};
-
-function upChange(piece, delta){
-  upCounts[piece] = Math.max(0, upCounts[piece]+delta);
-  document.getElementById('up-cnt-'+piece).textContent = upCounts[piece];
-  // Show dining type row when dining qty > 0
-  if(piece==='dining'){
-    document.getElementById('dining-type-row').style.display = upCounts.dining>0 ? 'block' : 'none';
-  }
-  recalc(); upPanels();
-}
-
-function setDiningType(type){
-  diningType = type;
-  document.getElementById('dining-btn-full').classList.toggle('sel', type==='full');
-  document.getElementById('dining-btn-seat').classList.toggle('sel', type==='seat');
-  recalc();
-}
-
-function toggleSectAddon(key){
-  sectAddon[key] = !sectAddon[key];
-  document.getElementById('sect-'+key+'-btn').classList.toggle('sel', sectAddon[key]);
-  recalc();
-}
-
-function upPanels(){
-  const mainPcs = upCounts.sofa + upCounts.loveseat + upCounts.chair;
-  vis('panel-upholstery', mainPcs > 0);
-  // Sectional addons
-  const sf = parseFloat(document.getElementById('sf').value)||0;
-  document.getElementById('sectional-addons').style.display = sf>0 ? 'block' : 'none';
-}
-
-function calcUpTotal(){
-  const sf = parseFloat(document.getElementById('sf').value)||0;
-  const mainPcs = upCounts.sofa + upCounts.loveseat + upCounts.chair;
-  const sofaC = upCounts.sofa * UP_PRICE.sofa;
-  const loveC = upCounts.loveseat * UP_PRICE.loveseat;
-  const chairC = upCounts.chair * UP_PRICE.chair;
-  const diningC = upCounts.dining * UP_PRICE['dining_'+diningType];
-  const sectC = Math.round(sf * 11);
-  const sectDeodC = sectAddon.deod ? 49 : 0;
-  const sectProtC = sectAddon.prot ? 49 : 0;
-  return {sofaC, loveC, chairC, diningC, sectC, sectDeodC, sectProtC,
-    mainPcs, sf,
-    diningPrice: UP_PRICE['dining_'+diningType],
-    diningTypeLabel: diningType==='full'?'Seat & Back':'Seat Only'
-  };
-}
-
-// INIT
-const month=new Date().getMonth();
-const season=SEASONS.find(s=>s.months.includes(month))||SEASONS[1];
-document.getElementById('season-emoji').textContent=season.emoji;
-document.getElementById('season-label').textContent=season.label;
-document.getElementById('fd').min=new Date().toISOString().split('T')[0];
-
-// Reviews
-(()=>{const d=[...REVIEWS,...REVIEWS];document.getElementById('rtk').innerHTML=d.map(r=>`<div class="review-chip"><span class="review-stars">Ã¢Ëâ¦Ã¢Ëâ¦Ã¢Ëâ¦Ã¢Ëâ¦Ã¢Ëâ¦</span><span class="review-text">"${r.t}"</span><span class="review-city">Ã¢â¬â ${r.c}</span></div>`).join('');})();
-
-// Color swatches
-(()=>{document.getElementById('cgrid').innerHTML=COLORS.map((c,i)=>`<div class="swatch" id="sw${i}" onclick="pickColor(${i})"><div class="sdot" style="background:${c.h}"></div><div class="sname">${c.n}</div></div>`).join('');})();
-
-// COUNTDOWN TIMER (48 hour urgency)
-// Mobile: tap back or pause removed
-
-// TOAST
-function toast(icon,title,body,type='',duration=4000){
-  const stack=document.getElementById('toast-stack');
-  const el=document.createElement('div');
-  el.className=`toast ${type}`;
-  el.innerHTML=`<span class="toast-icon">${icon}</span><div class="toast-title">${title}</div>${body?`<div class="toast-body">${body}</div>`:''}`;
-  stack.appendChild(el);
-  setTimeout(()=>{el.classList.add('out');setTimeout(()=>el.remove(),350);},duration);
-}
-
-// SAVINGS POPUP
-function showSavingsPop(multi,sea){
-  const total=multi+sea;
-  document.getElementById('sp-amt').textContent=`$${total}`;
-  document.getElementById('sp-detail').innerHTML=`Your <strong>Mix & Match discount</strong> just unlocked!<br><br>Ã°Å¸Å½â° Multi-Service: <strong>Ã¢Ëâ$${multi}</strong><br>${season.emoji} Seasonal: <strong>Ã¢Ëâ$${sea}</strong><br><br><em>Keep adding services to save even more.</em>`;
-  document.getElementById('savings-pop').classList.add('open');
-}
-
-// HEAR SOURCE
-function selectHear(chip,src){
-  document.querySelectorAll('.hear-chip').forEach(c=>c.classList.remove('on'));
-  chip.classList.add('on');
-  hearSource=src;
-  toast('Ã°Å¸âÂ£','Got it!',`Noted Ã¢â¬â ${src}.`,'milestone',2500);
-}
-
-// SMS TOGGLE
-function toggleSMS(){
-  smsOptIn=!smsOptIn;
-  document.getElementById('sms-check').classList[smsOptIn?'add':'remove']('on');
-  if(smsOptIn) toast('Ã°Å¸âÂ±','SMS reminders on!','We\'ll text your confirmation + a day-before reminder.','savings',3000);
-}
-
-// PROMO CODE
-function applyPromo(code){
-  const c=(code||'').trim().toUpperCase();
-  const promo=VALID_PROMOS[c];
-  if(promo){
-    promoCode=c;
-    promoDiscount=promo.pct;
-    document.getElementById('promo-success').classList.add('show');
-    document.getElementById('promo-error').classList.remove('show');
-    toast('Ã°Å¸Å½â°',`Code applied: ${c}`,`${promo.label} Ã¢â¬â saving even more!`,'savings',4000);
-    recalc();
-  } else if(c){
-    document.getElementById('promo-error').classList.add('show');
-    document.getElementById('promo-success').classList.remove('show');
-    promoCode='';promoDiscount=0;recalc();
-  }
-}
-
-// COUNTER
-function change(k,d){
-  counts[k]=Math.max(0,counts[k]+d);
-  const el=document.getElementById('val-'+k);
-  el.textContent=counts[k];
-  el.classList.remove('pop');void el.offsetWidth;el.classList.add('pop');
-  recalc();panels();
-}
-function panels(){
-  const tt=counts.tile+counts.bath_tile;
-  const up=(upCounts.sofa+upCounts.loveseat+upCounts.chair+upCounts.dining)>0||parseFloat(document.getElementById('sf').value||0)>0;
-  vis('panel-carpet',counts.carpet>0);
-  vis('panel-tile',tt>0);
-  vis('panel-upholstery',up);
-  vis('panel-windows',counts.windows>0);
-}
-function vis(id,show){const el=document.getElementById(id);el.classList[show?'add':'remove']('visible');}
-
-// ROOM TOGGLE
-function toggleRoom(service,label,chip){
-  const arr=roomSelections[service];
-  const idx=arr.indexOf(label);
-  if(idx>-1){arr.splice(idx,1);chip.classList.remove('on');}
-  else{arr.push(label);chip.classList.add('on');}
-  if(['carpet','tile','bath_tile'].includes(service)){
-    counts[service]=arr.length;
-    const v=document.getElementById('val-'+service);
-    if(v){v.textContent=arr.length;v.classList.remove('pop');void v.offsetWidth;v.classList.add('pop');}
-  }
-  const d=document.getElementById('rsel-'+service);
-  if(d){d.textContent=arr.length?arr.join(' Â· '):'';d.classList[arr.length?'add':'remove']('show');}
-  recalc();panels();
-}
-
-// ADDON TOGGLE
-function tog(k){
-  addons[k]=!addons[k];
-  document.getElementById('ck-'+k).classList[addons[k]?'add':'remove']('on');
-  if(k==='colorSeal') document.getElementById('color-picker').classList[addons[k]?'add':'remove']('visible');
-  if(k==='carpetDeod'&&addons[k]) toast('Ã°Å¸ÅÂ¬Ã¯Â¸Â','Smart add!','Deodorizer neutralizes odors Ã¢â¬â not just masks them.','milestone');
-  if(k==='scotchgard'&&addons[k]) toast('Ã°Å¸âºÂ¡Ã¯Â¸Â','Protected!','Scotchgard adds a 3Ãâ longer-lasting barrier.','milestone');
-  if(k==='fabricProt'&&addons[k]) toast('Ã°Å¸âºÂ¡Ã¯Â¸Â','Furniture protected!','Fabric Protector repels spills before they soak in.','milestone');
-  if(k==='colorSeal'&&addons[k]) toast('Ã°Å¸Å½Â¨','Great choice!','Pick a grout color below.','milestone');
-  recalc();
-}
-function togU(k){
-  upsells[k]=!upsells[k];
-  document.getElementById('uk-'+k).classList[upsells[k]?'add':'remove']('on');
-  document.getElementById('uc-'+k).classList[upsells[k]?'add':'remove']('on');
-  recalcModal();
-}
-
-// COLOR
-function pickColor(i){
-  COLORS.forEach((_,j)=>document.getElementById('sw'+j).classList.remove('picked'));
-  document.getElementById('sw'+i).classList.add('picked');
-  selColor=COLORS[i];
-  document.getElementById('color-chosen').classList.add('show');
-  document.getElementById('cdot').style.background=selColor.h;
-  document.getElementById('cname').textContent=selColor.n;
-  toast('Ã¢Åâ¦',`Color: ${selColor.n}`,"We'll match this exactly on-site.",'celebrate');
-  recalc();
-}
-
-// RECALC
-
-// Ã¢ââ¬Ã¢ââ¬ CHAT Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬
-const CHAT_RESPONSES = {
-  pricing: {
-    q: "Ã°Å¸âÂ° Pricing question",
-    a: "Great question! Carpet starts at $99 for the first room, $50 each additional. Tile is $125/room, windows $13 each. The best way to get an exact number is to scroll up and build your quote Ã¢â¬â it calculates everything live including your 10% seasonal discount! Ã°Å¸Å½â°"
-  },
-  area: {
-    q: "Ã°Å¸âÂ Do you service my area?",
-    a: "We cover 33+ cities across Maryland and Delaware's Eastern Shore Ã¢â¬â Salisbury, Ocean City, Rehoboth Beach, Bethany Beach, Lewes, Cambridge, Easton, and everywhere in between. Drop your ZIP in the booking form and we'll confirm! Ã°Å¸âÂ"
-  },
-  pet: {
-    q: "Ã°Å¸ÂÂ¾ Pet odor help",
-    a: "Pet odor is one of our specialties! Our RFÃ¢âÂ¢ residue-free process is key here Ã¢â¬â regular cleaning leaves soap residue that actually traps pet dander and re-soils faster. We also have a Deodorizer treatment that neutralizes odors at the source, not just masks them. Ã°Å¸ÂÂ¾"
-  },
-  upholstery: {
-    name: 'Upholstery Refresh',
-    items: '1 Sofa Â· 1 Loveseat Â· 2 Chairs Â· Fabric Protector',
-    price: 242,
-    savings: 'Ã°Å¸ÅÂ¸ Spring discount applied Ã¢â¬â saves $27',
-    counts: {},
-    upholstery: {sofa:1, loveseat:1, chair:2},
-    addons: {fabricProt:true},
-  },
-  rental: {
-    q: "Ã°Å¸ÂâÃ¯Â¸Â Vacation rental",
-    a: "Vacation rental turnovers are a big part of what we do on the Shore. Carpet, tile, windows Ã¢â¬â we can knock out a full property in one visit. Guests always notice clean windows and fresh carpet. Want me to help you build a turnover quote? Ã°Å¸ÂâÃ¯Â¸Â"
-  },
-};
-
-let chatOpen = false;
-let nudgeShown = false;
-
-// Show nudge after 8 seconds
-setTimeout(()=>{
-  if(!chatOpen && !nudgeShown){
-    nudgeShown = true;
-    document.getElementById('chat-nudge').style.display = 'block';
-    setTimeout(()=>{ document.getElementById('chat-nudge').style.display='none'; }, 6000);
-  }
-}, 8000);
-
-function toggleChat(){
-  chatOpen = !chatOpen;
-  document.getElementById('chat-window').classList.toggle('open', chatOpen);
-  document.getElementById('chat-nudge').style.display = 'none';
-  if(chatOpen) document.getElementById('chat-input').focus();
-}
-
-function chatQuick(key){
-  const r = CHAT_RESPONSES[key];
-  if(!r) return;
-  // Remove quick replies
-  document.getElementById('chat-qrs').style.display = 'none';
-  addChatMsg(r.q, 'me');
-  showTyping();
-  setTimeout(()=>{
-    removeTyping();
-    addChatMsg(r.a, 'them');
-    // After response show callback CTA
-    setTimeout(()=>{
-      addChatMsg("Still have questions? I can call you back Ã¢â¬â just tap below Ã°Å¸ââ¡", 'them');
-      addCallbackCTA();
-    }, 1000);
-  }, 1200);
-}
-
-function sendChat(){
-  const inp = document.getElementById('chat-input');
-  const msg = inp.value.trim();
-  if(!msg) return;
-  inp.value = '';
-  document.getElementById('chat-qrs').style.display = 'none';
-  addChatMsg(msg, 'me');
-  showTyping();
-  setTimeout(()=>{
-    removeTyping();
-    // Smart auto-responses
-    const low = msg.toLowerCase();
-    let reply = '';
-    if(low.includes('price')||low.includes('cost')||low.includes('how much'))
-      reply = CHAT_RESPONSES.pricing.a;
-    else if(low.includes('area')||low.includes('zip')||low.includes('location')||low.includes('service'))
-      reply = CHAT_RESPONSES.area.a;
-    else if(low.includes('pet')||low.includes('dog')||low.includes('cat')||low.includes('odor'))
-      reply = CHAT_RESPONSES.pet.a;
-    else if(low.includes('rental')||low.includes('airbnb')||low.includes('vacation'))
-      reply = CHAT_RESPONSES.rental.a;
-    else if(low.includes('hello')||low.includes('hi')||low.includes('hey'))
-      reply = "Hey! Ã°Å¸ââ¹ Happy to help. You can ask me about pricing, service areas, pet odors, vacation rentals Ã¢â¬â or just scroll up and build your quote directly!";
-    else if(low.includes('book')||low.includes('schedule')||low.includes('appoint'))
-      reply = "The fastest way to book is to build your quote right on this page and hit Confirm Booking Ã¢â¬â takes about 60 seconds! Or if you'd rather talk, I can call you back. Ã°Å¸âÅ¾";
-    else
-      reply = "Great question! For the fastest answer, call us at (443) 856-3244 or I can call you back Ã¢â¬â just let me know a good time. We cover the entire Eastern Shore! Ã°Å¸ÅÂ´";
-    addChatMsg(reply, 'them');
-    setTimeout(()=>{
-      addChatMsg("Want me to call you? Leave your number below Ã°Å¸ââ¡", 'them');
-      addCallbackCTA();
-    }, 900);
-  }, 1400);
-}
-
-function addChatMsg(text, who){
-  const msgs = document.getElementById('chat-msgs');
-  const div = document.createElement('div');
-  div.className = `chat-msg ${who==='me'?'me':''}`;
-  div.innerHTML = who==='them'
-    ? `<div class="chat-msg-avatar">Ã°Å¸ÅÂ´</div><div class="chat-msg-bubble">${text}</div>`
-    : `<div class="chat-msg-bubble">${text}</div>`;
-  msgs.appendChild(div);
-  msgs.scrollTop = msgs.scrollHeight;
-}
-
-function showTyping(){
-  const msgs = document.getElementById('chat-msgs');
-  const div = document.createElement('div');
-  div.className = 'chat-msg'; div.id = 'chat-typing';
-  div.innerHTML = `<div class="chat-msg-avatar">Ã°Å¸ÅÂ´</div><div class="chat-typing"><div class="chat-typing-dot"></div><div class="chat-typing-dot"></div><div class="chat-typing-dot"></div></div>`;
-  msgs.appendChild(div);
-  msgs.scrollTop = msgs.scrollHeight;
-}
-function removeTyping(){ const el=document.getElementById('chat-typing'); if(el)el.remove(); }
-
-let callbackCTAAdded = false;
-function addCallbackCTA(){
-  if(callbackCTAAdded) return;
-  callbackCTAAdded = true;
-  const msgs = document.getElementById('chat-msgs');
-  const div = document.createElement('div');
-  div.style.cssText = 'padding:4px 0';
-  div.innerHTML = `<button onclick="toggleChat();document.getElementById('cb-phone').focus();document.getElementById('cb-phone').scrollIntoView({behavior:'smooth',block:'center'})" style="width:100%;padding:10px;background:var(--teal);color:white;border:none;border-radius:10px;font-size:13px;font-weight:800;cursor:pointer;margin-top:4px">Ã°Å¸âÅ¾ Request a Callback</button>`;
-  msgs.appendChild(div);
-  msgs.scrollTop = msgs.scrollHeight;
-}
-
-// Ã¢ââ¬Ã¢ââ¬ CALLBACK Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬
-function fmtCb(el){
-  const d=el.value.replace(/\D/g,'').slice(0,10);
-  if(d.length<4)el.value=d;
-  else if(d.length<7)el.value=`(${d.slice(0,3)}) ${d.slice(3)}`;
-  else el.value=`(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6)}`;
-}
-
-async function submitCallback(){
-  const phone = document.getElementById('cb-phone').value.trim();
-  const time  = document.getElementById('cb-time').value;
-  if(phone.replace(/\D/g,'').length < 10){
-    document.getElementById('cb-phone').style.borderColor='var(--red)';
-    setTimeout(()=>document.getElementById('cb-phone').style.borderColor='',2000);
-    return;
-  }
-  try{
-    await fetch('/api/booking',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({type:'callback',phone,best_time:time||'Anytime',source:'booking_page',timestamp:new Date().toISOString()})
-    });
-  }catch{}
-  document.getElementById('cb-time-confirm').textContent = time ? `${time}` : 'soon';
-  document.getElementById('cb-sent').classList.add('show');
-  document.getElementById('cb-phone').value='';
-  document.getElementById('cb-time').value='';
-  toast('Ã°Å¸âÅ¾','Callback requested!','We\'ll call you ' + (time||'soon') + '.','savings',4000);
-}
-
-
-
-// Ã¢ââ¬Ã¢ââ¬ QUICK BOOK Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬Ã¢ââ¬
-const QB_PACKAGES = {
-  starter: {
-    name: 'RF99Ã¢âÂ¢ Starter',
-    items: '1 Carpet Room Â· RF99Ã¢âÂ¢ Process',
-    price: 99,
-    savings: 'Ã°Å¸ÅÂ¸ RF99Ã¢âÂ¢ promo rate',
-    counts: {carpet:1},
-    addons: {},
-  },
-  home: {
-    name: 'Home Clean',
-    items: '3 Carpet Rooms Â· 1 Tile Room',
-    price: 277,
-    savings: 'Ã°Å¸ÅÂ¸ Spring + Mix & Match Ã¢â¬â saves $47',
-    counts: {carpet:3, tile:1},
-    addons: {},
-  },
-  fullhouse: {
-    name: 'Full House',
-    items: '5 Carpet Â· 2 Tile Â· 10 Windows',
-    price: 581,
-    savings: 'Ã°Å¸ÅÂ¸ Spring + Mix & Match Ã¢â¬â saves $98',
-    counts: {carpet:5, tile:2, windows:10},
-    addons: {},
-  },
-  pet: {
-    name: 'Pet Home',
-    items: '3 Carpet Â· Deodorizer Â· Scotchgard',
-    price: 301,
-    savings: 'Ã°Å¸ÅÂ¸ Spring discount applied Ã¢â¬â saves $33',
-    counts: {carpet:3},
-    addons: {scotchgard:true, carpetDeod:true},
-  },
-  upholstery: {
-    name: 'Upholstery Refresh',
-    items: '1 Sofa Â· 1 Loveseat Â· 2 Chairs Â· Fabric Protector',
-    price: 242,
-    savings: 'Ã°Å¸ÅÂ¸ Spring discount applied Ã¢â¬â saves $27',
-    counts: {},
-    upholstery: {sofa:1, loveseat:1, chair:2},
-    addons: {fabricProt:true},
-  },
-  rental: {
-    name: 'Vacation Rental',
-    items: '3 Carpet Â· 2 Bath Tile Â· 12 Windows',
-    price: 517,
-    savings: 'Ã°Å¸ÅÂ¸ Spring + Mix & Match Ã¢â¬â saves $88',
-    counts: {carpet:3, bath_tile:2, windows:12},
-    addons: {},
-  },
-};
-
-let qcSMSOn = false;
-let selectedPkg = null;
-
-// Show QB popup after 1.5s on first visit
-(()=>{
-  // Only show once per session
-  if(sessionStorage.getItem('qb_seen')) return;
-  sessionStorage.setItem('qb_seen','1');
-  setTimeout(()=>{
-    document.getElementById('qb-overlay').classList.add('open');
-  }, 1500);
-})();
-
-function closeQB(){
-  document.getElementById('qb-overlay').classList.remove('open');
-}
-
-function selectPackage(key){
-  selectedPkg = QB_PACKAGES[key];
-  if(!selectedPkg){ return; }
-  closeQB();
-  // Populate quick checkout
-  document.getElementById('qc-pkg-name').textContent = selectedPkg.name;
-  document.getElementById('qc-pkg-items').textContent = selectedPkg.items;
-  document.getElementById('qc-pkg-price').textContent = selectedPkg.price;
-  document.getElementById('qc-pkg-savings').textContent = selectedPkg.savings;
-  document.getElementById('qc-btn-price').textContent = selectedPkg.price;
-  document.getElementById('qc-date').min = new Date().toISOString().split('T')[0];
-  document.getElementById('qc-overlay').classList.add('open');
-  // Toast
-  toast('Ã¢Å¡Â¡', selectedPkg.name + ' selected!', 'Fill in your info Ã¢â¬â takes 30 seconds.', 'savings', 3000);
-}
-
-function backToPackages(){
-  document.getElementById('qc-overlay').classList.remove('open');
-  document.getElementById('qb-overlay').classList.add('open');
-}
-
-function toggleQCSMS(){
-  qcSMSOn = !qcSMSOn;
-  const check = document.getElementById('qc-sms-check');
-  const svg   = document.getElementById('qc-sms-svg');
-  check.style.background   = qcSMSOn ? '#15803d' : 'white';
-  check.style.borderColor  = qcSMSOn ? '#15803d' : '#86efac';
-  svg.style.display        = qcSMSOn ? 'block' : 'none';
-}
-
-function fmtQC(el){
-  const d=el.value.replace(/\D/g,'').slice(0,10);
-  if(d.length<4)el.value=d;
-  else if(d.length<7)el.value=`(${d.slice(0,3)}) ${d.slice(3)}`;
-  else el.value=`(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6)}`;
-}
-
-async function submitQuickBook(){
-  if(!selectedPkg) return;
-  const g = id => document.getElementById(id);
-
-  // Validate
-  let ok = true;
-  ['qc-name','qc-phone','qc-date','qc-street','qc-city','qc-zip'].forEach(id=>{
-    const el = g(id);
-    const v  = el.value.trim();
-    const valid = id==='qc-phone' ? v.replace(/\D/g,'').length===10
-                : id==='qc-zip'   ? /^\d{5}$/.test(v)
-                : v.length > 0;
-    el.classList.toggle('err', !valid);
-    if(!valid) ok = false;
-  });
-  if(!ok){
-    toast('Ã¢Å¡Â Ã¯Â¸Â','Missing info','Please fill in all required fields.','milestone',3000);
-    return;
-  }
-
-  const btn = g('qc-btn');
-  btn.disabled = true;
-  btn.textContent = 'SendingÃ¢â¬Â¦';
-
-  const payload = {
-    type: 'booking',
-    source: 'quick_book',
-    package: selectedPkg.name,
-    customer: {
-      name:   g('qc-name').value,
-      phone:  g('qc-phone').value,
-      email:  g('qc-email').value,
-      date:   g('qc-date').value,
-      time:   g('qc-time').value,
-      street: g('qc-street').value,
-      city:   g('qc-city').value,
-      state:  'MD',
-      zip:    g('qc-zip').value,
-      sms_optin: qcSMSOn,
-    },
-    services: { counts: selectedPkg.counts || {} },
-    upholstery: selectedPkg.upholstery || {},
-    addons:   selectedPkg.addons,
-    grand_total: selectedPkg.price,
-    timestamp: new Date().toISOString(),
-  };
-
-  try{
-    await fetch('/api/booking',{
-      method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)
-    });
-  }catch{}
-
-  // Success
-  document.getElementById('qc-overlay').classList.remove('open');
-  const confNum = 'TB'+Math.floor(100000+Math.random()*900000);
-  document.getElementById('cnum').textContent = confNum;
-  document.getElementById('sdet').innerHTML = `
-    <strong style="color:#004d59">Package:</strong> ${selectedPkg.name}<br>
-    <strong style="color:#004d59">Name:</strong> ${payload.customer.name}${qcSMSOn?' Ã°Å¸âÂ±':''}<br>
-    <strong style="color:#004d59">Phone:</strong> ${payload.customer.phone}<br>
-    <strong style="color:#004d59">Date:</strong> ${payload.customer.date||'TBD'}${payload.customer.time?' Â· '+payload.customer.time:''}<br>
-    <strong style="color:#004d59">Address:</strong> ${payload.customer.street}, ${payload.customer.city} ${payload.customer.zip}<br>
-    <hr style="border:none;border-top:1px solid rgba(0,105,120,.15);margin:8px 0">
-    <strong style="color:#004d59">Services:</strong> ${selectedPkg.items}<br>
-    <strong style="color:#004d59">Total:</strong> $${selectedPkg.price}<br>
-    <div style="font-size:11px;color:#94a3b8;margin-top:6px">Final price confirmed on-site Â· We'll call to confirm</div>
-  `;
-  document.getElementById('sovl').classList.add('open');
-
-  if(typeof gtag!=='undefined'){
-    gtag('event','quick_book_submitted',{currency:'USD',value:selectedPkg.price,item_name:selectedPkg.name});
-  }
-}
-
-
-function recalc(){
-  panels();
-  const hw=parseFloat(document.getElementById('hw').value)||0;
-  const sf=parseFloat(document.getElementById('sf').value)||0;
-  const tt=counts.tile+counts.bath_tile;
-  const carpetC=counts.carpet>0?P.carpet_first+(counts.carpet-1)*P.carpet_add:0;
-  const hwC=Math.round(hw*P.hardwood);
-  const tileC=counts.tile*P.tile+counts.bath_tile*P.bath_tile;
-  // Upholstery Ã¢â¬â use upCounts (new system)
-  const upData=calcUpTotal();
-  const {sofaC,loveC,chairC,diningC,sectC,sectDeodC,sectProtC}=upData;
-  const upC=sofaC+loveC+chairC+diningC+sectC+sectDeodC+sectProtC;
-  const upPcs=upCounts.sofa+upCounts.loveseat+upCounts.chair; // for shared add-ons (deod/prot)
-  const winC=counts.windows*P.window;
-  const rugN=counts.rug_small+counts.rug_medium+counts.rug_large+counts.rug_oversized;
-  const rugC=rugN>0?counts.rug_small*P.rug_small+counts.rug_medium*P.rug_medium+counts.rug_large*P.rug_large+counts.rug_oversized*P.rug_oversized+rugN*P.rug_pickup:0;
-  const ezC=counts.ezbreeze>0?counts.ezbreeze*P.ezbreeze_panel+P.ezbreeze_track:0;
-  const base=carpetC+hwC+tileC+upC+winC+rugC+ezC; // upC already includes all up addons
-  const sc=addons.scotchgard?counts.carpet*P.scotchgard:0;
-  const cd=addons.carpetDeod?counts.carpet*P.carpetDeod:0;
-  const gr=addons.grout?tt*P.grout:0;
-  const cs=addons.colorSeal?tt*P.colorSeal:0;
-  const scr=addons.screens?counts.windows*P.screens:0;
-  const fp=addons.fabricProt?upPcs*P.fabricProt_piece:0;
-  const ud=addons.upDeod?upPcs*P.upDeod_piece:0;
-  const addC=sc+cd+gr+cs+scr+fp+ud;
-  const pm={scotchgard:sc,carpetDeod:cd,grout:gr,colorSeal:cs,screens:scr,fabricProt:fp,upDeod:ud};
-  Object.entries(pm).forEach(([k,v])=>{const el=document.getElementById('pr-'+k);if(el)el.textContent=v>0?`+$${v}`:'+$0';});
-  const sub=base+addC;
-  const seaD=sub>0?Math.round(sub*P.sea):0;
-  const svcN=[carpetC>0,hwC>0,tileC>0,upC>0,winC>0,ezC>0,rugN>0].filter(Boolean).length;
-  const autoM=svcN>=2;
-
-  // Savings popup trigger
-  if(autoM&&!multiPopShown&&base>=500){
-    multiPopShown=true;upsells.multi=true;
-    document.getElementById('uk-multi').classList.add('on');
-    document.getElementById('uc-multi').classList.add('on');
-    document.getElementById('mdesc').textContent='Ã¢Åâ Auto-applied Ã¢â¬â 2+ service categories selected.';
-    setTimeout(()=>showSavingsPop(Math.round(base*P.multi),seaD),400);
-  }
-  if(svcN===1&&prevSvcCount===0) toast('Ã°Å¸Å½â°','Great start!','Add a second service to unlock your Mix & Match discount.','milestone',3500);
-  prevSvcCount=svcN;
-
-  const multiD=autoM?Math.round(base*P.multi):0;
-  const bund=upsells.bundle?P.starter:0;
-  const promoD=promoDiscount>0?Math.round(sub*promoDiscount/100):0;
-  const grand=Math.max(0,sub-seaD-multiD-promoD+bund);
-  document.getElementById('mprice').textContent=multiD>0?`Ã¢Ëâ$${multiD}`:'Ã¢Ëâ5%';
-
-  // Estimate card
-  const ec=document.getElementById('est-card');
-  if(base>0){
-    ec.style.display='block';
-    const L=[];
-    if(carpetC) L.push([`Ã°Å¸ÂÂ  Carpet Ã¢â¬â ${counts.carpet} room${counts.carpet>1?'s':''}`,carpetC]);
-    if(hwC) L.push([`Ã°Å¸ÂªÂµ Hardwood Ã¢â¬â ${hw.toLocaleString()} sq ft`,hwC]);
-    if(counts.tile) L.push([`Ã¢Â¬Å Tile Ã¢â¬â ${counts.tile} room${counts.tile>1?'s':''}`,counts.tile*P.tile]);
-    if(counts.bath_tile) L.push([`Ã°Å¸Å¡Â¿ Bathroom Ã¢â¬â ${counts.bath_tile} bath${counts.bath_tile>1?'s':''}`,counts.bath_tile*P.bath_tile]);
-    // Upholstery line items
-    if(sofaC)  L.push([`Ã°Å¸âºâ¹Ã¯Â¸Â Sofas Ãâ ${upCounts.sofa}`, sofaC]);
-    if(loveC)  L.push([`Ã°Å¸âºâ¹Ã¯Â¸Â Loveseats Ãâ ${upCounts.loveseat}`, loveC]);
-    if(chairC) L.push([`Ã°Å¸Âªâ Chairs Ãâ ${upCounts.chair}`, chairC]);
-    if(diningC)L.push([`Ã°Å¸ÂÂ½Ã¯Â¸Â Dining Chairs Ãâ ${upCounts.dining} (${upData.diningTypeLabel})`, diningC]);
-    if(sectC)  L.push([`Ã°Å¸âºâ¹Ã¯Â¸Â Sectional Ã¢â¬â ${upData.sf}ft`, sectC]);
-    if(sectDeodC) L.push(['Ã¢â Â³ Sectional Deodorizer (flat)', sectDeodC,'sub']);
-    if(sectProtC) L.push(['Ã¢â Â³ Sectional Protector (flat)', sectProtC,'sub']);
-    if(fp&&upPcs>0) L.push([`Ã¢â Â³ Fabric Protector Ãâ ${upPcs} pieces`,fp,'sub']);
-    if(ud&&upPcs>0) L.push([`Ã¢â Â³ Deodorizer Ãâ ${upPcs} pieces`,ud,'sub']);
-    if(winC) L.push([`Ã°Å¸ÂªÅ¸ Windows Ã¢â¬â ${counts.windows}`,winC]);
-    if(ezC) L.push([`Ã°Å¸ÅÂ¬Ã¯Â¸Â EZ Breeze Ã¢â¬â ${counts.ezbreeze} panels`,ezC]);
-    if(rugC) L.push([`Ã°Å¸Âªâ Rugs Ã¢â¬â ${rugN} (incl. pickup)`,rugC]);
-    if(sc) L.push(['Ã¢â Â³ Scotchgard',sc,'sub']);
-    if(cd) L.push(['Ã¢â Â³ Carpet Deodorizer',cd,'sub']);
-    if(gr) L.push(['Ã¢â Â³ Grout Sealing',gr,'sub']);
-    if(cs) L.push([`Ã¢â Â³ Color Seal${selColor?' Ã¢â¬â '+selColor.n:''}`,cs,'sub']);
-    if(scr) L.push(['Ã¢â Â³ Screens & Tracks',scr,'sub']);
-    if(seaD) L.push([`${season.emoji} Seasonal Discount (10%)`,-seaD,'disc']);
-    if(multiD) L.push(['Ã°Å¸âÂ¸ Mix & Match (5%)',-multiD,'disc']);
-    if(promoD) L.push([`Ã°Å¸Å½Å¸Ã¯Â¸Â Promo: ${promoCode} (${promoDiscount}%)`,-promoD,'disc']);
-    if(bund) L.push(['Ã°Å¸ÅÂ´ RF99Ã¢âÂ¢ Starter Pack',bund]);
-    document.getElementById('est-lines').innerHTML=L.map(([l,v,c])=>`<div class="est-line ${c||''}"><span>${l}</span><strong>${v<0?'Ã¢Ëâ$'+Math.abs(v):'+$'+v}</strong></div>`).join('');
-    document.getElementById('gtotal').textContent=grand;
-  } else { ec.style.display='none'; }
-
-  const saved=seaD+multiD+promoD;
-  const msg=saved>0?`${season.emoji} Saving $${saved} today`:'';
-  ['stag','bsave'].forEach(id=>{const el=document.getElementById(id);if(el){el.textContent=msg;el.style.display=msg?'block':'none';}});
-  ['sg','bg','bprice','mtotal'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=grand;});
-  return{base,grand,seaD,multiD,bund,addC,promoD};
-}
-function recalcModal(){const r=recalc();document.getElementById('mbtn').innerHTML=`Add Selected Ã¢â¬â $${r.grand}`;}
-
-// AI FALLBACK
-const QUICK_FILLS={pet:'3 bedrooms, hallway, one sofa Ã¢â¬â strong pet odor throughout, hardwood in living room',rental:'Vacation rental turnover Ã¢â¬â 3 bedrooms, 2 bathrooms with tile, kitchen tile, 12 windows',move:'Move-out Ã¢â¬â 4 bedrooms carpet, tile kitchen, 2 bathrooms, need spotless for deposit'};
-function quickFill(type){document.getElementById('ai-inp').value=QUICK_FILLS[type];askAI();}
-
-function generateFallback(inp){
-  const low=inp.toLowerCase();
-  const hasPet=low.includes('pet')||low.includes('dog')||low.includes('cat')||low.includes('odor');
-  const hasRental=low.includes('rental')||low.includes('airbnb')||low.includes('vacation');
-  const hasTile=low.includes('tile')||low.includes('kitchen')||low.includes('bathroom');
-  const hasWindows=low.includes('window');
-  const beds=parseInt((inp.match(/(\d+)\s*bed/i)||[])[1])||2;
-  let text=`Great Ã¢â¬â here's what I'd recommend. `;
-  const s={carpet:beds,tile:0,bath_tile:0,chairs:0,loveseats:0,sofas:0,windows:0,scotchgard:false,carpetDeod:hasPet,grout:false,fabricProt:false,upDeod:false,screens:false};
-  if(hasPet){text+=`Since you have pets, I'd prioritize RFÃ¢âÂ¢ carpet cleaning for all ${beds} rooms Ã¢â¬â the residue-free process means no soap residue trapping pet dander. Add the Deodorizer to neutralize odors at the source. `;s.scotchgard=true;}
-  else text+=`I'd start with ${beds} rooms of RF99Ã¢âÂ¢ carpet cleaning Ã¢â¬â the RFÃ¢âÂ¢ process leaves zero sticky residue so your carpets stay cleaner longer. `;
-  if(hasTile){text+=`For the tile, our 1,200+ PSI deep clean restores grout lines Ã¢â¬â add Grout Sealing to lock it in. `;s.tile=1;s.bath_tile=1;s.grout=true;}
-  if(hasRental){text+=`For vacation rentals, window cleaning is essential Ã¢â¬â guests always notice. `;s.windows=10;}
-  if(hasWindows){s.windows=s.windows||8;s.screens=true;}
-  text+=`Tap "Apply to my quote" to fill everything in automatically.`;
-  return{text,counts:s};
-}
-
-function typewriter(el,text,onDone){
-  let i=0;
-  const cursor=document.createElement('span');
-  cursor.className='ai-cursor';
-  el.appendChild(cursor);
-  const iv=setInterval(()=>{
-    if(i<text.length){el.insertBefore(document.createTextNode(text[i]),cursor);i++;}
-    else{clearInterval(iv);cursor.remove();if(onDone)onDone();}
-  },16);
-}
-
-async function askAI(){
-  const inp=document.getElementById('ai-inp').value.trim();
-  if(!inp)return;
-  const btn=document.getElementById('ai-btn');
-  const think=document.getElementById('ai-think');
-  const resp=document.getElementById('ai-resp');
-  const textEl=document.getElementById('ai-text');
-  const applyBtn=document.getElementById('ai-apply');
-  btn.disabled=true;think.classList.add('show');resp.classList.remove('show');
-  textEl.innerHTML='';applyBtn.classList.remove('show');aiSuggestion=null;
-
-  const GEMINI_KEY='YOUR_GEMINI_API_KEY_HERE';
-  if(!GEMINI_KEY||GEMINI_KEY==='YOUR_GEMINI_API_KEY_HERE'){
-    think.classList.remove('show');resp.classList.add('show');
-    const{text,counts:s}=generateFallback(inp);
-    typewriter(textEl,text,()=>{aiSuggestion=s;applyBtn.classList.add('show');});
-    btn.disabled=false;return;
-  }
-  try{
-    const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{role:'user',parts:[{text:`You are the AI quote assistant for Tropical Breeze RFÃ¢âÂ¢. Customer says: "${inp}". Recommend services warmly in 3-4 sentences, then output raw JSON: {"carpet":0,"tile":0,"bath_tile":0,"chairs":0,"loveseats":0,"sofas":0,"windows":0,"scotchgard":false,"carpetDeod":false,"grout":false,"fabricProt":false,"upDeod":false,"screens":false}`}]}],generationConfig:{temperature:.85,maxOutputTokens:600}})});
-    const d=await res.json();
-    const raw=d.candidates?.[0]?.content?.parts?.[0]?.text||'';
-    const ji=raw.lastIndexOf('\n{');
-    const displayText=(ji>-1?raw.slice(0,ji):raw).trim();
-    const jsonStr=ji>-1?raw.slice(ji).trim():null;
-    think.classList.remove('show');resp.classList.add('show');
-    typewriter(textEl,displayText,()=>{
-      if(jsonStr){try{aiSuggestion=JSON.parse(jsonStr);applyBtn.classList.add('show');}catch{}}
-    });
-  }catch{
-    think.classList.remove('show');resp.classList.add('show');
-    const{text,counts:s}=generateFallback(inp);
-    typewriter(textEl,text,()=>{aiSuggestion=s;applyBtn.classList.add('show');});
-  }
-  btn.disabled=false;
-}
-document.getElementById('ai-inp').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();askAI();}});
-
-function applyAISuggestion(){
-  if(!aiSuggestion)return;
-  const s=aiSuggestion;
-  ['carpet','tile','bath_tile','chairs','loveseats','sofas','windows'].forEach(k=>{
-    if(s[k]>0){counts[k]=s[k];const v=document.getElementById('val-'+k);if(v){v.textContent=s[k];v.classList.remove('pop');void v.offsetWidth;v.classList.add('pop');}}
-  });
-  ['scotchgard','carpetDeod','grout','fabricProt','upDeod','screens'].forEach(k=>{
-    if(s[k]&&!addons[k]){addons[k]=true;const c=document.getElementById('ck-'+k);if(c)c.classList.add('on');}
-  });
-  recalc();panels();
-  toast('Ã¢Åâ¦','Quote applied!','Scroll down to review and adjust.','savings',4000);
-  document.getElementById('est-card').scrollIntoView({behavior:'smooth',block:'start'});
-}
-
-// PHONE FORMAT
-function fmtPh(el){const d=el.value.replace(/\D/g,'').slice(0,10);if(d.length<4)el.value=d;else if(d.length<7)el.value=`(${d.slice(0,3)}) ${d.slice(3)}`;else el.value=`(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6)}`;}
-
-// VALIDATE
-function validate(){
-  let ok=true;
-  [['fn','en',v=>v.trim()],['fp','ep',v=>v.replace(/\D/g,'').length===10],['fd','ed',v=>v],['fst','est2',v=>v.trim()],['fc','ec',v=>v.trim()],['fz','ez',v=>/^\d{5}$/.test(v)]].forEach(([f,e,t])=>{
-    const v=document.getElementById(f).value,p=!!t(v);
-    document.getElementById(e).classList[p?'remove':'add']('show');
-    document.getElementById(f).classList[p?'remove':'add']('error');
-    if(!p)ok=false;
-  });
-  return ok;
-}
-
-function openUpsell(){
-  if(!validate()){document.getElementById('fn').scrollIntoView({behavior:'smooth',block:'center'});toast('Ã¢Å¡Â Ã¯Â¸Â','Almost there!','Fill in your info below to confirm.','milestone',3000);return;}
-  recalcModal();
-  // If multi-service discount already auto-applied, hide that card from modal
-  const multiCard=document.getElementById('uc-multi');
-  if(multiPopShown){
-    multiCard.style.display='none';
-  } else {
-    multiCard.style.display='flex';
-  }
-  document.getElementById('umodal').classList.add('open');
-}
-
-// SUBMIT
-async function submitBooking(skip){
-  document.getElementById('umodal').classList.remove('open');
-  if(skip)upsells.bundle=false;
-  const{grand,seaD,multiD,promoD}=recalc();
-  const g=id=>document.getElementById(id).value;
-
-  // GA4 event
-  if(typeof gtag!=='undefined') gtag('event','booking_submitted',{currency:'USD',value:grand,items:[{item_name:'Cleaning Service',price:grand}]});
-
-  const payload={
-    customer:{name:g('fn'),phone:g('fp'),email:g('fe'),date:g('fd'),time:g('ft'),street:g('fst'),city:g('fc'),state:g('fstate'),zip:g('fz'),notes:g('fnotes'),sms_optin:smsOptIn},
-    services:{counts:{...counts},hardwood_sqft:parseFloat(g('hw'))||0,sectional_ft:parseFloat(g('sf'))||0},
-    room_labels:{carpet:roomSelections.carpet,tile:roomSelections.tile,bath:roomSelections.bath_tile},
-    addons:{...addons},grout_color:selColor?.n||null,upsells:{...upsells},
-    promo_code:promoCode||null,promo_discount:promoDiscount,
-    hear_source:hearSource,grand_total:grand,
-    season:season.emoji,source:'booking_html',timestamp:new Date().toISOString()
-  };
-
-  // Build line items for email
-  const emailLines = [];
-  const addLine = (l,v,cls='') => emailLines.push({label:l, value:v, cls:cls});
-  if(counts.carpet>0){
-    const rms=roomSelections.carpet;
-    addLine('Carpet - 1st room'+(rms[0]?' ('+rms[0]+')':''), P.carpet_first);
-    for(let i=1;i<counts.carpet;i++) addLine('  Additional'+(rms[i]?' ('+rms[i]+')':''), P.carpet_add);
-  }
-  const hwVal=parseFloat(document.getElementById('hw').value)||0;
-  if(hwVal) addLine('Hardwood - '+hwVal+' sq ft', Math.round(hwVal*P.hardwood));
-  for(let i=0;i<counts.tile;i++) addLine('Tile - '+(roomSelections.tile[i]||'Room '+(i+1)), P.tile);
-  for(let i=0;i<counts.bath_tile;i++) addLine('Bathroom - '+(roomSelections.bath_tile[i]||'Bath '+(i+1)), P.bath_tile);
-  const upData2=calcUpTotal();
-  if(upData2.sofaC) addLine('Sofas x '+upCounts.sofa, upData2.sofaC);
-  if(upData2.loveC) addLine('Loveseats x '+upCounts.loveseat, upData2.loveC);
-  if(upData2.chairC) addLine('Chairs x '+upCounts.chair, upData2.chairC);
-  if(upData2.diningC) addLine('Dining Chairs x '+upCounts.dining+' ('+upData2.diningTypeLabel+')', upData2.diningC);
-  if(upData2.sectC) addLine('Sectional - '+upData2.sf+'ft', upData2.sectC);
-  if(upData2.sectDeodC) addLine('Sectional Deodorizer', upData2.sectDeodC);
-  if(upData2.sectProtC) addLine('Sectional Protector', upData2.sectProtC);
-  if(counts.windows) addLine('Windows x '+counts.windows, counts.windows*P.window);
-  if(counts.ezbreeze) addLine('EZ Breeze x '+counts.ezbreeze, counts.ezbreeze*P.ezbreeze_panel);
-  const rugN2=counts.rug_small+counts.rug_medium+counts.rug_large+counts.rug_oversized;
-  if(rugN2) addLine('Rugs (incl. pickup)', counts.rug_small*P.rug_small+counts.rug_medium*P.rug_medium+counts.rug_large*P.rug_large+counts.rug_oversized*P.rug_oversized+rugN2*P.rug_pickup);
-  const sc2=addons.scotchgard?counts.carpet*P.scotchgard:0;
-  const cd2=addons.carpetDeod?counts.carpet*P.carpetDeod:0;
-  const gr2=addons.grout?(counts.tile+counts.bath_tile)*P.grout:0;
-  const cs2=addons.colorSeal?(counts.tile+counts.bath_tile)*P.colorSeal:0;
-  const scr2=addons.screens?counts.windows*P.screens:0;
-  const fp2=addons.fabricProt?(upCounts.sofa+upCounts.loveseat+upCounts.chair)*P.fabricProt_piece:0;
-  const ud2=addons.upDeod?(upCounts.sofa+upCounts.loveseat+upCounts.chair)*P.upDeod_piece:0;
-  if(sc2) addLine('Scotchgard x '+counts.carpet, sc2);
-  if(cd2) addLine('Carpet Deodorizer x '+counts.carpet, cd2);
-  if(gr2) addLine('Grout Sealing', gr2);
-  if(cs2) addLine('Color Seal'+(selColor?' - '+selColor.n:''), cs2);
-  if(scr2) addLine('Screens & Tracks', scr2);
-  if(fp2) addLine('Fabric Protector', fp2);
-  if(ud2) addLine('Upholstery Deodorizer', ud2);
-  const seaD2=grand>0?Math.round(grand*P.sea):0;
-  if(seaD2) addLine('Seasonal Discount (10%)', -seaD2, 'disc');
-  payload.line_items = emailLines;
-  try{await fetch('/api/booking',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});}catch{}
-
-  // Build line items
-  const hw=parseFloat(g('hw'))||0,sf=parseFloat(g('sf'))||0;
-  const upPcs=upCounts.sofa+upCounts.loveseat+upCounts.chair,tt=counts.tile+counts.bath_tile;
-  const lines=[];
-  const lr=(l,v,cls='')=>lines.push(`<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid rgba(0,105,120,.07);font-size:13px;color:${cls==='disc'?'#15803d':'#334155'}"><span>${l}</span><strong>${v==='TBD'?'TBD':v<0?'Ã¢Ëâ$'+Math.abs(v):'$'+v}</strong></div>`);
-  if(counts.carpet>0){const rms=roomSelections.carpet;lr(`Ã°Å¸ÂÂ  Carpet Ã¢â¬â 1st room${rms[0]?' ('+rms[0]+')':''}`,P.carpet_first);for(let i=1;i<counts.carpet;i++)lr(`&nbsp;&nbsp;&nbsp;Ã¢â Â³ Additional${rms[i]?' ('+rms[i]+')':''}`,P.carpet_add);}
-  if(hw) lr(`Ã°Å¸ÂªÂµ Hardwood Ã¢â¬â ${hw.toLocaleString()} sq ft`,Math.round(hw*P.hardwood));
-  for(let i=0;i<counts.tile;i++) lr(`Ã¢Â¬Å Tile Ã¢â¬â ${roomSelections.tile[i]||'Room '+(i+1)}`,P.tile);
-  for(let i=0;i<counts.bath_tile;i++) lr(`Ã°Å¸Å¡Â¿ Bathroom Ã¢â¬â ${roomSelections.bath_tile[i]||'Bath '+(i+1)}`,P.bath_tile);
-  // Upholstery per piece
-  const {sofaC,loveC,chairC,diningC,sectC,sectDeodC,sectProtC,diningTypeLabel,sf:sectFt}=calcUpTotal();
-  if(sofaC)  lr(`Ã°Å¸âºâ¹Ã¯Â¸Â Sofas Ãâ ${upCounts.sofa}`,sofaC);
-  if(loveC)  lr(`Ã°Å¸âºâ¹Ã¯Â¸Â Loveseats Ãâ ${upCounts.loveseat}`,loveC);
-  if(chairC) lr(`Ã°Å¸Âªâ Chairs Ãâ ${upCounts.chair}`,chairC);
-  if(diningC)lr(`Ã°Å¸ÂÂ½Ã¯Â¸Â Dining Chairs Ãâ ${upCounts.dining} (${diningTypeLabel})`,diningC);
-  if(sectC)  lr(`Ã°Å¸âºâ¹Ã¯Â¸Â Sectional Ã¢â¬â ${sectFt}ft`,sectC);
-  if(sectDeodC) lr('&nbsp;&nbsp;&nbsp;Ã¢â Â³ Sectional Deodorizer (flat)',sectDeodC);
-  if(sectProtC) lr('&nbsp;&nbsp;&nbsp;Ã¢â Â³ Sectional Protector (flat)',sectProtC);
-  const submitUpPcs=upCounts.sofa+upCounts.loveseat+upCounts.chair;
-  const subFp=addons.fabricProt?submitUpPcs*P.fabricProt_piece:0;
-  const subUd=addons.upDeod?submitUpPcs*P.upDeod_piece:0;
-  if(subFp&&submitUpPcs>0) lr(`Ã°Å¸âºÂ¡Ã¯Â¸Â Fabric Protector Ãâ ${submitUpPcs} pieces`,subFp);
-  if(subUd&&submitUpPcs>0) lr(`Ã°Å¸ÅÂ¬Ã¯Â¸Â Deodorizer Ãâ ${submitUpPcs} pieces`,subUd);
-  if(counts.windows) lr(`Ã°Å¸ÂªÅ¸ Windows Ãâ ${counts.windows}`,counts.windows*P.window);
-  if(counts.storm)   lr(`Ã°Å¸ÅÂ¨Ã¯Â¸Â Storm Windows Ãâ ${counts.storm} (price confirmed on-site)`,'TBD');
-  if(counts.ezbreeze){lr(`Ã°Å¸ÅÂ¬Ã¯Â¸Â EZ Breeze Ãâ ${counts.ezbreeze}`,counts.ezbreeze*P.ezbreeze_panel);lr('&nbsp;&nbsp;&nbsp;Ã¢â Â³ Track fee',P.ezbreeze_track);}
-  const rugN=counts.rug_small+counts.rug_medium+counts.rug_large+counts.rug_oversized;
-  if(counts.rug_small) lr(`Ã°Å¸Âªâ Small Rugs Ãâ ${counts.rug_small}`,counts.rug_small*P.rug_small);
-  if(counts.rug_medium) lr(`Ã°Å¸Âªâ Medium Rugs Ãâ ${counts.rug_medium}`,counts.rug_medium*P.rug_medium);
-  if(counts.rug_large) lr(`Ã°Å¸Âªâ Large Rugs Ãâ ${counts.rug_large}`,counts.rug_large*P.rug_large);
-  if(counts.rug_oversized) lr(`Ã°Å¸Âªâ Oversized Ãâ ${counts.rug_oversized}`,counts.rug_oversized*P.rug_oversized);
-  if(rugN) lr(`&nbsp;&nbsp;&nbsp;Ã¢â Â³ Pickup Ãâ ${rugN}`,rugN*P.rug_pickup);
-  if(addons.scotchgard&&counts.carpet) lr(`Ã°Å¸âºÂ¡Ã¯Â¸Â Scotchgard Ãâ ${counts.carpet}`,counts.carpet*P.scotchgard);
-  if(addons.carpetDeod&&counts.carpet) lr(`Ã°Å¸ÅÂ¬Ã¯Â¸Â Carpet Deodorizer Ãâ ${counts.carpet}`,counts.carpet*P.carpetDeod);
-  if(addons.grout&&tt) lr(`Ã°Å¸ââ Grout Sealing Ãâ ${tt}`,tt*P.grout);
-  if(addons.colorSeal&&tt) lr(`Ã°Å¸Å½Â¨ Color Seal${selColor?' Ã¢â¬â '+selColor.n:''} Ãâ ${tt}`,tt*P.colorSeal);
-  if(addons.screens&&counts.windows) lr(`Ã°Å¸â¢Â¸Ã¯Â¸Â Screens & Tracks Ãâ ${counts.windows}`,counts.windows*P.screens);
-  if(upsells.bundle) lr('Ã°Å¸ÅÂ´ RF99Ã¢âÂ¢ Starter Pack',P.starter);
-  if(seaD) lr(`${season.emoji} Seasonal Discount (10%)`,-seaD,'disc');
-  if(multiD) lr('Ã°Å¸âÂ¸ Mix & Match Discount (5%)',-multiD,'disc');
-  if(promoD) lr(`Ã°Å¸Å½Å¸Ã¯Â¸Â Promo: ${promoCode} (${promoDiscount}%)`,-promoD,'disc');
-
-  const confNum='TB'+Math.floor(100000+Math.random()*900000);
-  document.getElementById('cnum').textContent=confNum;
-  document.getElementById('sdet').innerHTML=`
-    <div style="margin-bottom:10px"><strong style="color:#004d59">Name:</strong> ${payload.customer.name} &nbsp;Â·&nbsp; <strong style="color:#004d59">Phone:</strong> ${payload.customer.phone}${smsOptIn?' Ã°Å¸âÂ±':''}</div>
-    <div style="margin-bottom:10px"><strong style="color:#004d59">Date:</strong> ${payload.customer.date||'TBD'}${payload.customer.time?' Â· '+payload.customer.time:''}</div>
-    <div style="margin-bottom:${hearSource?10:0}px"><strong style="color:#004d59">Address:</strong> ${payload.customer.street}, ${payload.customer.city}, ${payload.customer.state} ${payload.customer.zip}</div>
-    ${hearSource?`<div style="margin-bottom:10px"><strong style="color:#004d59">Referred by:</strong> ${hearSource}</div>`:''}
-    <hr style="border:none;border-top:1px solid rgba(0,105,120,.15);margin:10px 0">
-    ${lines.join('')}
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:10px;border-top:2px solid rgba(0,105,120,.2)">
-      <span style="font-size:14px;font-weight:800;color:#1e293b">Estimated Total</span>
-      <span style="font-size:26px;font-weight:900;color:#006978">$${grand}</span>
-    </div>
-    <div style="font-size:11px;color:#94a3b8;margin-top:6px;text-align:center">Final price confirmed on-site Â· We'll call to confirm</div>`;
-  document.getElementById('sovl').classList.add('open');
-}
-
-// RESET
-function doReset(){
-  document.getElementById('sovl').classList.remove('open');
-  Object.keys(counts).forEach(k=>{counts[k]=0;const e=document.getElementById('val-'+k);if(e)e.textContent='0';});
-  Object.keys(addons).forEach(k=>{addons[k]=false;const e=document.getElementById('ck-'+k);if(e)e.classList.remove('on');});
-  Object.keys(upsells).forEach(k=>{upsells[k]=false;document.getElementById('uk-'+k).classList.remove('on');document.getElementById('uc-'+k).classList.remove('on');});
-  Object.keys(roomSelections).forEach(k=>roomSelections[k]=[]);
-  document.querySelectorAll('.rchip').forEach(c=>c.classList.remove('on'));
-  document.querySelectorAll('.rsel').forEach(d=>{d.textContent='';d.classList.remove('show');});
-  ['hw','sf','fn','fp','fe','fd','fst','fc','fz','fnotes','f-promo'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('fstate').value='MD';document.getElementById('ft').value='';
-  document.getElementById('ai-inp').value='';document.getElementById('ai-resp').classList.remove('show');
-  document.getElementById('color-picker').classList.remove('visible');
-  document.getElementById('color-chosen').classList.remove('show');
-  COLORS.forEach((_,i)=>document.getElementById('sw'+i).classList.remove('picked'));
-  document.getElementById('promo-success').classList.remove('show');
-  document.getElementById('promo-error').classList.remove('show');
-  document.querySelectorAll('.hear-chip').forEach(c=>c.classList.remove('on'));
-  if(smsOptIn){smsOptIn=false;document.getElementById('sms-check').classList.remove('on');}
-  selColor=null;promoCode='';promoDiscount=0;hearSource='';prevSvcCount=0;multiPopShown=false;aiSuggestion=null;
-  // Reset upholstery
-  ['sofa','loveseat','chair','dining'].forEach(p=>{
-    upCounts[p]=0;
-    document.getElementById('up-cnt-'+p).textContent='0';
-  });
-  diningType='full';
-  document.getElementById('dining-type-row').style.display='none';
-  document.getElementById('dining-btn-full').classList.add('sel');
-  document.getElementById('dining-btn-seat').classList.remove('sel');
-  sectAddon.deod=false; sectAddon.prot=false;
-  document.getElementById('sect-deod-btn').classList.remove('sel');
-  document.getElementById('sect-prot-btn').classList.remove('sel');
-  document.getElementById('sectional-addons').style.display='none';
-  recalc();window.scrollTo({top:0,behavior:'smooth'});
-}
-
-
-recalc();
-</script>
-</body>
-</html>
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="refresh" content="0;url=https://book.housecallpro.com/book/Tropical-Breeze-Carpet-Cleaning/b4fab033fc0c474a8b3d702950c61063?v2=true">
+  <meta name="robots" content="noindex">
+  <title>Book Now — Tropical Breeze RF™</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      background: #0a3d6b;
+      color: white;
+      text-align: center;
+    }
+    a { color: #4fc3f7; font-size: 1.1rem; }
+  </style>
+</head>
+<body>
+  <div>
+    <p style="font-size:1.4rem;">🌴 Taking you to booking...</p>
+    <p><a href="https://book.housecallpro.com/book/Tropical-Breeze-Carpet-Cleaning/b4fab033fc0c474a8b3d702950c61063?v2=true">Click here if you're not redirected</a></p>
+  </div>
+  <script>
+    window.location.replace("https://book.housecallpro.com/book/Tropical-Breeze-Carpet-Cleaning/b4fab033fc0c474a8b3d702950c61063?v2=true");
+  </script>
+</body>
+</html>

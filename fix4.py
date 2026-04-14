@@ -1,0 +1,7 @@
+﻿content = open("public/booking.html", "rb").read()
+content = content.replace(b'\xc3\xa2\xe2\x80\x9a\xc2\xac', b'-')
+content = content.replace(b'\xc3\xa2\xc2\x84\xc2\xa2', b'TM')
+content = content.replace(b'\xc3\xa2\xc2\x80\xc2\x99', b"'")
+content = content.replace(b'\xc3\x82\xc2\xb7', b' - ')
+open("public/booking.html", "wb").write(content)
+print("Done")

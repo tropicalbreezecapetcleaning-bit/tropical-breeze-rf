@@ -161,14 +161,14 @@ export default function CarpetCleaning() {
               <img src="https://d1chim18wmcawu.cloudfront.net/images/carpet-during-1.jpg" alt="Carpet cleaning in progress with Rotovac wand" className="w-full h-72 object-cover group-hover:scale-105 transition-transform duration-500" />
               <div className="absolute top-4 left-4 bg-orange-500 text-white text-xs font-black px-3 py-1 rounded-full">DURING</div>
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
-                <p className="text-white text-xs font-bold">Rotovac Powerwand 360 in action</p>
+                <p className="text-white text-xs font-bold">Prochem truckmount extraction</p>
               </div>
             </div>
             <div className="relative rounded-2xl overflow-hidden shadow-lg group">
               <img src="https://d1chim18wmcawu.cloudfront.net/images/carpet-during-2.jpg" alt="RF carpet cleaning process bedroom" className="w-full h-72 object-cover group-hover:scale-105 transition-transform duration-500" />
               <div className="absolute top-4 left-4 bg-orange-500 text-white text-xs font-black px-3 py-1 rounded-full">DURING</div>
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
-                <p className="text-white text-xs font-bold">300-500 PSI extraction</p>
+                <p className="text-white text-xs font-bold">RF process in progress</p>
               </div>
             </div>
             <div className="relative rounded-2xl overflow-hidden shadow-lg group">

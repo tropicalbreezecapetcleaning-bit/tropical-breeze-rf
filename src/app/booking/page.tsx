@@ -318,8 +318,28 @@ export default function BookingPage() {
     // Strip base64 data from photos — send only filename + size to avoid API Gateway 10 MB limit
     const safePhotos = photos.map(p => ({ name: p.name }));
     const payload = {
-      quote,
-      form: { ...form, promoDiscount: undefined }, // don't expose internal field
+  firstName: form.name.split(' ')[0],
+  lastName: form.name.split(' ').slice(1).join(' '),
+  phone: form.phone,
+  email: form.email,
+  address: form.address,
+  city: form.city,
+  state: form.state,
+  zip: form.zip,
+  scheduledDate: form.date,
+  timeSlot: selSlot,
+  services: [
+    ...(quote.carpetRooms.length > 0 ? ['carpet-cleaning'] : []),
+    ...((parseFloat(hardwoodSqft)||0) > 0 ? ['hardwood-cleaning'] : []),
+    ...(quote.tileRooms.length + quote.bathrooms.length > 0 ? ['tile-grout-cleaning'] : []),
+    ...(quote.sofas + quote.loveseats + quote.chairs + quote.ottomans > 0 ? ['upholstery-cleaning'] : []),
+    ...(quote.windows + quote.ezBreeze + quote.glassDoors > 0 ? ['window-cleaning'] : []),
+  ],
+  estimatedPrice: total + (upsells.priority ? 29 : 0),
+  notes: form.notes,
+  source: 'booking-form',
+  timestamp: new Date().toISOString(),
+}; // don't expose internal field
       hardwoodSqft,
       sectionalFt,
       upsells,

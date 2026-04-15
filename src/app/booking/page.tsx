@@ -8,7 +8,7 @@ const TEAL_DARK  = '#145f5b';
 const TEAL_LIGHT = '#e6f7f6';
 
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
-const API    = 'https://vzyz64q319.execute-api.us-east-1.amazonaws.com/production/booking';
+const API    = 'https://vzyz64q319.execute-api.us-east-1.amazonaws.com/Stage/booking';
 const SPRING = 0.10;
 
 const CARPET_ROOMS   = ['LR','BR 1','BR 2','BR 3','BR 4','BR 5','BR 6','OF','DN','ST','ST 2','ENTRY','HALL','DR','LOFT','PORCH','BONUS'];

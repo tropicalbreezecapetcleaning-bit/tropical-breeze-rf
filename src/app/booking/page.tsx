@@ -339,12 +339,7 @@ export default function BookingPage() {
   notes: form.notes,
   source: 'booking-form',
   timestamp: new Date().toISOString(),
-}; // don't expose internal field
-      hardwoodSqft,
-      sectionalFt,
-      upsells,
-      timestamp: new Date().toISOString(),
-    };
+};
     try {
       const res  = await fetch(API, {
         method:  'POST',

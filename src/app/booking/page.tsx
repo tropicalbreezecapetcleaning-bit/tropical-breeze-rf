@@ -343,10 +343,6 @@ export default function BookingPage() {
       hardwoodSqft,
       sectionalFt,
       upsells,
-      total,
-      jobType,
-      photos: safePhotos,
-      selectedPackage: selectedPkg?.id || 'custom',
       timestamp: new Date().toISOString(),
     };
     try {

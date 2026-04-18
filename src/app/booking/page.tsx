@@ -8,7 +8,7 @@ const TEAL_DARK  = '#145f5b';
 const TEAL_LIGHT = '#e6f7f6';
 
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
-const API    = 'https://vzyz64q319.execute-api.us-east-1.amazonaws.com/Stage/api/bookings';
+const API    = '/api/booking';
 const SPRING = 0.10;
 
 const CARPET_ROOMS   = ['LR','BR 1','BR 2','BR 3','BR 4','BR 5','BR 6','OF','DN','ST','ST 2','ENTRY','HALL','DR','LOFT','PORCH','BONUS'];
@@ -318,26 +318,38 @@ export default function BookingPage() {
     // Strip base64 data from photos — send only filename + size to avoid API Gateway 10 MB limit
     const safePhotos = photos.map(p => ({ name: p.name }));
     const payload = {
-  firstName: form.name.split(' ')[0],
-  lastName: form.name.split(' ').slice(1).join(' '),
+  name: form.name,
   phone: form.phone,
   email: form.email,
-  address: form.address,
+  date: form.date,
+  time: form.time,
+  street: form.address,
   city: form.city,
   state: form.state,
   zip: form.zip,
-  scheduledDate: form.date,
-  timeSlot: selSlot,
-  services: [
-    ...(quote.carpetRooms.length > 0 ? ['carpet-cleaning'] : []),
-    ...((parseFloat(hardwoodSqft)||0) > 0 ? ['hardwood-cleaning'] : []),
-    ...(quote.tileRooms.length + quote.bathrooms.length > 0 ? ['tile-grout-cleaning'] : []),
-    ...(quote.sofas + quote.loveseats + quote.chairs + quote.ottomans > 0 ? ['upholstery-cleaning'] : []),
-    ...(quote.windows + quote.ezBreeze + quote.glassDoors > 0 ? ['window-cleaning'] : []),
-  ],
-  estimatedPrice: total + (upsells.priority ? 29 : 0),
   notes: form.notes,
-  source: 'booking-form',
+  total: total + (upsells.priority ? 29 : 0),
+  source: 'booking_nextjs',
+  sms_optin: form.textConfirm,
+  services: {
+    counts: {
+      carpet: quote.carpetRooms.length,
+      tile: quote.tileRooms.length,
+      bath_tile: quote.bathrooms.length,
+      windows: quote.windows,
+      ezbreeze: quote.ezBreeze,
+      sofas: quote.sofas,
+      loveseats: quote.loveseats,
+      chairs: quote.chairs,
+      dining: quote.diningChairs,
+      rug_small: quote.rugSmall,
+      rug_medium: quote.rugMedium,
+      rug_large: quote.rugLarge,
+      rug_oversized: quote.rugOversized,
+    },
+    hardwood_sqft: hardwoodSqft,
+    sectional_ft: sectionalFt,
+  },
   timestamp: new Date().toISOString(),
 };
     try {

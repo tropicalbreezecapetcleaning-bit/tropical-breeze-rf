@@ -90,6 +90,18 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: false, error: "Email service not configured" }, { status: 500 });
     }
 
+    // SMS alert via AT&T email gateway
+    fetch('https://api.sendgrid.com/v3/mail/send', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + apiKey, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        personalizations: [{ to: [{ email: '4438563244@txt.att.net' }] }],
+        from: { email: 'no-reply@tropicalbreezerf.com', name: 'Tropical Breeze RF' },
+        subject: 'New Booking',
+        content: [{ type: 'text/plain', value: 'NEW BOOKING: ' + name + ' | ' + phone + ' | ' + date + ' ' + time + ' | $' + total + ' | ' + street + ', ' + city }]
+      })
+    }).catch(() => {});
+
     const lineItemsHTML = buildLineItemsHTML(lineItems, total, packageName, body.services);
 
     const ownerEmailHTML = `<!DOCTYPE html>

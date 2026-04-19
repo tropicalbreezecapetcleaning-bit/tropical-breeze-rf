@@ -1,4 +1,100 @@
 import Link from 'next/link';
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Residue-Free Carpet, Window & Upholstery Cleaning | MD & DE Eastern Shore",
+  description:
+    "Tropical Breeze RF™ delivers residue-free carpet, upholstery, tile, hardwood, window & EZ Breeze cleaning across Maryland and Delaware's Eastern Shore. 365+ five-star reviews. Book online or call 443-856-3244.",
+  alternates: {
+    canonical: "https://tropicalbreezerf.com",
+  },
+  openGraph: {
+    title: "Residue-Free Cleaning on the Eastern Shore | Tropical Breeze RF™",
+    description:
+      "The only RF™ certified residue-free cleaning service in MD & DE. Carpet stays cleaner 3× longer. Serving 33+ cities. Book online — instant quote.",
+    url: "https://tropicalbreezerf.com",
+  },
+};
+
+const localBusinessSchema = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "@id": "https://tropicalbreezerf.com/#business",
+  name: "Tropical Breeze RF™",
+  image: "https://tropicalbreezerf.com/logo.png",
+  description:
+    "Maryland and Delaware's only residue-free cleaning service. Carpet, upholstery, tile, hardwood, windows & EZ Breeze cleaning across the Eastern Shore.",
+  url: "https://tropicalbreezerf.com",
+  telephone: "+1-443-856-3244",
+  priceRange: "$$",
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Salisbury",
+    addressRegion: "MD",
+    postalCode: "21801",
+    addressCountry: "US",
+  },
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: 38.3607,
+    longitude: -75.5994,
+  },
+  areaServed: [
+    { "@type": "City", name: "Salisbury", containedIn: "Maryland" },
+    { "@type": "City", name: "Ocean City", containedIn: "Maryland" },
+    { "@type": "City", name: "Berlin", containedIn: "Maryland" },
+    { "@type": "City", name: "Ocean Pines", containedIn: "Maryland" },
+    { "@type": "City", name: "Snow Hill", containedIn: "Maryland" },
+    { "@type": "City", name: "Cambridge", containedIn: "Maryland" },
+    { "@type": "City", name: "Easton", containedIn: "Maryland" },
+    { "@type": "City", name: "Rehoboth Beach", containedIn: "Delaware" },
+    { "@type": "City", name: "Bethany Beach", containedIn: "Delaware" },
+    { "@type": "City", name: "Lewes", containedIn: "Delaware" },
+    { "@type": "City", name: "Fenwick Island", containedIn: "Delaware" },
+    { "@type": "City", name: "Milton", containedIn: "Delaware" },
+  ],
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "RF™ Cleaning Services",
+    itemListElement: [
+      {
+        "@type": "Offer",
+        itemOffered: { "@type": "Service", name: "Residue-Free Carpet Cleaning", description: "RF™ process removes dirt AND residue. Stays cleaner 3× longer." },
+        price: "99.00",
+        priceCurrency: "USD",
+      },
+      {
+        "@type": "Offer",
+        itemOffered: { "@type": "Service", name: "Upholstery Cleaning", description: "Fiber-specific process for every fabric type. Pet odor enzyme treatment available." },
+        price: "50.00",
+        priceCurrency: "USD",
+      },
+      {
+        "@type": "Offer",
+        itemOffered: { "@type": "Service", name: "Window Cleaning", description: "Pure water process removes salt-air mineral deposits." },
+        price: "13.00",
+        priceCurrency: "USD",
+      },
+      {
+        "@type": "Offer",
+        itemOffered: { "@type": "Service", name: "Tile & Grout Cleaning", description: "1,200+ PSI extraction removes years of buildup." },
+        price: "125.00",
+        priceCurrency: "USD",
+      },
+      {
+        "@type": "Offer",
+        itemOffered: { "@type": "Service", name: "EZ Breeze Cleaning", description: "Vinyl-safe RF™ process. Restores fairway and bay views." },
+      },
+    ],
+  },
+  aggregateRating: {
+    "@type": "AggregateRating",
+    ratingValue: "5",
+    reviewCount: "365",
+    bestRating: "5",
+    worstRating: "1",
+  },
+};
 
 export default function Home() {
   const services = [
@@ -41,6 +137,10 @@ export default function Home() {
 
   return (
     <main className="min-h-screen overflow-x-hidden">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+      />
 
       {/* HERO */}
       <section className="relative min-h-screen flex items-center bg-gradient-to-br from-[#0a1628] via-[#004d5a] to-[#006978] overflow-hidden">
@@ -60,9 +160,9 @@ export default function Home() {
               Now Serving 33+ Cities · MD & DE Eastern Shore
             </div>
             <h1 className="font-black text-white leading-none mb-6" style={{fontSize:'clamp(52px,8vw,96px)',letterSpacing:'-1px'}}>
-              YOUR HOME<br />
-              <span className="text-teal-300">DESERVES</span><br />
-              <span className="text-orange-400">BETTER.</span>
+              RESIDUE-FREE<br />
+              <span className="text-teal-300">CLEANING FOR</span><br />
+              <span className="text-orange-400">THE EASTERN SHORE.</span>
             </h1>
             <p className="text-xl text-sky-100 leading-relaxed mb-10 max-w-xl opacity-90">
               Traditional cleaning leaves <strong className="text-white">soap residue</strong> that re-attracts dirt within days. Our RF™ process removes the dirt <strong className="text-white">AND</strong> the residue — so your home stays cleaner up to <strong className="text-teal-300">3× longer.</strong>
@@ -120,7 +220,7 @@ export default function Home() {
                 WHY YOUR CARPETS<br /><span className="text-teal-600">GET DIRTY AGAIN SO FAST</span>
               </h2>
               <p className="text-gray-600 text-lg leading-relaxed mb-6">
-                Most cleaning companies leave behind a layer of soap residue. It's invisible — but it's a magnet for new dirt. Within 2 weeks your carpets look worse than before they were cleaned.
+                Most cleaning companies leave behind a layer of soap residue. It&apos;s invisible — but it&apos;s a magnet for new dirt. Within 2 weeks your carpets look worse than before they were cleaned.
               </p>
               <p className="text-gray-800 font-bold text-lg">The RF™ process was built to fix exactly this.</p>
               <Link href="/residue-free" className="inline-flex items-center gap-2 text-teal-600 font-bold mt-6 hover:text-teal-800 transition group">
@@ -153,7 +253,7 @@ export default function Home() {
           <div className="text-center mb-16">
             <span className="text-orange-400 text-xs font-bold tracking-widest uppercase block mb-4">Did You Know?</span>
             <h2 className="font-black text-white leading-none" style={{fontSize:'clamp(36px,5vw,64px)'}}>
-              THE DATA<br /><span className="text-teal-300">DOESN'T LIE</span>
+              THE DATA<br /><span className="text-teal-300">DOESN&apos;T LIE</span>
             </h2>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
@@ -245,12 +345,12 @@ export default function Home() {
             {[...reviews, ...reviews].map((r, i) => (
               <div key={i} className="w-80 flex-shrink-0 bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
                 <div className="text-yellow-400 text-lg mb-3">★★★★★</div>
-                <p className="text-gray-600 text-sm leading-relaxed italic mb-4">"{r.text}"</p>
+                <p className="text-gray-600 text-sm leading-relaxed italic mb-4">&ldquo;{r.text}&rdquo;</p>
                 <div className="font-bold text-[#0a1628] text-sm">{r.author}</div>
                 <div className="text-teal-600 text-xs font-semibold">{r.city}</div>
               </div>
             ))}
-     </div>
+          </div>
         </div>
         <style>{`@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }`}</style>
       </section>
@@ -306,7 +406,7 @@ export default function Home() {
         <div className="relative z-10 max-w-3xl mx-auto">
           <span className="text-orange-400 text-xs font-bold tracking-widest uppercase block mb-6">Ready?</span>
           <h2 className="font-black text-white leading-none mb-6" style={{fontSize:'clamp(40px,6vw,80px)'}}>
-            RESIDUE DOESN'T<br /><span className="text-orange-400">SURVIVE HERE™</span>
+            RESIDUE DOESN&apos;T<br /><span className="text-orange-400">SURVIVE HERE™</span>
           </h2>
           <p className="text-sky-200 text-xl mb-12 leading-relaxed">Book online for an instant quote and exclusive savings.</p>
           <div className="flex flex-wrap gap-4 justify-center">
@@ -328,4 +428,3 @@ export default function Home() {
     </main>
   );
 }
-   

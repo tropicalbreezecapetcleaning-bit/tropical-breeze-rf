@@ -1,4 +1,50 @@
 import Link from 'next/link';
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Residue-Free Carpet Cleaning in MD & DE | RF99™ Starts at $99",
+  description:
+    "RF™ carpet cleaning that stays cleaner 3× longer than traditional methods. RF99™ first room $99. Serving 33+ cities across Maryland and Delaware's Eastern Shore. Call 443-856-3244.",
+  alternates: {
+    canonical: "https://tropicalbreezerf.com/carpet-cleaning",
+  },
+  openGraph: {
+    title: "Residue-Free Carpet Cleaning | Tropical Breeze RF™",
+    description:
+      "RF99™ starts at $99. Carpets stay cleaner 3× longer. Dry in 4–6 hours. Serving Ocean City, Rehoboth Beach, Salisbury, and 33+ Eastern Shore cities.",
+    url: "https://tropicalbreezerf.com/carpet-cleaning",
+  },
+};
+
+const carpetSchema = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name: "Residue-Free Carpet Cleaning",
+  provider: {
+    "@type": "LocalBusiness",
+    name: "Tropical Breeze RF™",
+    telephone: "+1-443-856-3244",
+    url: "https://tropicalbreezerf.com",
+  },
+  serviceType: "Carpet Cleaning",
+  areaServed: "Maryland and Delaware Eastern Shore",
+  description:
+    "RF™ residue-free carpet cleaning removes dirt AND soap residue. Carpets stay cleaner 3× longer than traditional cleaning. RF99™ first room $99.",
+  offers: {
+    "@type": "Offer",
+    price: "99.00",
+    priceCurrency: "USD",
+    description: "RF99™ first room up to 200 sq ft — includes deodorizing treatment OR carpet protector",
+  },
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "Carpet Cleaning Pricing",
+    itemListElement: [
+      { "@type": "Offer", name: "RF99™ First Room", price: "99.00", priceCurrency: "USD" },
+      { "@type": "Offer", name: "Additional Rooms", price: "50.00", priceCurrency: "USD" },
+    ],
+  },
+};
 
 export default function CarpetCleaning() {
   const healthStats = [
@@ -32,6 +78,10 @@ export default function CarpetCleaning() {
 
   return (
     <main className="min-h-screen overflow-x-hidden">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(carpetSchema) }}
+      />
 
       {/* HERO */}
       <section className="relative py-32 px-6 bg-gradient-to-br from-[#0a1628] via-[#004d5a] to-[#006978] overflow-hidden">
@@ -69,6 +119,8 @@ export default function CarpetCleaning() {
                 <div className="text-xs text-sky-300 font-semibold tracking-widest uppercase mt-1">{s.l}</div>
               </div>
             ))}
+          </div>
+
           {/* RF99 CARD */}
           <div className="hidden lg:block absolute right-0 top-1/2 -translate-y-1/2 z-10">
             <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-3xl p-8 w-72 shadow-2xl border border-orange-400 border-opacity-30">
@@ -90,10 +142,9 @@ export default function CarpetCleaning() {
               </div>
             </div>
           </div>
-
-        </div>
         </div>
       </section>
+
       {/* RF99 OFFER */}
       <section className="py-16 px-6 bg-orange-500">
         <div className="max-w-4xl mx-auto flex flex-wrap items-center justify-between gap-6">
@@ -145,7 +196,6 @@ export default function CarpetCleaning() {
         </div>
       </section>
 
-
       {/* BEFORE & AFTER GALLERY */}
       <section className="py-24 px-6 bg-gray-50">
         <div className="max-w-6xl mx-auto">
@@ -154,7 +204,7 @@ export default function CarpetCleaning() {
             <h2 className="font-black text-[#0a1628] leading-none" style={{fontSize:"clamp(32px,4vw,56px)"}}>
               PROCHEM + ROTOVAC.<br /><span className="text-teal-600">REAL RESULTS.</span>
             </h2>
-            <p className="text-gray-500 mt-4 text-lg max-w-xl mx-auto">Professional Prochem truckmount with Rotovac Powerwand 360 in action. 300-500 PSI. Zero residue.</p>
+            <p className="text-gray-500 mt-4 text-lg max-w-xl mx-auto">Professional Prochem truckmount with Rotovac Powerwand 360° in action. 300–500 PSI. Zero residue.</p>
           </div>
           <div className="grid md:grid-cols-3 gap-6 mb-12">
             <div className="relative rounded-2xl overflow-hidden shadow-lg group">
@@ -175,7 +225,7 @@ export default function CarpetCleaning() {
               <img src="https://d1chim18wmcawu.cloudfront.net/images/carpet-after.jpg" alt="Carpet after RF cleaning - clean restored fibers" className="w-full h-72 object-cover group-hover:scale-105 transition-transform duration-500" />
               <div className="absolute top-4 left-4 bg-teal-500 text-white text-xs font-black px-3 py-1 rounded-full">AFTER</div>
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
-                <p className="text-white text-xs font-bold">Zero residue. Dry in 4-6 hours.</p>
+                <p className="text-white text-xs font-bold">Zero residue. Dry in 4–6 hours.</p>
               </div>
             </div>
           </div>
@@ -221,7 +271,7 @@ export default function CarpetCleaning() {
           <div className="text-center mb-16">
             <span className="text-orange-400 text-xs font-bold tracking-widest uppercase block mb-4">The Health Case</span>
             <h2 className="font-black text-white leading-none" style={{fontSize:'clamp(32px,4vw,56px)'}}>
-              WHAT'S LIVING IN<br /><span className="text-teal-300">YOUR CARPET RIGHT NOW</span>
+              WHAT&apos;S LIVING IN<br /><span className="text-teal-300">YOUR CARPET RIGHT NOW</span>
             </h2>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
@@ -307,7 +357,7 @@ export default function CarpetCleaning() {
           <h2 className="font-black text-white leading-none mb-6" style={{fontSize:'clamp(36px,5vw,72px)'}}>
             READY FOR RF™<br /><span className="text-orange-400">CLEAN CARPETS?</span>
           </h2>
-          <p className="text-sky-200 text-xl mb-10">Residue Doesn't Survive Here™ · Serving 33+ cities across MD & DE</p>
+          <p className="text-sky-200 text-xl mb-10">Residue Doesn&apos;t Survive Here™ · Serving 33+ cities across MD & DE</p>
           <div className="flex flex-wrap gap-4 justify-center">
             <Link href="/booking" className="bg-gradient-to-r from-orange-500 to-orange-600 text-white font-black text-xl px-12 py-6 rounded-full shadow-2xl hover:-translate-y-1 transition-all">
               🌴 Book Online — Get Instant Quote
@@ -318,7 +368,6 @@ export default function CarpetCleaning() {
           </div>
         </div>
       </section>
-
     </main>
   );
 }

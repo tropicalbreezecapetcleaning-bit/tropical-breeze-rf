@@ -17,11 +17,31 @@ export async function generateMetadata({ params }: CityPageProps) {
   const { slug: citySlug } = await params;
   const city = await db.select().from(cities).where(eq(cities.slug, citySlug)).limit(1);
   if (!city[0]) return {};
+
+  const c = city[0];
+
+  // Build a keyword-rich, unique title — use metaTitle from DB if set, otherwise generate
+  const title = c.metaTitle ||
+    `Carpet, Window & Upholstery Cleaning in ${c.name}, ${c.state} | Tropical Breeze RF™`;
+
+  // Build a unique description — use metaDescription from DB if set, otherwise generate from local data
+  const description = c.metaDescription || (() => {
+    const hook = c.localHook ? `${c.localHook} ` : '';
+    const rentals = c.hasVacationRentals ? 'Vacation rental turnover specialists. ' : '';
+    const golf = c.hasGolfCommunity ? 'Serving golf community homes. ' : '';
+    return `${hook}Tropical Breeze RF™ delivers residue-free carpet, window, upholstery, tile & EZ Breeze cleaning in ${c.name}, ${c.state}. ${rentals}${golf}Prochem truckmount + Rotovac Powerwand 360°. Call 443-856-3244.`;
+  })();
+
   return {
-    title: `RF Cleaning in ${city[0].name}, ${city[0].state} | Tropical Breeze RF`,
-    description: city[0].metaDescription || `Professional residue-free cleaning in ${city[0].name}, ${city[0].state}. Carpet, tile, windows, upholstery, hardwood, EZ Breeze. Prochem truckmount. Call 443-856-3244.`,
+    title,
+    description,
     alternates: {
-      canonical: `https://tropicalbreezerf.com/${citySlug}`,
+      canonical: c.canonicalUrl || `https://tropicalbreezerf.com/${citySlug}`,
+    },
+    openGraph: {
+      title,
+      description,
+      url: c.canonicalUrl || `https://tropicalbreezerf.com/${citySlug}`,
     },
   };
 }
@@ -35,51 +55,138 @@ export default async function CityPage({ params }: CityPageProps) {
   const nearbyList: string[] = city.nearbyCities ? JSON.parse(city.nearbyCities) : [];
 
   const services = [
-    { icon: "🧼", name: "Carpet Cleaning", price: "$99 first room", slug: "carpet-cleaning", desc: "RF99 process with Prochem truckmount and Rotovac Powerwand 360. Dry in 4-6 hours.", active: city.offersCarpet },
-    { icon: "🛋️", name: "Upholstery Cleaning", price: "From $50", slug: "upholstery", desc: "Fiber-specific RF process for every sofa, chair, and sectional. Pet odor enzyme treatment available.", active: city.offersUpholstery },
+    { icon: "🧼", name: "Carpet Cleaning", price: "$99 first room", slug: "carpet-cleaning", desc: "RF99™ process with Prochem truckmount and Rotovac Powerwand 360°. Dry in 4–6 hours.", active: city.offersCarpet },
+    { icon: "🛋️", name: "Upholstery Cleaning", price: "From $50", slug: "upholstery", desc: "Fiber-specific RF™ process for every sofa, chair, and sectional. Pet odor enzyme treatment available.", active: city.offersUpholstery },
     { icon: "⬜", name: "Tile and Grout", price: "$125 per room", slug: "tile-grout", desc: "Up to 1,200+ PSI rotary extraction. Orange sprinkler stains are our Eastern Shore specialty.", active: city.offersTileGrout },
-    { icon: "🪵", name: "Hardwood Floors", price: "$1.00 per sq ft", slug: "hardwood", desc: "Low-moisture RF process safe for all finishes. Free inspection before every job.", active: city.offersHardwood },
+    { icon: "🪵", name: "Hardwood Floors", price: "$1.00 per sq ft", slug: "hardwood", desc: "Low-moisture RF™ process safe for all finishes. Free inspection before every job.", active: city.offersHardwood },
     { icon: "🪟", name: "Window Cleaning", price: "$13 per window", slug: "window-cleaning", desc: "Pure water process removes salt-air mineral deposits. Inside, outside, screens, tracks, sills.", active: city.offersWindow },
     { icon: "🌴", name: "EZ Breeze Cleaning", price: "Free assessment", slug: "ez-breeze", desc: "Vinyl-safe solutions only. Never ammonia-based. Restores your view streak-free.", active: city.offersEzBreeze },
-    { icon: "🪄", name: "Area Rug Cleaning", price: "From $75", slug: "area-rugs", desc: "Pickup and delivery included. RF process safe for all rug types and fibers.", active: city.offersAreaRugs },
+    { icon: "🪄", name: "Area Rug Cleaning", price: "From $75", slug: "area-rugs", desc: "Pickup and delivery included. RF™ process safe for all rug types and fibers.", active: city.offersAreaRugs },
   ].filter(s => s.active);
 
   const faqs = [
     {
       q: `How much does carpet cleaning cost in ${city.name}?`,
-      a: `Our RF99 process starts at $99 for the first room (up to 200 sq ft) and $50 for each additional room in ${city.name}. This includes our Prochem truckmount hot water extraction and Rotovac Powerwand 360 at 300-500 PSI. Dry in 4-6 hours.`
+      a: `Our RF99™ process starts at $99 for the first room (up to 200 sq ft) and $50 for each additional room in ${city.name}. This includes our Prochem truckmount hot water extraction and Rotovac Powerwand 360° at 300–500 PSI. Dry in 4–6 hours.`,
     },
     {
-      q: `What makes RF cleaning different from other carpet cleaners in ${city.name}?`,
-      a: `Traditional cleaning companies in the ${city.state} area leave soap residue in carpet fibers that re-attracts dirt within 2 weeks. Our RF (Residue-Free) process uses a neutralization rinse that removes every cleaning molecule after extraction. Your carpets stay cleaner up to 3x longer.`
+      q: `What makes RF™ cleaning different from other carpet cleaners in ${city.name}?`,
+      a: `Traditional cleaning companies in the ${city.state} area leave soap residue in carpet fibers that re-attracts dirt within 2 weeks. Our RF™ (Residue-Free) process uses a neutralization rinse that removes every cleaning molecule after extraction. Your carpets stay cleaner up to 3× longer.`,
     },
     {
       q: `Do you serve all of ${city.name} and surrounding areas?`,
-      a: `Yes - we serve all of ${city.name} and the surrounding ${city.region || city.state} area including ${nearbyList.slice(0, 3).join(', ')}${nearbyList.length > 3 ? ' and more' : ''}. Call 443-856-3244 to confirm availability for your specific address.`
+      a: `Yes — we serve all of ${city.name} and the surrounding ${city.region || city.state} area including ${nearbyList.slice(0, 3).join(', ')}${nearbyList.length > 3 ? ' and more' : ''}. Call 443-856-3244 to confirm availability for your specific address.`,
     },
     {
       q: `What equipment do you use in ${city.name}?`,
-      a: `We use a professional Prochem truck-mount hot water extraction system with a Rotovac Powerwand 360 for carpet cleaning at 300-500 PSI. For tile and grout we use up to 1,200+ PSI rotary extraction. This is professional grade equipment, not the consumer rental machines other companies use.`
+      a: `We use a professional Prochem truckmount hot water extraction system with a Rotovac Powerwand 360° for carpet cleaning at 300–500 PSI. For tile and grout we use up to 1,200+ PSI rotary extraction. This is professional grade equipment, not consumer rental machines.`,
     },
     {
       q: `How long does carpet cleaning take in ${city.name}?`,
-      a: `Most rooms take 20-40 minutes. A full home is typically 2-4 hours depending on size and condition. Carpets are walk-ready in 4-6 hours with our RF process - not 24-48 hours like traditional cleaning.`
+      a: `Most rooms take 20–40 minutes. A full home is typically 2–4 hours depending on size and condition. Carpets are walk-ready in 4–6 hours with our RF™ process — not 24–48 hours like traditional cleaning.`,
     },
     {
-      q: `Is RF cleaning safe for pets and children in ${city.name}?`,
-      a: `Completely safe. The RF process is specifically designed to remove all cleaning agents from fibers. There is nothing left behind for pets or children to contact. Safe immediately after drying.`
+      q: `Is RF™ cleaning safe for pets and children in ${city.name}?`,
+      a: `Completely safe. The RF™ process is specifically designed to remove all cleaning agents from fibers. There is nothing left behind for pets or children to contact. Safe immediately after drying.`,
     },
   ];
 
   const stats = [
     { n: "365+", l: "5-Star Reviews" },
-    { n: "3x", l: "Longer Clean" },
-    { n: "4-6hr", l: "Dry Time" },
+    { n: "3×", l: "Longer Clean" },
+    { n: "4–6hr", l: "Dry Time" },
     { n: "33+", l: "Cities Served" },
   ];
 
+  // Build active service names for schema
+  const activeServiceNames = services.map(s => s.name);
+
+  // LocalBusiness schema with GeoCoordinates — unique per city
+  const localBusinessSchema = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "@id": `https://tropicalbreezerf.com/${citySlug}#business`,
+    name: "Tropical Breeze RF™",
+    url: "https://tropicalbreezerf.com",
+    telephone: "+1-443-856-3244",
+    image: "https://tropicalbreezerf.com/logo.png",
+    description: `Residue-free cleaning in ${city.name}, ${city.state}. ${activeServiceNames.join(', ')}. Prochem truckmount + Rotovac Powerwand 360°.`,
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Salisbury",
+      addressRegion: "MD",
+      postalCode: "21801",
+      addressCountry: "US",
+    },
+    areaServed: {
+      "@type": "City",
+      name: city.name,
+      containedIn: city.state === "MD" ? "Maryland" : "Delaware",
+    },
+    ...(city.lat && city.lng ? {
+      geo: {
+        "@type": "GeoCoordinates",
+        latitude: Number(city.lat),
+        longitude: Number(city.lng),
+      },
+    } : {}),
+    priceRange: "$$",
+    ...(city.reviewCount && Number(city.reviewCount) > 0 ? {
+      aggregateRating: {
+        "@type": "AggregateRating",
+        ratingValue: city.avgRating || "5",
+        reviewCount: city.reviewCount,
+        bestRating: "5",
+        worstRating: "1",
+      },
+    } : {
+      aggregateRating: {
+        "@type": "AggregateRating",
+        ratingValue: "5",
+        reviewCount: "365",
+        bestRating: "5",
+        worstRating: "1",
+      },
+    }),
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: `RF™ Cleaning Services in ${city.name}`,
+      itemListElement: services.map(s => ({
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: s.name,
+          description: s.desc,
+        },
+        price: s.price,
+      })),
+    },
+  };
+
+  // FAQ schema — unique per city because questions include city name
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map(faq => ({
+      "@type": "Question",
+      name: faq.q,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.a,
+      },
+    })),
+  };
+
   return (
     <main className="min-h-screen overflow-x-hidden">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
 
       {/* HERO */}
       <section className="relative py-32 px-6 bg-gradient-to-br from-[#0a1628] via-[#004d5a] to-[#006978] overflow-hidden">
@@ -94,22 +201,22 @@ export default async function CityPage({ params }: CityPageProps) {
         <div className="max-w-4xl mx-auto relative z-10">
           <div className="inline-flex items-center gap-2 bg-teal-500 bg-opacity-20 border border-teal-400 border-opacity-30 text-teal-300 text-xs font-bold tracking-widest uppercase px-4 py-2 rounded-full mb-8">
             <span className="w-2 h-2 bg-teal-400 rounded-full animate-pulse inline-block" />
-            Tropical Breeze RF · {city.state} · {city.region || "Eastern Shore"}
+            Tropical Breeze RF™ · {city.state} · {city.region || "Eastern Shore"}
           </div>
           <h1 className="font-black text-white leading-none mb-6" style={{fontSize:"clamp(40px,7vw,88px)"}}>
-            {city.h1Headline || `RF CLEANING IN ${city.name.toUpperCase()}, ${city.state}`}
+            {city.h1Headline || `RF™ CLEANING IN ${city.name.toUpperCase()}, ${city.state}`}
           </h1>
           {city.localHook && (
             <p className="text-xl text-teal-300 font-bold leading-relaxed max-w-2xl mb-4 italic">
-              "{city.localHook}"
+              &ldquo;{city.localHook}&rdquo;
             </p>
           )}
           <p className="text-lg text-sky-100 leading-relaxed max-w-2xl mb-10">
-            {city.localChallenge || `Professional residue-free cleaning in ${city.name}, ${city.state}. Prochem truckmount, Rotovac Powerwand 360, zero residue left behind. Serving all of ${city.region || city.state}.`}
+            {city.localChallenge || `Professional residue-free cleaning in ${city.name}, ${city.state}. Prochem truckmount, Rotovac Powerwand 360°, zero residue left behind. Serving all of ${city.region || city.state}.`}
           </p>
           <div className="flex flex-wrap gap-4 mb-12">
             <Link href="/booking" className="bg-gradient-to-r from-orange-500 to-orange-600 text-white font-black text-lg px-10 py-5 rounded-full shadow-2xl hover:-translate-y-1 transition-all">
-              🌴 Book RF Service in {city.name}
+              🌴 Book RF™ Service in {city.name}
             </Link>
             <a href="tel:4438563244" className="bg-white bg-opacity-10 border border-white border-opacity-20 text-white font-bold text-lg px-8 py-5 rounded-full hover:bg-opacity-20 transition-all">
               📞 443-856-3244
@@ -125,6 +232,19 @@ export default async function CityPage({ params }: CityPageProps) {
           </div>
         </div>
       </section>
+
+      {/* FEATURED REVIEW — unique per city if available */}
+      {city.featuredReview && (
+        <section className="py-12 px-6 bg-orange-500">
+          <div className="max-w-3xl mx-auto text-center">
+            <div className="text-white text-2xl mb-3">★★★★★</div>
+            <p className="text-white font-bold text-xl italic mb-3">&ldquo;{city.featuredReview}&rdquo;</p>
+            {city.featuredReviewer && (
+              <p className="text-orange-100 text-sm font-semibold">— {city.featuredReviewer}, {city.name}</p>
+            )}
+          </div>
+        </section>
+      )}
 
       {/* LOCAL CHALLENGE */}
       <section className="py-24 px-6 bg-white">
@@ -144,14 +264,26 @@ export default async function CityPage({ params }: CityPageProps) {
                   <p className="text-teal-600 text-sm leading-relaxed">{city.waterQualityNote}</p>
                 </div>
               )}
+              {city.hasGolfCommunity && (
+                <div className="bg-green-50 border-l-4 border-green-500 rounded-r-xl p-5 mb-6">
+                  <div className="text-green-700 font-bold text-sm mb-1">⛳ Golf Community Specialist</div>
+                  <p className="text-green-600 text-sm leading-relaxed">We specialize in EZ Breeze cleaning and full-home services for golf community properties in {city.name}. Regular maintenance schedules available.</p>
+                </div>
+              )}
+              {city.hasVacationRentals && (
+                <div className="bg-blue-50 border-l-4 border-blue-500 rounded-r-xl p-5 mb-6">
+                  <div className="text-blue-700 font-bold text-sm mb-1">🏖️ Vacation Rental Specialist</div>
+                  <p className="text-blue-600 text-sm leading-relaxed">RF™ 4–6 hour dry time means same-day turnaround between guests in {city.name}. Never lose a rental night to wet carpets.</p>
+                </div>
+              )}
               <p className="text-gray-600 text-lg leading-relaxed mb-6">
-                The RF process was specifically developed for Eastern Shore conditions. Our Prochem truck-mount system with Rotovac Powerwand 360 delivers 200F+ heat extraction followed by a neutralizing rinse that removes every cleaning molecule — leaving surfaces genuinely clean, not just visually clean.
+                The RF™ process was specifically developed for Eastern Shore conditions. Our Prochem truckmount system with Rotovac Powerwand 360° delivers 200°F+ heat extraction followed by a neutralizing rinse that removes every cleaning molecule — leaving surfaces genuinely clean, not just visually clean.
               </p>
               <div className="space-y-3">
                 {[
                   `Serving all of ${city.name} and ${city.region || city.state}`,
-                  "Prochem truckmount + Rotovac Powerwand 360 on every job",
-                  "RF process — stays cleaner 3x longer than traditional cleaning",
+                  "Prochem truckmount + Rotovac Powerwand 360° on every job",
+                  "RF™ process — stays cleaner 3× longer than traditional cleaning",
                   "Licensed, insured, locally operated from Salisbury MD",
                   "365+ five-star reviews across the Eastern Shore",
                 ].map((item) => (
@@ -164,13 +296,13 @@ export default async function CityPage({ params }: CityPageProps) {
             </div>
             <div className="space-y-4">
               <div className="bg-gray-50 rounded-2xl p-6 border border-gray-100">
-                <h3 className="font-black text-[#0a1628] text-lg mb-4">Why RF Works Better in {city.name}</h3>
+                <h3 className="font-black text-[#0a1628] text-lg mb-4">Why RF™ Works Better in {city.name}</h3>
                 <div className="space-y-4">
                   {[
                     { icon: "🌊", title: "Salt Air Mineral Deposits", desc: "Coastal proximity means windows and tile accumulate mineral deposits faster. Our pure water process and high-PSI extraction dissolve them completely." },
                     { icon: "💧", title: "Iron-Rich Groundwater", desc: "Eastern Shore well water leaves orange iron staining on tile grout. Our mineral-specific treatment is the only reliable solution." },
-                    { icon: "☁️", title: "High Coastal Humidity", desc: "Humidity accelerates mold growth in grout and re-soiling in carpet. RF residue-free process eliminates the sticky surface that attracts moisture-borne contamination." },
-                    { icon: "🏖️", title: "Vacation Rental Turnover", desc: "RF 4-6 hour dry time means same-day turnaround between guests. Never lose a rental night to wet carpets." },
+                    { icon: "☁️", title: "High Coastal Humidity", desc: "Humidity accelerates mold growth in grout and re-soiling in carpet. RF™ residue-free process eliminates the sticky surface that attracts moisture-borne contamination." },
+                    { icon: "🏖️", title: "Vacation Rental Turnover", desc: "RF™ 4–6 hour dry time means same-day turnaround between guests. Never lose a rental night to wet carpets." },
                   ].map((item) => (
                     <div key={item.title} className="flex gap-4">
                       <span className="text-2xl flex-shrink-0">{item.icon}</span>
@@ -182,6 +314,22 @@ export default async function CityPage({ params }: CityPageProps) {
                   ))}
                 </div>
               </div>
+
+              {/* City-specific housing type badge if available */}
+              {city.housingType && (
+                <div className="bg-teal-50 rounded-2xl p-5 border border-teal-100">
+                  <div className="text-teal-700 font-bold text-sm mb-1">🏠 Primary Housing in {city.name}</div>
+                  <p className="text-teal-600 text-sm">{city.housingType}</p>
+                </div>
+              )}
+
+              {/* Seasonal peak if available */}
+              {city.seasonalPeak && (
+                <div className="bg-orange-50 rounded-2xl p-5 border border-orange-100">
+                  <div className="text-orange-700 font-bold text-sm mb-1">📅 Peak Cleaning Season</div>
+                  <p className="text-orange-600 text-sm">{city.seasonalPeak} — book early for best availability.</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -192,7 +340,7 @@ export default async function CityPage({ params }: CityPageProps) {
         <div className="max-w-4xl mx-auto flex flex-wrap items-center justify-between gap-6">
           <div>
             <p className="text-orange-100 text-xs font-bold tracking-widest uppercase mb-2">🌸 Spring Offer</p>
-            <h2 className="font-black text-white text-4xl">RF99 — First Room $99</h2>
+            <h2 className="font-black text-white text-4xl">RF99™ — First Room $99</h2>
             <p className="text-orange-100 mt-2">One room up to 200 sq ft + deodorizing treatment OR carpet protector. Perfect for {city.name} homes.</p>
           </div>
           <div className="flex gap-4">
@@ -206,11 +354,11 @@ export default async function CityPage({ params }: CityPageProps) {
       <section className="py-24 px-6 bg-gray-50">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <span className="text-orange-500 text-xs font-bold tracking-widest uppercase block mb-4">RF Services in {city.name}</span>
+            <span className="text-orange-500 text-xs font-bold tracking-widest uppercase block mb-4">RF™ Services in {city.name}</span>
             <h2 className="font-black text-[#0a1628] leading-none" style={{fontSize:"clamp(32px,4vw,56px)"}}>
               EVERY SURFACE.<br /><span className="text-teal-600">ONE STANDARD.</span>
             </h2>
-            <p className="text-gray-500 mt-4 text-lg">Every service performed to the RF residue-free standard in {city.name}, {city.state}.</p>
+            <p className="text-gray-500 mt-4 text-lg">Every service performed to the RF™ residue-free standard in {city.name}, {city.state}.</p>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
             {services.map((s) => (
@@ -240,16 +388,16 @@ export default async function CityPage({ params }: CityPageProps) {
           </div>
           <div className="grid md:grid-cols-2 gap-8">
             <div className="bg-gray-50 rounded-2xl p-8 border border-gray-100">
-              <h3 className="font-black text-[#0a1628] text-xl mb-3">Rotovac Powerwand 360</h3>
-              <p className="text-gray-600 leading-relaxed mb-4">Standard wands only clean in two directions. Our Rotovac Powerwand uses dual-rotary heads to deep-clean every fiber from 360 degrees, removing significantly more soil than traditional methods at 300-500 PSI for carpet.</p>
+              <h3 className="font-black text-[#0a1628] text-xl mb-3">Rotovac Powerwand 360°</h3>
+              <p className="text-gray-600 leading-relaxed mb-4">Standard wands only clean in two directions. Our Rotovac Powerwand uses dual-rotary heads to deep-clean every fiber from 360°, removing significantly more soil than traditional methods at 300–500 PSI for carpet.</p>
               <div className="bg-teal-50 rounded-xl p-4 border border-teal-100">
-                <div className="text-teal-700 text-sm font-bold">Carpet PSI: 300-500</div>
+                <div className="text-teal-700 text-sm font-bold">Carpet PSI: 300–500</div>
                 <div className="text-teal-600 text-xs mt-1">Appropriate pressure for carpet fibers — not damaging like high-pressure systems</div>
               </div>
             </div>
             <div className="bg-gray-50 rounded-2xl p-8 border border-gray-100">
               <h3 className="font-black text-[#0a1628] text-xl mb-3">Prochem Truckmount</h3>
-              <p className="text-gray-600 leading-relaxed mb-4">The gold standard in hot water extraction. We deliver 200F+ heat directly from our truck to your door, instantly sanitizing and killing bacteria on contact. Combined with our RF neutralization process for zero residue results.</p>
+              <p className="text-gray-600 leading-relaxed mb-4">The gold standard in hot water extraction. We deliver 200°F+ heat directly from our truck to your door, instantly sanitizing and killing bacteria on contact. Combined with our RF™ neutralization process for zero residue results.</p>
               <div className="bg-teal-50 rounded-xl p-4 border border-teal-100">
                 <div className="text-teal-700 text-sm font-bold">Tile and Grout PSI: Up to 1,200+</div>
                 <div className="text-teal-600 text-xs mt-1">Deep grout pore extraction only possible with professional rotary systems</div>
@@ -259,7 +407,7 @@ export default async function CityPage({ params }: CityPageProps) {
         </div>
       </section>
 
-      {/* FAQ */}
+      {/* FAQ with schema */}
       <section className="py-24 px-6 bg-gray-50">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
@@ -284,13 +432,17 @@ export default async function CityPage({ params }: CityPageProps) {
         <section className="py-16 px-6 bg-white">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="font-black text-[#0a1628] text-2xl mb-4">Also Serving Near {city.name}</h2>
-            <p className="text-gray-500 mb-8">RF cleaning available throughout {city.region || city.state} and the Eastern Shore.</p>
+            <p className="text-gray-500 mb-8">RF™ cleaning available throughout {city.region || city.state} and the Eastern Shore.</p>
             <div className="flex flex-wrap gap-3 justify-center">
-              {nearbyList.map((nearby) => (
-                <span key={nearby} className="bg-teal-50 border border-teal-200 text-teal-700 font-semibold text-sm px-5 py-2 rounded-full">
-                  📍 {nearby}
-                </span>
-              ))}
+              {nearbyList.map((nearby: string) => {
+                const nearbySlug = nearby.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+                return (
+                  <Link key={nearby} href={`/${nearbySlug}`}
+                    className="bg-teal-50 border border-teal-200 text-teal-700 font-semibold text-sm px-5 py-2 rounded-full hover:bg-teal-600 hover:text-white hover:border-teal-600 transition-all">
+                    📍 {nearby}
+                  </Link>
+                );
+              })}
             </div>
           </div>
         </section>
@@ -309,7 +461,7 @@ export default async function CityPage({ params }: CityPageProps) {
             {[
               { stat: "200K+", label: "Dust mites per oz of carpet dust", source: "American Lung Association" },
               { stat: "68%", label: "Re-soil within 2 weeks of traditional cleaning", source: "Carpet and Rug Institute" },
-              { stat: "3x", label: "Longer clean with RF vs traditional methods", source: "Tropical Breeze RF" },
+              { stat: "3×", label: "Longer clean with RF™ vs traditional methods", source: "Tropical Breeze RF™" },
               { stat: "80%", label: "Of home allergens live in soft surfaces", source: "U.S. EPA" },
             ].map((h) => (
               <div key={h.stat} className="bg-white bg-opacity-5 border border-teal-400 border-opacity-20 rounded-2xl p-6 text-center hover:bg-opacity-10 transition-all">
@@ -326,9 +478,9 @@ export default async function CityPage({ params }: CityPageProps) {
       <section className="py-24 px-6 bg-gradient-to-br from-[#0a1628] to-[#004d5a] text-center">
         <div className="max-w-3xl mx-auto">
           <h2 className="font-black text-white leading-none mb-6" style={{fontSize:"clamp(36px,5vw,72px)"}}>
-            READY FOR RF CLEAN<br /><span className="text-orange-400">IN {city.name.toUpperCase()}?</span>
+            READY FOR RF™ CLEAN<br /><span className="text-orange-400">IN {city.name.toUpperCase()}?</span>
           </h2>
-          <p className="text-sky-200 text-xl mb-10">Residue Does Not Survive Here · Serving {city.name} and all of {city.region || city.state}</p>
+          <p className="text-sky-200 text-xl mb-10">Residue Doesn&apos;t Survive Here™ · Serving {city.name} and all of {city.region || city.state}</p>
           <div className="flex flex-wrap gap-4 justify-center">
             <Link href="/booking" className="bg-gradient-to-r from-orange-500 to-orange-600 text-white font-black text-xl px-12 py-6 rounded-full shadow-2xl hover:-translate-y-1 transition-all">
               🌴 Book Online — Get Instant Quote

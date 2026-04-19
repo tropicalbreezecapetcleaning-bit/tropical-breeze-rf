@@ -1,23 +1,130 @@
 import Link from "next/link";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Residue-Free Cleaning Guide | Eastern Shore MD & DE | Tropical Breeze RF™",
+  description:
+    "Expert guides on residue-free cleaning, Eastern Shore home care, salt air windows, EZ Breeze panels, vacation rental turnover, and tile & grout restoration across Maryland and Delaware.",
+  alternates: {
+    canonical: "https://tropicalbreezerf.com/blog",
+  },
+  openGraph: {
+    title: "The RF™ Cleaning Guide | Tropical Breeze RF™",
+    description:
+      "Expert guides on residue-free cleaning, Eastern Shore home care, salt air windows, EZ Breeze panels, and vacation rental turnover across MD & DE.",
+    url: "https://tropicalbreezerf.com/blog",
+  },
+};
+
+const blogSchema = {
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  name: "The RF™ Cleaning Guide",
+  description: "Expert guides on residue-free cleaning, Eastern Shore home care, and surface restoration across Maryland and Delaware.",
+  url: "https://tropicalbreezerf.com/blog",
+  publisher: {
+    "@type": "Organization",
+    name: "Tropical Breeze RF™",
+    url: "https://tropicalbreezerf.com",
+    logo: { "@type": "ImageObject", url: "https://tropicalbreezerf.com/logo.png" },
+  },
+  blogPost: [
+    {
+      "@type": "BlogPosting",
+      headline: "Why Your Carpet Gets Dirty So Fast After Cleaning",
+      url: "https://tropicalbreezerf.com/blog/why-carpet-gets-dirty-so-fast",
+      datePublished: "2026-04-19",
+      author: { "@type": "Organization", name: "Tropical Breeze RF™" },
+    },
+    {
+      "@type": "BlogPosting",
+      headline: "Orange Grout Lines on the Eastern Shore: Cause and Fix",
+      url: "https://tropicalbreezerf.com/blog/orange-grout-eastern-shore",
+      datePublished: "2026-04-19",
+      author: { "@type": "Organization", name: "Tropical Breeze RF™" },
+    },
+    {
+      "@type": "BlogPosting",
+      headline: "Vacation Rental Cleaning Checklist: Eastern Shore MD & DE",
+      url: "https://tropicalbreezerf.com/blog/vacation-rental-cleaning-checklist",
+      datePublished: "2026-04-19",
+      author: { "@type": "Organization", name: "Tropical Breeze RF™" },
+    },
+    {
+      "@type": "BlogPosting",
+      headline: "EZ Breeze Cleaning Mistakes That Permanently Damage Panels",
+      url: "https://tropicalbreezerf.com/blog/ez-breeze-cleaning-mistakes",
+      datePublished: "2026-04-19",
+      author: { "@type": "Organization", name: "Tropical Breeze RF™" },
+    },
+    {
+      "@type": "BlogPosting",
+      headline: "Salt Air and Your Windows: Why Coastal Cleaning Is Different",
+      url: "https://tropicalbreezerf.com/blog/salt-air-windows-eastern-shore",
+      datePublished: "2026-04-19",
+      author: { "@type": "Organization", name: "Tropical Breeze RF™" },
+    },
+  ],
+};
+
+const featuredPost = {
+  slug: "why-carpet-gets-dirty-so-fast",
+  title: "Why Your Carpet Gets Dirty So Fast After Cleaning",
+  excerpt: "68% of traditionally cleaned carpets re-soil within 2 weeks. The cause is soap residue left behind by traditional methods — acting as a dirt magnet. Here is the science and the only permanent fix.",
+  category: "Carpet Care",
+  readTime: "6 min read",
+  icon: "🧼",
+  tags: ["Carpet", "Residue", "Cleaning Science", "Eastern Shore"],
+};
+
+const posts = [
+  {
+    slug: "orange-grout-eastern-shore",
+    title: "Orange Grout Lines on the Eastern Shore: Cause and Fix",
+    excerpt: "Orange grout staining is caused by iron-rich Eastern Shore groundwater from irrigation systems. Learn why standard cleaning fails and how 1,200+ PSI rotary extraction removes it permanently.",
+    category: "Tile & Grout",
+    readTime: "5 min read",
+    icon: "⬜",
+    tags: ["Tile", "Grout", "Iron Staining", "Eastern Shore"],
+  },
+  {
+    slug: "vacation-rental-cleaning-checklist",
+    title: "Vacation Rental Cleaning Checklist: Eastern Shore MD & DE",
+    excerpt: "Fast turnovers, salt air, high guest expectations. How RF™ residue-free cleaning with 4–6 hour dry times keeps Eastern Shore vacation rentals guest-ready without losing a rental night.",
+    category: "Vacation Rentals",
+    readTime: "7 min read",
+    icon: "🏖️",
+    tags: ["Vacation Rental", "Ocean City", "Rehoboth Beach"],
+  },
+  {
+    slug: "ez-breeze-cleaning-mistakes",
+    title: "EZ Breeze Cleaning Mistakes That Permanently Damage Panels",
+    excerpt: "Windex, pressure washing, abrasive scrubbing — the common mistakes that permanently scratch, yellow, and damage EZ Breeze vinyl panels. What to use instead.",
+    category: "EZ Breeze",
+    readTime: "5 min read",
+    icon: "🌴",
+    tags: ["EZ Breeze", "Vinyl", "Golf Communities"],
+  },
+  {
+    slug: "salt-air-windows-eastern-shore",
+    title: "Salt Air and Your Windows: Why Coastal Cleaning Is Different",
+    excerpt: "Salt air carries minerals that bond to glass and cannot be removed with standard cleaners. Only pure water (0 TDS) has the ionic attraction to pull mineral deposits from coastal windows.",
+    category: "Window Cleaning",
+    readTime: "5 min read",
+    icon: "🪟",
+    tags: ["Windows", "Salt Air", "Coastal", "Eastern Shore"],
+  },
+];
 
 export default function Blog() {
-  const posts = [
-    { title: "What is Residue-Free Cleaning? The Complete Science Guide", excerpt: "Traditional cleaning leaves soap residue that re-attracts dirt within days. Learn the chemistry, health data, and science behind the RF™ process.", category: "RF™ Science", readTime: "8 min read", href: "/residue-free", icon: "🔬", tags: ["Residue-Free", "Chemistry", "Health"] },
-    { title: "Why Carpet Cleaning Makes Your Carpets Dirty Faster", excerpt: "68% of traditionally cleaned carpets re-soil within 2 weeks. Here is the science behind the residue cycle — and how to break it permanently.", category: "Carpet Care", readTime: "5 min read", href: "/carpet-cleaning", icon: "🧼", tags: ["Carpet", "Residue", "Health"] },
-    { title: "Salt Air, Mineral Deposits, and Your Eastern Shore Windows", excerpt: "Ocean-facing homes on the Eastern Shore deal with a unique enemy: salt air mineral deposits. Here is why standard window cleaning fails.", category: "Window Cleaning", readTime: "4 min read", href: "/windows", icon: "🪟", tags: ["Windows", "Coastal", "Salt Air"] },
-    { title: "EZ Breeze Panels: The One Cleaning Mistake That Ruins Them", excerpt: "EZ Breeze vinyl panels are not glass — they scratch easily with the wrong cleaner. What you need to know before your next cleaning.", category: "EZ Breeze", readTime: "4 min read", href: "/ez-breeze", icon: "🌴", tags: ["EZ Breeze", "Vinyl", "Golf Communities"] },
-    { title: "The Vacation Rental Owners Cleaning Checklist", excerpt: "Fast turnovers, guest expectations, and no time for 24-hour dry times. How RF™ cleaning is built for the vacation rental market.", category: "Vacation Rentals", readTime: "6 min read", href: "/golf-communities", icon: "🏖️", tags: ["Vacation Rental", "Turnover", "Beach"] },
-    { title: "Pet Odor in Carpet: Why Masking Does Not Work", excerpt: "Enzyme treatment vs deodorizing spray — the difference between eliminating pet odor and hiding it. What actually works and why.", category: "Pet Care", readTime: "5 min read", href: "/carpet-cleaning", icon: "🐾", tags: ["Pets", "Odor", "Enzyme Treatment"] },
-    { title: "Orange Grout Lines: What Causes Them and How to Remove Them", excerpt: "Orange staining on tile grout is one of the most common complaints on the Eastern Shore. It is iron from irrigation water. Here is how we fix it.", category: "Tile and Grout", readTime: "4 min read", href: "/tile-grout", icon: "⬜", tags: ["Tile", "Grout", "Iron Staining"] },
-    { title: "Hardwood Floors on the Eastern Shore: The Humidity Problem", excerpt: "High humidity is the number one enemy of hardwood floors in Maryland and Delaware. Low-moisture cleaning is essential. Here is why.", category: "Hardwood", readTime: "5 min read", href: "/hardwood", icon: "🪵", tags: ["Hardwood", "Humidity", "Eastern Shore"] },
-    { title: "Prochem Hot Water Extraction: Why Professional Equipment Matters", excerpt: "Not all carpet cleaning equipment is equal. Learn why Prochem truck-mount systems with Rotovac Powerwand deliver results consumer machines cannot.", category: "RF™ Science", readTime: "5 min read", href: "/residue-free", icon: "🔧", tags: ["Prochem", "Equipment", "Professional"] },
-    { title: "Indoor Air Quality: Why Your Carpet Is Your Biggest Filter", excerpt: "The EPA estimates indoor air is 2-10x more polluted than outdoor air. Your carpet is the primary reservoir — and the primary solution when cleaned correctly.", category: "Health and Air Quality", readTime: "6 min read", href: "/residue-free", icon: "🌬️", tags: ["Air Quality", "Health", "EPA Data"] },
-    { title: "Golf Community Home Maintenance: A Seasonal Checklist", excerpt: "The Peninsula, Bayside, Heritage Shores — golf community homes have unique maintenance needs. Here is the seasonal cleaning calendar.", category: "Golf Communities", readTime: "7 min read", href: "/golf-communities", icon: "⛳", tags: ["Golf", "HOA", "Seasonal"] },
-    { title: "How to Prepare Your Home for a Professional Cleaning", excerpt: "Moving furniture, pre-vacuuming, protecting valuables — what you should and should not do before your RF™ cleaning appointment.", category: "Tips", readTime: "3 min read", href: "/booking", icon: "📋", tags: ["Preparation", "Tips", "Booking"] },
-  ];
-
   return (
     <main className="min-h-screen overflow-x-hidden">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogSchema) }}
+      />
+
+      {/* HERO */}
       <section className="relative py-32 px-6 bg-gradient-to-br from-[#0a1628] via-[#004d5a] to-[#006978] overflow-hidden">
         <div className="absolute bottom-0 left-0 right-0">
           <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
@@ -32,37 +139,42 @@ export default function Blog() {
             THE RF™<br /><span className="text-teal-300">CLEANING GUIDE</span>
           </h1>
           <p className="text-xl text-sky-100 leading-relaxed max-w-2xl mx-auto">
-            Expert guides on residue-free cleaning, Eastern Shore home care, health data, Prochem equipment, and everything you need to protect your home.
+            Expert guides on residue-free cleaning, Eastern Shore home care, salt air windows, EZ Breeze panels, and vacation rental turnover across Maryland and Delaware.
           </p>
         </div>
       </section>
 
+      {/* FEATURED POST */}
       <section className="py-16 px-6 bg-white">
         <div className="max-w-6xl mx-auto">
-          <Link href="/residue-free" className="block group bg-gradient-to-br from-[#0a1628] to-[#004d5a] rounded-3xl p-10 text-white hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 mb-12">
+          <Link href={`/blog/${featuredPost.slug}`}
+            className="block group bg-gradient-to-br from-[#0a1628] to-[#004d5a] rounded-3xl p-10 text-white hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 mb-12">
             <div className="flex flex-wrap gap-3 mb-6">
-              {["Residue-Free","Chemistry","Health","RF™ Process"].map((tag) => (
+              {featuredPost.tags.map(tag => (
                 <span key={tag} className="bg-teal-500 bg-opacity-20 border border-teal-400 border-opacity-30 text-teal-300 text-xs font-bold px-3 py-1 rounded-full">{tag}</span>
               ))}
-              <span className="text-sky-400 text-xs font-semibold">8 min read</span>
+              <span className="text-sky-400 text-xs font-semibold self-center">{featuredPost.readTime}</span>
             </div>
             <h2 className="font-black text-white text-3xl md:text-5xl leading-tight mb-6 group-hover:text-teal-200 transition-colors">
-              What is Residue-Free Cleaning? The Complete Science Guide
+              {featuredPost.title}
             </h2>
-            <p className="text-sky-200 text-lg leading-relaxed mb-8 max-w-2xl">The definitive guide to residue-free cleaning — chemistry, health data, Prochem equipment specs, and why RF™ outperforms every traditional method.</p>
+            <p className="text-sky-200 text-lg leading-relaxed mb-8 max-w-2xl">{featuredPost.excerpt}</p>
             <div className="inline-flex items-center gap-2 bg-orange-500 text-white font-bold px-8 py-4 rounded-full group-hover:bg-orange-400 transition-colors">
               Read the Full Guide →
             </div>
           </Link>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {posts.slice(1).map((post) => (
-              <Link key={post.title} href={post.href} className="group bg-white rounded-2xl p-6 border border-gray-100 hover:border-teal-200 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col">
+
+          {/* GRID POSTS */}
+          <div className="grid md:grid-cols-2 gap-6">
+            {posts.map((post) => (
+              <Link key={post.slug} href={`/blog/${post.slug}`}
+                className="group bg-white rounded-2xl p-8 border border-gray-100 hover:border-teal-200 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col">
                 <div className="text-4xl mb-4">{post.icon}</div>
                 <div className="flex items-center gap-3 mb-3">
                   <span className="bg-teal-50 text-teal-700 text-xs font-bold px-3 py-1 rounded-full">{post.category}</span>
                   <span className="text-gray-400 text-xs">{post.readTime}</span>
                 </div>
-                <h3 className="font-black text-[#0a1628] text-lg leading-tight mb-3 group-hover:text-teal-700 transition-colors flex-1">{post.title}</h3>
+                <h3 className="font-black text-[#0a1628] text-xl leading-tight mb-3 group-hover:text-teal-700 transition-colors flex-1">{post.title}</h3>
                 <p className="text-gray-500 text-sm leading-relaxed mb-4">{post.excerpt}</p>
                 <div className="text-teal-600 font-bold text-sm group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
                   Read Article →
@@ -73,6 +185,20 @@ export default function Blog() {
         </div>
       </section>
 
+      {/* WHAT IS RESIDUE-FREE CALLOUT */}
+      <section className="py-16 px-6 bg-teal-50 border-t border-b border-teal-100">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="font-black text-[#0a1628] text-3xl mb-4">What Is Residue-Free Cleaning?</h2>
+          <p className="text-gray-600 text-lg leading-relaxed mb-6 max-w-2xl mx-auto">
+            RF™ is the only residue-free cleaning process on Maryland and Delaware&apos;s Eastern Shore. Traditional cleaning leaves soap residue that attracts new dirt within days. RF™ removes the dirt AND the cleaning agent — so surfaces stay cleaner up to 3× longer.
+          </p>
+          <Link href="/residue-free" className="inline-flex items-center gap-2 bg-teal-600 text-white font-black px-8 py-4 rounded-full hover:bg-teal-700 transition">
+            🔬 Read the Full RF™ Science Guide →
+          </Link>
+        </div>
+      </section>
+
+      {/* CTA */}
       <section className="py-24 px-6 bg-gradient-to-br from-[#0a1628] to-[#004d5a] text-center">
         <div className="max-w-3xl mx-auto">
           <h2 className="font-black text-white leading-none mb-6" style={{fontSize:"clamp(36px,5vw,64px)"}}>

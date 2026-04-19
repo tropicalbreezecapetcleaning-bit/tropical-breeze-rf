@@ -47,6 +47,7 @@ export const metadata: Metadata = {
     description:
       "Maryland and Delaware's only residue-free cleaning service. Serving 33+ cities across the Eastern Shore.",
   },
+    verification: { google: "wnRSntRwg91A_YGvOT1hgis5ZK6G--mJBoyWvMILuDE", other: { "msvalidate.01": "CEB5BDA5CC8A99B761AB5FFEADC741E6" } },
   robots: {
     index: true,
     follow: true,
@@ -113,3 +114,4 @@ export default function RootLayout({
     </html>
   );
 }
+

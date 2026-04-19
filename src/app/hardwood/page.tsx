@@ -1,4 +1,31 @@
 import Link from "next/link";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Hardwood Floor Cleaning in MD & DE | Low-Moisture RF™ | $1.00/Sq Ft",
+  description:
+    "RF™ low-moisture hardwood floor cleaning. Free finish inspection before every job. Safe for polyurethane, oil-based, engineered, and all hardwood types. $1.00/sq ft. Eastern Shore MD & DE. Call 443-856-3244.",
+  alternates: {
+    canonical: "https://tropicalbreezerf.com/hardwood",
+  },
+  openGraph: {
+    title: "Hardwood Floor Cleaning — Low-Moisture RF™ | Tropical Breeze RF™",
+    description:
+      "$1.00/sq ft. Free finish inspection before every job. Dry in 1–2 hours. Safe for all hardwood types. Eastern Shore MD & DE.",
+    url: "https://tropicalbreezerf.com/hardwood",
+  },
+};
+
+const hardwoodSchema = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name: "RF™ Hardwood Floor Cleaning",
+  provider: { "@type": "LocalBusiness", name: "Tropical Breeze RF™", telephone: "+1-443-856-3244", url: "https://tropicalbreezerf.com" },
+  serviceType: "Hardwood Floor Cleaning",
+  areaServed: "Maryland and Delaware Eastern Shore",
+  description: "Low-moisture RF™ hardwood floor cleaning. Free finish inspection before every job. Dry in 1–2 hours. Safe for all finish types.",
+  offers: { "@type": "Offer", price: "1.00", priceCurrency: "USD", description: "Per square foot — includes free finish inspection" },
+};
 
 export default function Hardwood() {
   const finishTypes = [
@@ -13,7 +40,7 @@ export default function Hardwood() {
   const faqs = [
     { q: "How much does hardwood floor cleaning cost?", a: "$1.00 per square foot — with a free inspection before every job. Minimum service charge applies. Call 443-856-3244 for a free estimate." },
     { q: "Why do you inspect before cleaning?", a: "Hardwood finish type determines the correct cleaning method. Using the wrong process can cause hazing, swelling, or permanent damage. Inspection takes 5 minutes and protects your floor." },
-    { q: "Is moisture safe for hardwood floors?", a: "Low moisture yes, high moisture no. Our RF™ low-moisture process uses minimal water — floors dry in 1-2 hours. Traditional steam cleaning leaves floors wet for 24+ hours causing cupping and damage." },
+    { q: "Is moisture safe for hardwood floors?", a: "Low moisture yes, high moisture no. Our RF™ low-moisture process uses minimal water — floors dry in 1–2 hours. Traditional steam cleaning leaves floors wet for 24+ hours causing cupping and damage." },
     { q: "What about Eastern Shore humidity?", a: "High humidity is the number one enemy of hardwood floors on the Shore. Our low-moisture process eliminates the risk of moisture damage that traditional cleaning causes." },
     { q: "Can you clean engineered hardwood?", a: "Yes — engineered hardwood is cleaned using the same low-moisture RF™ process. Engineered floors are more moisture-sensitive than solid hardwood, making our approach especially important." },
     { q: "What PSI do you use for hardwood?", a: "Hardwood floors use very low pressure — we use a gentle low-moisture extraction process, not high-pressure water. High PSI is for tile and grout only." },
@@ -21,6 +48,11 @@ export default function Hardwood() {
 
   return (
     <main className="min-h-screen overflow-x-hidden">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(hardwoodSchema) }}
+      />
+
       <section className="relative py-32 px-6 bg-gradient-to-br from-[#0a1628] via-[#004d5a] to-[#006978] overflow-hidden">
         <div className="absolute bottom-0 left-0 right-0">
           <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
@@ -47,7 +79,7 @@ export default function Hardwood() {
             </a>
           </div>
           <div className="flex flex-wrap gap-8">
-            {[{n:"$1.00",l:"Per Sq Ft"},{n:"1-2hr",l:"Dry Time"},{n:"Free",l:"Inspection"},{n:"365+",l:"5-Star Reviews"}].map(s => (
+            {[{n:"$1.00",l:"Per Sq Ft"},{n:"1–2hr",l:"Dry Time"},{n:"Free",l:"Inspection"},{n:"365+",l:"5-Star Reviews"}].map(s => (
               <div key={s.n}>
                 <div className="text-4xl font-black text-teal-300 leading-none">{s.n}</div>
                 <div className="text-xs text-sky-300 font-semibold tracking-widest uppercase mt-1">{s.l}</div>
@@ -61,14 +93,14 @@ export default function Hardwood() {
         <div className="max-w-6xl mx-auto text-center">
           <span className="text-orange-400 text-xs font-bold tracking-widest uppercase block mb-4">The Eastern Shore Problem</span>
           <h2 className="font-black text-white leading-none mb-16" style={{fontSize:"clamp(32px,4vw,56px)"}}>
-            HUMIDITY IS YOUR<br /><span className="text-teal-300">FLOORS BIGGEST ENEMY</span>
+            HUMIDITY IS YOUR<br /><span className="text-teal-300">FLOOR&apos;S BIGGEST ENEMY</span>
           </h2>
           <div className="grid md:grid-cols-4 gap-6">
             {[
-              { stat: "60-80%", label: "Average summer humidity in coastal MD/DE", detail: "The Eastern Shore maritime climate is the primary threat to hardwood floors." },
+              { stat: "60–80%", label: "Average summer humidity in coastal MD/DE", detail: "The Eastern Shore maritime climate is the primary threat to hardwood floors." },
               { stat: "8%", label: "Maximum safe moisture content for hardwood", detail: "Moisture above 8% causes wood fibers to swell, leading to cupping and buckling." },
-              { stat: "24hrs", label: "Traditional cleaning wet time — dangerous", detail: "24-48 hours of moisture exposure from traditional cleaning can cause permanent damage." },
-              { stat: "1-2hr", label: "RF™ dry time for hardwood — safe", detail: "Our low-moisture process eliminates the risk of moisture damage entirely." },
+              { stat: "24hrs", label: "Traditional cleaning wet time — dangerous", detail: "24–48 hours of moisture exposure from traditional cleaning can cause permanent damage." },
+              { stat: "1–2hr", label: "RF™ dry time for hardwood — safe", detail: "Our low-moisture process eliminates the risk of moisture damage entirely." },
             ].map((h) => (
               <div key={h.stat} className="bg-white bg-opacity-5 border border-teal-400 border-opacity-20 rounded-2xl p-8 hover:bg-opacity-10 transition-all">
                 <div className="font-black text-teal-300 leading-none mb-3" style={{fontSize:"clamp(28px,4vw,44px)"}}>{h.stat}</div>

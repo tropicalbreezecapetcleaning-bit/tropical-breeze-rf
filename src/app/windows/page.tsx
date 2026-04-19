@@ -1,4 +1,31 @@
-﻿import Link from "next/link";
+import Link from "next/link";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Window Cleaning in MD & DE | $13 Per Window — Inside, Outside & Screens",
+  description:
+    "Pure water window cleaning removes salt-air mineral deposits and hard water staining. $13 per window — inside + outside + screens + tracks + sills. Serving 33+ Eastern Shore cities. Call 443-856-3244.",
+  alternates: {
+    canonical: "https://tropicalbreezerf.com/windows",
+  },
+  openGraph: {
+    title: "Window Cleaning $13/Window — Salt Air Specialists | Tropical Breeze RF™",
+    description:
+      "$13 per window includes inside, outside, screens, tracks, and sills. Pure water process. Eastern Shore MD & DE.",
+    url: "https://tropicalbreezerf.com/windows",
+  },
+};
+
+const windowSchema = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name: "Pure Water Window Cleaning",
+  provider: { "@type": "LocalBusiness", name: "Tropical Breeze RF™", telephone: "+1-443-856-3244", url: "https://tropicalbreezerf.com" },
+  serviceType: "Window Cleaning",
+  areaServed: "Maryland and Delaware Eastern Shore",
+  description: "Pure water window cleaning removes salt-air mineral deposits and hard water staining. Inside + outside + screens + tracks + sills. $13 per window.",
+  offers: { "@type": "Offer", price: "13.00", priceCurrency: "USD", description: "Per window — includes interior, exterior, screens, tracks, and sills" },
+};
 
 export default function Windows() {
   const included = [
@@ -14,13 +41,18 @@ export default function Windows() {
     { q: "How much does window cleaning cost?", a: "$13 per window — includes inside glass, outside glass, screen cleaning, track cleaning, and sill wipe-down. No hidden fees." },
     { q: "What does $13 per window include?", a: "Everything: interior glass, exterior glass, screen removal and cleaning, track vacuuming and wiping, and sill wipe-down. No extra charges for screens or tracks." },
     { q: "Can you remove hard water stains and salt deposits?", a: "Yes — salt air mineral deposits and hard water staining are our Eastern Shore specialty. We use mineral-specific treatment to dissolve calcium, iron, and sodium deposits." },
-    { q: "How often should I have windows cleaned?", a: "Ocean-facing homes: every 3-4 months. Inland homes: every 4-6 months. Vacation rentals benefit from cleaning between major guest turnovers." },
+    { q: "How often should I have windows cleaned?", a: "Ocean-facing homes: every 3–4 months. Inland homes: every 4–6 months. Vacation rentals benefit from cleaning between major guest turnovers." },
     { q: "Do you serve vacation rental properties?", a: "Yes — vacation rental window cleaning is one of our most requested services across Ocean City, Rehoboth, Bethany, Fenwick, and Lewes." },
     { q: "Do you clean high windows?", a: "Yes — we use water-fed pole systems for second-story and high windows, allowing us to clean safely from the ground." },
   ];
 
   return (
     <main className="min-h-screen overflow-x-hidden">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(windowSchema) }}
+      />
+
       <section className="relative py-32 px-6 bg-gradient-to-br from-[#0a1628] via-[#004d5a] to-[#006978] overflow-hidden">
         <div className="absolute bottom-0 left-0 right-0">
           <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">

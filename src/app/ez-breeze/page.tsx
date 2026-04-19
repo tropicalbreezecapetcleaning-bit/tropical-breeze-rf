@@ -1,4 +1,31 @@
 import Link from "next/link";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "EZ Breeze Cleaning in MD & DE | Vinyl-Safe RF™ | Eastern Shore Specialists",
+  description:
+    "RF™ EZ Breeze panel cleaning using vinyl-safe solutions only. Removes salt air, pollen, and oxidation without damaging panels. Free assessment. Serving golf communities and waterfront homes across MD & DE. Call 443-856-3244.",
+  alternates: {
+    canonical: "https://tropicalbreezerf.com/ez-breeze",
+  },
+  openGraph: {
+    title: "EZ Breeze Cleaning — Vinyl-Safe Specialists | Tropical Breeze RF™",
+    description:
+      "Free EZ Breeze assessment. Vinyl-safe RF™ process only. Removes salt air, pollen, yellowing, and oxidation. Eastern Shore golf communities and waterfront homes.",
+    url: "https://tropicalbreezerf.com/ez-breeze",
+  },
+};
+
+const ezBreezeSchema = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name: "EZ Breeze Panel Cleaning",
+  provider: { "@type": "LocalBusiness", name: "Tropical Breeze RF™", telephone: "+1-443-856-3244", url: "https://tropicalbreezerf.com" },
+  serviceType: "EZ Breeze Cleaning",
+  areaServed: "Maryland and Delaware Eastern Shore",
+  description: "Vinyl-safe RF™ EZ Breeze panel cleaning. Removes salt air, pollen, yellowing, and oxidation. Free assessment before every job.",
+  offers: { "@type": "Offer", description: "Free assessment — pricing based on panel count and condition" },
+};
 
 export default function EzBreeze() {
   const mistakes = [
@@ -11,15 +38,20 @@ export default function EzBreeze() {
 
   const faqs = [
     { q: "What is EZ Breeze?", a: "EZ Breeze is a vinyl panel enclosure system used to enclose porches, patios, and sunrooms. The panels are made of polycarbonate or PVC vinyl — not glass. Extremely popular in Eastern Shore golf communities and waterfront homes." },
-    { q: "Why cant I use regular glass cleaner on EZ Breeze?", a: "Glass cleaners contain ammonia which breaks down vinyl polymers over time, causing yellowing, brittleness, and surface degradation. EZ Breeze requires vinyl-safe cleaning solutions only." },
+    { q: "Why can't I use regular glass cleaner on EZ Breeze?", a: "Glass cleaners contain ammonia which breaks down vinyl polymers over time, causing yellowing, brittleness, and surface degradation. EZ Breeze requires vinyl-safe cleaning solutions only." },
     { q: "Can you restore yellowed EZ Breeze panels?", a: "In many cases yes. Yellowing from oxidation and UV exposure can be significantly reduced with our vinyl restoration treatment." },
-    { q: "How often should EZ Breeze be cleaned?", a: "On the Eastern Shore we recommend 2-3 times per year due to pollen, salt air, and humidity buildup. Golf community properties often benefit from quarterly cleaning." },
+    { q: "How often should EZ Breeze be cleaned?", a: "On the Eastern Shore we recommend 2–3 times per year due to pollen, salt air, and humidity buildup. Golf community properties often benefit from quarterly cleaning." },
     { q: "What does EZ Breeze cleaning cost?", a: "EZ Breeze pricing is consultation-based due to variation in panel count and condition. We provide a free assessment and written quote before any work begins. Call 443-856-3244." },
     { q: "Do you clean the tracks and frames too?", a: "Yes — tracks are critical. Dirt in tracks causes panels to bind and skip. We vacuum and wipe every track as part of every cleaning service." },
   ];
 
   return (
     <main className="min-h-screen overflow-x-hidden">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(ezBreezeSchema) }}
+      />
+
       <section className="relative py-32 px-6 bg-gradient-to-br from-[#0a1628] via-[#004d5a] to-[#006978] overflow-hidden">
         <div className="absolute bottom-0 left-0 right-0">
           <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">

@@ -1,3 +1,5 @@
+export const dynamicParams = true;
+
 import { db } from '@/db';
 import { cities } from '@/db/schema';
 import { eq } from 'drizzle-orm';
@@ -574,3 +576,4 @@ export default async function ServiceLocationPage({ params }: PageProps) {
     </main>
   );
 }
+

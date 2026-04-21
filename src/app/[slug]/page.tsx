@@ -1,5 +1,6 @@
 ﻿export const dynamicParams = true;
 export const revalidate = 3600;
+export const revalidate = 3600;
 
 import { db } from '@/db';
 import { cities } from '@/db/schema';

@@ -1,0 +1,8 @@
+f = open('src/app/[slug]/page.tsx', 'r', encoding='utf-8')
+content = f.read()
+f.close()
+content = content.replace('export const dynamicParams = true;', 'export const dynamicParams = true;\nexport const revalidate = 3600;')
+f = open('src/app/[slug]/page.tsx', 'w', encoding='utf-8')
+f.write(content)
+f.close()
+print('Done')

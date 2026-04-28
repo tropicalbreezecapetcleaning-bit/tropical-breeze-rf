@@ -1,4 +1,4 @@
-﻿version: 1
+version: 1
 frontend:
   phases:
     preBuild:
@@ -9,6 +9,7 @@ frontend:
         - echo "GEMINI_API_KEY=$GEMINI_API_KEY" >> .env.production
         - echo "SENDGRID_API_KEY=$SENDGRID_API_KEY" >> .env.production
         - echo "DATABASE_URL=$DATABASE_URL" >> .env.production
+        - echo "BREEZE_DB_URL=$BREEZE_DB_URL" >> .env.production
         - npm run build
   artifacts:
     baseDirectory: .next

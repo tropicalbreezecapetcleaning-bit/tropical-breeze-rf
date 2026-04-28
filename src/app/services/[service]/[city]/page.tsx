@@ -2,8 +2,6 @@ import { Metadata } from "next"
 import { neon } from "@neondatabase/serverless"
 import { notFound } from "next/navigation"
 
-const sql = neon(process.env.BREEZE_DB_URL!)
-
 export const revalidate = 3600
 
 interface Props {
@@ -11,12 +9,18 @@ interface Props {
 }
 
 async function getContent(service: string, city: string) {
-  const slug = `services/${service}/${city}`
-  const rows = await sql(
-    "SELECT * FROM seo_content WHERE slug = $1 AND status = 'published' LIMIT 1",
-    [slug]
-  )
-  return rows[0] || null
+  try {
+    const sql = neon(process.env.BREEZE_DB_URL!)
+    const slug = `services/${service}/${city}`
+    const rows = await sql(
+      "SELECT * FROM seo_content WHERE slug = $1 AND status = 'published' LIMIT 1",
+      [slug]
+    )
+    return rows[0] || null
+  } catch (e) {
+    console.error("DB error:", e)
+    return null
+  }
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -26,9 +30,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: data.title || `Residue Free ${service} Cleaning in ${city} | Tropical Breeze RF`,
     description: data.meta_description || "",
-    alternates: {
-      canonical: `https://tropicalbreezerf.com/services/${service}/${city}`,
-    },
   }
 }
 

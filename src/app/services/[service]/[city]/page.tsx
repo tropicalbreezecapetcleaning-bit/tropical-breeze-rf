@@ -9,11 +9,13 @@ interface Props {
 }
 
 async function getContent(service: string, city: string) {
+  const dbUrl = process.env.BREEZE_DB_URL || process.env.DATABASE_URL
+  if (!dbUrl) return null
   try {
-    const sql = neon(process.env.BREEZE_DB_URL!)
+    const sql = neon(dbUrl)
     const slug = `services/${service}/${city}`
     const rows = await sql(
-      "SELECT * FROM seo_content WHERE slug = $1 AND status = 'published' LIMIT 1",
+      "SELECT id, title, content, meta_description, status, slug FROM seo_content WHERE slug = $1 LIMIT 1",
       [slug]
     )
     return rows[0] || null

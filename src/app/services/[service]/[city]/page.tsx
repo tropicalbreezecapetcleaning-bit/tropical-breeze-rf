@@ -11,9 +11,10 @@ interface Props {
 }
 
 async function getContent(service: string, city: string) {
+  const slug = `services/${service}/${city}`
   const rows = await sql(
-    "SELECT * FROM seo_content WHERE service = $1 AND city = $2 AND status = 'published' LIMIT 1",
-    [service, city]
+    "SELECT * FROM seo_content WHERE slug = $1 AND status = 'published' LIMIT 1",
+    [slug]
   )
   return rows[0] || null
 }

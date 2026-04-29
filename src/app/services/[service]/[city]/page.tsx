@@ -50,7 +50,7 @@ export default async function ServiceCityPage({ params }: Props) {
           <div className="inline-flex items-center gap-2 bg-teal-500 bg-opacity-20 border border-teal-400 border-opacity-30 text-teal-300 text-xs font-bold tracking-widest uppercase px-4 py-2 rounded-full mb-6">
             RF™ Residue-Free · {cityName}
           </div>
-          <h1 className="font-black text-white text-4xl md:text-6xl leading-none mb-6">
+          <h1 className="font-black text-white text-5xl md:text-7xl leading-none mb-6">
             {serviceName} in<br /><span className="text-teal-300">{cityName}</span>
           </h1>
           <div className="flex flex-wrap gap-4 justify-center mt-8">

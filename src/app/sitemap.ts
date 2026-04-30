@@ -1,15 +1,18 @@
 import { MetadataRoute } from 'next';
 
-const BASE_URL = 'https://app.tropicalbreezerf.com';
+const BASE_URL = 'https://www.tropicalbreezerf.com';
 
 const CITY_SLUGS = [
-  'salisbury-md', 'ocean-city-md', 'rehoboth-beach-de', 'bethany-beach-de',
-  'fenwick-island-de', 'lewes-de', 'milton-de', 'georgetown-de', 'seaford-de',
-  'milford-de', 'the-peninsula-de', 'bayside-de', 'heritage-shores-de',
-  'nutters-crossing-md', 'berlin-md', 'ocean-pines-md', 'cambridge-md',
-  'easton-md', 'st-michaels-md', 'princess-anne-md', 'crisfield-md',
-  'snow-hill-md', 'pocomoke-city-md', 'fruitland-md', 'delmar-md-de',
-  'pittsville-md', 'parsonsburg-md', 'bishopville-md',
+  'ocean-city-md', 'fenwick-island-de', 'bethany-beach-de', 'rehoboth-beach-de',
+  'lewes-de', 'ocean-pines-md', 'berlin-md', 'easton-md', 'st-michaels-md',
+  'cambridge-md', 'oxford-md', 'trappe-md', 'milford-de', 'milton-de',
+  'salisbury-md', 'fruitland-md', 'princess-anne-md', 'delmar-md',
+  'snow-hill-md', 'pocomoke-city-md', 'georgetown-de', 'seaford-de',
+  'the-peninsula-de', 'bayside-de', 'heritage-shores-de', 'crisfield-md',
+  'mardela-springs-md', 'hebron-md', 'pittsville-md', 'willards-md',
+  'quantico-md', 'selbyville-de', 'millsboro-de', 'dagsboro-de',
+  'bridgeville-de', 'laurel-de', 'long-neck-de', 'dewey-beach-de',
+  'millville-de', 'ocean-view-de', 'frankford-de', 'harrington-de',
 ];
 
 const SERVICES = [
@@ -27,14 +30,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/hardwood`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
     { url: `${BASE_URL}/windows`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
     { url: `${BASE_URL}/ez-breeze`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${BASE_URL}/residue-free`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${BASE_URL}/golf-communities`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${BASE_URL}/about`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${BASE_URL}/blog`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
   ];
-
-  const cityPages: MetadataRoute.Sitemap = CITY_SLUGS.map((slug) => ({
-    url: `${BASE_URL}/${slug}`,
-    lastModified: new Date(),
-    changeFrequency: 'weekly' as const,
-    priority: 0.9,
-  }));
 
   const serviceLocationPages: MetadataRoute.Sitemap = CITY_SLUGS.flatMap((slug) =>
     SERVICES.map((service) => ({
@@ -45,5 +45,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }))
   );
 
-  return [...staticPages, ...cityPages, ...serviceLocationPages];
+  return [...staticPages, ...serviceLocationPages];
 }
